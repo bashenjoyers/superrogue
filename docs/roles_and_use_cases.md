@@ -1,3 +1,3 @@
 [..](../README.md)
 
-![](http://imgur.com/UNd7SmC)
+![Use cases diagram](https://i.imgur.com/UNd7SmC.png)
