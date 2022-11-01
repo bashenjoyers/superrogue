@@ -2,7 +2,7 @@
 
 # Описание компонентов
 
-![state-machine](pictures/state-machine.drawio.png)
+![state-machine](pictures/state-machine.png)
 
 `Idle (Main Menu)` - начальный экран из которого можно начать игру и перейти в контейнер `Game` или выйти. 
 
