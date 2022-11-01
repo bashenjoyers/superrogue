@@ -1,4 +1,4 @@
-[..](README.md)
+[..](../README.md)
 
 ![sequence1](pictures/seq1.png)
 

@@ -1,19 +1,19 @@
 # superrogue
 
-[general info](general_info.md)
+[general info](docs/general_info.md)
 
-[architectural drivers](architectural_drivers.md)
+[architectural drivers](docs/architectural_drivers.md)
 
-[roles and use cases](roles_and_use_cases.md)
+[roles and use cases](docs/roles_and_use_cases.md)
 
-[composition](composition.md)
+[composition](docs/composition.md)
 
-[controller logic](controller_logic.md)
+[controller logic](docs/controller_logic.md)
 
-[model logic](model-logic.md)
+[model logic](docs/model-logic.md)
 
-[view logic](view-logic.md)
+[view logic](docs/view-logic.md)
 
-[state machine](state_machine.md)
+[state machine](docs/state_machine.md)
 
-[sequence graphs](sequence_graphs.md)
+[sequence graphs](docs/sequence_graphs.md)
