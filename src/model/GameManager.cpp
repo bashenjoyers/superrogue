@@ -18,10 +18,10 @@ GameOptions GameManager::generate_game_options() noexcept {
 Characteristics GameManager::generate_characteristics(float characteristic_k = 1) noexcept {
     int points = int(__level * POINTS_IN_LVL * characteristic_k);
     int health_default = int(__level * HEALTH_LVL_K * characteristic_k);
-    int damage = int(__generator.characteristic_gen() / 4 * points);
-    int armor = int(__generator.characteristic_gen() / 4 * points);
-    int health = int(__generator.characteristic_gen() / 4 * points);
-    int dexterity = int(__generator.characteristic_gen() / 4 * points);
+    int damage = int(__generator.characteristic_gen() / PARAMETER_COUNT * points);
+    int armor = int(__generator.characteristic_gen() / PARAMETER_COUNT * points);
+    int health = int(__generator.characteristic_gen() / PARAMETER_COUNT * points);
+    int dexterity = int(__generator.characteristic_gen() / PARAMETER_COUNT * points);
     int luck = __generator.luck_gen();
     return Characteristics(damage, armor, health_default + health, dexterity, luck);
 }

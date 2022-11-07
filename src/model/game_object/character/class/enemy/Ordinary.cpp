@@ -4,7 +4,7 @@
 namespace superrogue::game_object::character {
 Ordinary::Ordinary(string description) noexcept : IEnemyClass(description) {}
 
-void Ordinary::strategy() noexcept {
-    // TODO
+CharacterAction Ordinary::strategy(vector<Position>& cells, Position& pos, Position& person_pos) noexcept {
+    return CharacterAction::POTION;
 }
 };

@@ -21,7 +21,7 @@ class Inventory {
     vector<Potion> __potions = {};
     int __potions_max;
 public:
-    Inventory(int potions_max) noexcept;
+    Inventory(int potions_max = DEFAULT_POTIONS_MAX) noexcept;
     void set_helmet(optional<Item> helmet);
     optional<Item> get_helmet() const noexcept;
     void set_armor(optional<Item> armor);

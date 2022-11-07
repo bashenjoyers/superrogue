@@ -15,6 +15,7 @@ public:
     virtual void potion(int potion_i) = 0;
     IPersonClass get_person_class() const noexcept;
     IPerson(string name, Characteristics characteristics, IPersonClass person_class) noexcept;
+    IPerson() {};
     virtual ~IPerson() {}
 };
 };

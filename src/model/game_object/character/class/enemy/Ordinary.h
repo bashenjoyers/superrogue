@@ -5,7 +5,9 @@
 namespace superrogue::game_object::character {
 class Ordinary : public IEnemyClass {
 public:
+    const int visible_radius = DEFAULT_VISIBLE_RADIUS;
+    const bool ignore_walls = false;
     Ordinary(string description) noexcept;
-    void strategy() noexcept;
+    CharacterAction strategy(vector<Position>& cells, Position& pos, Position& person_pos) noexcept;
 };
 };

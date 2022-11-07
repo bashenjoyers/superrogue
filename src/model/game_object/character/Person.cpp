@@ -2,7 +2,6 @@
 #include "model/const.h"
 
 
-
 namespace superrogue::game_object::character {
 void Person::before_any_action() {      // TODO(do it adequately)
     vector<int> delete_potions_i = {};
@@ -33,14 +32,12 @@ void Person::potion(int potion_i) {
     Potion potion = inventory.use_potion(potion_i);
 }
 
-bool Person::step() {   // TODO
+void Person::step() {
     before_any_action();
-    return true;
 }
 
-bool Person::punch() {  // TODO
+void Person::punch() {
     before_any_action();
-    return true;
 }
 
 Characteristics Person::get_full_characteristics(bool melee = true) {    // TODO(do it adequately)

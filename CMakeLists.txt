@@ -15,6 +15,7 @@ add_executable(
         src/exceptions/exceptions.h
         src/controller/IEvent.h
         src/controller/const.h
+        src/model/abstract.h
         src/model/values.h
         src/model/GameManager.cpp
         src/model/GameManager.h
@@ -31,6 +32,7 @@ add_executable(
         src/model/game_object/character/ICharacter.h
         src/model/game_object/character/Enemy.h
         src/model/game_object/character/IPerson.cpp
+        src/model/game_object/character/CharacterAction.h
         src/model/game_object/character/Person.cpp
         src/model/game_object/character/IPerson.h
         src/model/game_object/character/Enemy.cpp

@@ -15,6 +15,7 @@ public:
     virtual string get_description() const noexcept;
     Characteristics characteristics;
     IGameObject(string name, string description, Characteristics characteristics) noexcept;
+    IGameObject() {};
     virtual ~IGameObject() {}
 };
 };

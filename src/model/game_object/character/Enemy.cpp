@@ -2,12 +2,12 @@
 
 
 namespace superrogue::game_object::character {
-bool Enemy::step() {   // TODO
-    return true;
+void Enemy::step() {   // TODO
+
 }
 
-bool Enemy::punch() {  // TODO
-    return true;
+void Enemy::punch() {  // TODO
+
 }
 
 Enemy::Enemy(string name, Characteristics characteristics, IEnemyClass enemy_class, float intellect) noexcept :

@@ -8,7 +8,7 @@ using superrogue::exception::InventoryException;
 
 
 namespace superrogue::inventory {
-Inventory::Inventory(int potions_max) noexcept : __potions_max(potions_max = DEFAULT_POTIONS_MAX) {}
+Inventory::Inventory(int potions_max) noexcept : __potions_max(potions_max) {}
 
 void Inventory::set_helmet(optional<Item> helmet) {
     if (!helmet.has_value() && helmet.value().get_item_type() != ItemType::HELMET) 

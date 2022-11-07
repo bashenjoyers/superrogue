@@ -15,9 +15,10 @@ class Person : public IPerson {
 public:
     Inventory inventory;
     void potion(int potion_i) override;
-    bool step() override;
-    bool punch() override;
+    void step() override;
+    void punch() override;
     Characteristics get_full_characteristics(bool melee);
     Person(string name, Characteristics characteristics, IPersonClass person_class, Inventory inventory = Inventory(DEFAULT_POTIONS_MAX)) noexcept;
+    Person() {};
 };
 };

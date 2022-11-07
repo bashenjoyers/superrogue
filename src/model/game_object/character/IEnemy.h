@@ -5,6 +5,7 @@
 #include "model/game_object/character/class/enemy/IEnemyClass.h"
 
 using std::string;
+using superrogue::game_object::character::IEnemyClass;
 
 
 namespace superrogue::game_object::character {

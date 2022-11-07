@@ -5,7 +5,7 @@
 namespace superrogue::game_object::character {
 class IPersonClass : public ICharacterClass {
 public:
-    IPersonClass(string description) noexcept : ICharacterClass(description) {}
+    IPersonClass(string description = "") noexcept : ICharacterClass(description) {}
     virtual ~IPersonClass() {}
 };
 };
