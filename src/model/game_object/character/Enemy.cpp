@@ -1,5 +1,8 @@
 #include "model/game_object/character/Enemy.h"
 
+using std::string;
+using superrogue::game_object::character::IEnemyClass;
+
 
 namespace superrogue::game_object::character {
 void Enemy::step() {   // TODO

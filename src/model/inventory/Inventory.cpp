@@ -2,9 +2,12 @@
 #include "model/const.h"
 #include "exceptions/exceptions.h"
 
-using superrogue::DEFAULT_POTIONS_MAX;
 using superrogue::game_object::item::ItemType;
 using superrogue::exception::InventoryException;
+using std::optional;
+using std::vector;
+using superrogue::game_object::item::Item;
+using superrogue::game_object::item::Potion;
 
 
 namespace superrogue::inventory {

@@ -2,6 +2,8 @@
 #include <string>
 #include "model/game_object/IGameObject.h"
 
+using std::string;
+
 
 namespace superrogue::game_object {
 IGameObject::IGameObject(string name, string description, Characteristics characteristics) noexcept : 

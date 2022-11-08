@@ -1,5 +1,7 @@
 #include "model/game_object/character/IPerson.h"
 
+using std::string;
+
 
 namespace superrogue::game_object::character {
 string IPerson::get_description() const noexcept {

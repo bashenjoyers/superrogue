@@ -15,4 +15,9 @@ class InventoryException : public GameObjectException {
 public:
     explicit InventoryException(const std::string& message);
 };
+
+class StepException : public GameObjectException {
+public:
+    explicit StepException(const std::string& message);
+};
 };

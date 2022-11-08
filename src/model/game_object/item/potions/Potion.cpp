@@ -4,13 +4,14 @@
 #include "model/const.h"
 #include "exceptions/exceptions.h"
 
+using superrogue::exception::GameObjectException;
+
 
 namespace superrogue::game_object::item {
-Potion::Potion(string name, string description, Characteristics characteristics, int work_time = DEFAULT_POTION_WORK_TIME) : 
+Potion::Potion(std::string name, std::string description, Characteristics characteristics, int work_time = DEFAULT_POTION_WORK_TIME) : 
     IItem(name, description, characteristics), __work_time(work_time) {
         if (work_time < 0) {
-            const string a = string("word_time should be more than 0");
-            throw GameObjectException(a);
+            throw GameObjectException(std::string("word_time should be more than 0"));
         }
     }
 

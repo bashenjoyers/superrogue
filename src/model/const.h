@@ -1,5 +1,6 @@
 #pragma once
 
+
 namespace superrogue {
 const int PARAMETER_COUNT = 4;
 const int DEFAULT_VISIBLE_RADIUS = 4;

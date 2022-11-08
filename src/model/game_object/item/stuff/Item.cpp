@@ -6,9 +6,8 @@
 
 
 namespace superrogue::game_object::item {
-Item::Item(string name, string description, Characteristics characteristics, ItemType itemType) noexcept : 
+Item::Item(std::string name, std::string description, Characteristics characteristics, ItemType itemType) noexcept : 
     IItem(name, description, characteristics), itemType(itemType) {}
-
 
 ItemType Item::get_item_type() const noexcept {
     return this->itemType;

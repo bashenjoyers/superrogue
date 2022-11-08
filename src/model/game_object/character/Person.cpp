@@ -1,6 +1,13 @@
 #include "model/game_object/character/Person.h"
 #include "model/const.h"
 
+using std::string;
+using std::vector;
+using std::optional;
+using superrogue::inventory::Inventory;
+using superrogue::game_object::item::Potion;
+using superrogue::game_object::item::Item;
+
 
 namespace superrogue::game_object::character {
 void Person::before_any_action() {      // TODO(do it adequately)

@@ -1,5 +1,8 @@
 #include "model/game_object/character/IEnemy.h"
 
+using std::string;
+using superrogue::game_object::character::IEnemyClass;
+
 
 namespace superrogue::game_object::character {
 string IEnemy::get_description() const noexcept {

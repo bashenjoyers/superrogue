@@ -5,6 +5,6 @@
 namespace superrogue::game_object::character {
 class Lucky : public IPersonClass {
 public:
-    Lucky(string description) noexcept;
+    Lucky(std::string description) noexcept;
 };
 };

@@ -1,5 +1,13 @@
 #include "model/map/Map.h"
 
+using std::vector;
+using superrogue::game_object::character::IEnemyClass;
+using superrogue::game_object::character::Person;
+using superrogue::game_object::character::Enemy;
+using superrogue::game_object::character::CharacterAction;
+using superrogue::abstract::Position;
+using superrogue::exception::StepException;
+
 
 namespace superrogue::map {
 Map::Map(vector<Enemy> enemies, Person person, MapOptions map_options) : 
@@ -7,9 +15,17 @@ Map::Map(vector<Enemy> enemies, Person person, MapOptions map_options) :
     enemies_with_positions = {};
     for (Enemy enemy : enemies) {
         enemies_with_positions.push_back(EnemyWithPosition(enemy));
-    } 
+    }
     generate_map_and_door();     // create map and door
     set_positions();    // set person and enemies positions, enemies areas
+    // TODO
+}
+
+void Map::set_positions() {
+    // TODO
+}
+
+void Map::generate_map_and_door() {
     // TODO
 }
 
@@ -18,58 +34,57 @@ vector<Position> Map::visible_cells(const Position& pos, int radius, bool ignore
 }
 
 bool Map::step(CharacterAction action) {
-    if (!__step(action)) {
+    if (!__action_person(action)) {
         return false;
     }
     for (EnemyWithPosition enemy_with_position : enemies_with_positions) {
-        auto enemy_class = enemy_with_position.enemy.get_enemy_class();
+        IEnemyClass enemy_class = enemy_with_position.get_enemy_class();
         int radius = enemy_class.visible_radius;
         bool ignore_walls = enemy_class.ignore_walls;
         vector<Position> cells = visible_cells(enemy_with_position.pos, radius, false, enemy_with_position.area);
         CharacterAction enemy_action = enemy_class.strategy(cells, enemy_with_position.pos, person_with_position.pos);
-        if (!__step(enemy_action)) {    // FIXME(for enemy)
-            throw GameObjectException("enemy cheated!");
-        }
+        __action_enemy(enemy_action, enemy_with_position);
     }
     return true;
 }
 
-bool Map::__step(CharacterAction action) {  // not only for person
-    bool correct = true;
+bool Map::__step_anybody(CharacterAction action, WithPosition anybody) {
+    bool step_was = false;
     switch (action)
     {
     case CharacterAction::STEP_FORWARD:
-        if (person_with_position.pos.x + 1 < __map_options.width) {
-            person_with_position.preson.step();
-            person_with_position.pos.x += 1;
-        } else {
-            correct = false;
+        if (anybody.pos.x + 1 < __map_options.width) {
+            anybody.pos.x += 1;
+            step_was = true;
         }
         break;
     case CharacterAction::STEP_RIGHT:
-        if (person_with_position.pos.y + 1 < __map_options.height) {
-            person_with_position.preson.step();
-            person_with_position.pos.y += 1;
-        } else {
-            correct = false;
+        if (anybody.pos.y + 1 < __map_options.height) {
+            anybody.pos.y += 1;
+            step_was = true;
         }
     case CharacterAction::STEP_BACK:
-        if (person_with_position.pos.x - 1 >= 0) {
-            person_with_position.preson.step();
-            person_with_position.pos.x -= 1;
-        } else {
-            correct = false;
+        if (anybody.pos.x - 1 >= 0) {
+            anybody.pos.x -= 1;
+            step_was = true;
         }
         break;
     case CharacterAction::STEP_LEFT:
-        if (person_with_position.pos.y - 1 >= 0) {
-            person_with_position.preson.step();
-            person_with_position.pos.y -= 1;
-        } else {
-            correct = false;
+        if (anybody.pos.y - 1 >= 0) {
+            anybody.pos.y -= 1;
+            step_was = true;
         }
         break;
-    // TODO
+    default:
+        break;
+    }
+    return step_was;
+}
+
+bool Map::__action_person(CharacterAction action) {
+    bool correct = false;
+    switch (action)
+    {
     case CharacterAction::PUNCH_FORWARD:
         break;
     case CharacterAction::PUNCH_RIGHT:
@@ -81,8 +96,38 @@ bool Map::__step(CharacterAction action) {  // not only for person
     case CharacterAction::POTION:
         break;
     default:
+        if (__step_anybody(action, person_with_position)) {
+            person_with_position.step();
+            correct = true;
+        }
         break;
     }
     return correct;
+}
+
+void Map::__action_enemy(CharacterAction action, EnemyWithPosition enemy_with_position) {
+    bool correct = false;
+    switch (action)
+    {
+    case CharacterAction::PUNCH_FORWARD:
+        break;
+    case CharacterAction::PUNCH_RIGHT:
+        break;
+    case CharacterAction::PUNCH_BACK:
+        break;
+    case CharacterAction::PUNCH_LEFT:
+        break;
+    case CharacterAction::POTION:
+        correct = true;
+    default:
+        if (__step_anybody(action, enemy_with_position)) {
+            enemy_with_position.step();
+            correct = true;
+        }
+        break;
+    }
+    if (!correct) {
+        throw StepException("enemy: failed " + to_string(action));
+    }
 }
 };

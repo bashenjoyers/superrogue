@@ -1,12 +1,26 @@
 #include "model/GameManager.h"
 
+using std::string;
+using std::vector;
+using superrogue::game_object::character::Person;
+using superrogue::game_object::character::Enemy;
+using superrogue::game_object::character::IEnemyClass;
+using superrogue::game_object::character::IPersonClass;
+using superrogue::controller::event::IEvent;
+using superrogue::map::Map;
+using superrogue::map::MapOptions;
+using superrogue::values::enemy_classes;
+using superrogue::values::person_classes;
+using superrogue::values::firstnames;
+using superrogue::values::lastnames;
+
 
 namespace superrogue::game_manager {
 GameManager::GameManager(MapOptions map_options) : __map_options(map_options) {}
 
 vector<IEvent> GameManager::events() noexcept {
     return {};
-} // TODO
+} // TODO(controller)
 
 
 GameOptions GameManager::generate_game_options() noexcept {

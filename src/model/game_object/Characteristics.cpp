@@ -26,4 +26,8 @@ Characteristics Characteristics::operator+= (Characteristics const &other) {
     this->dexterity += other.dexterity;
     return *this;
 }
+
+Characteristics Characteristics::operator* (const int k) {
+    return Characteristics(damage * k, armor * k, health * k, dexterity * k, luck);
+};
 };

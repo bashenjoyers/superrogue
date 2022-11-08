@@ -9,4 +9,6 @@ const char* GameObjectException::what() const noexcept {
 }
 
 InventoryException::InventoryException(const std::string& message) : GameObjectException(message) {};
+
+StepException::StepException(const std::string& message) : GameObjectException(message) {};
 };

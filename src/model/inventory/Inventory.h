@@ -4,36 +4,30 @@
 #include "model/game_object/item/stuff/Item.h"
 #include "model/game_object/item/potions/Potion.h"
 
-using std::optional;
-using std::nullopt;
-using std::vector;
-using superrogue::game_object::item::Item;
-using superrogue::game_object::item::Potion;
-
 
 namespace superrogue::inventory {
 class Inventory {
-    optional<Item> __helmet = nullopt;
-    optional<Item> __armor = nullopt;
-    optional<Item> __boots = nullopt;
-    optional<Item> __weapon_melee = nullopt;
-    optional<Item> __weapon_distant = nullopt;
-    vector<Potion> __potions = {};
+    std::optional<superrogue::game_object::item::Item> __helmet = std::nullopt;
+    std::optional<superrogue::game_object::item::Item> __armor = std::nullopt;
+    std::optional<superrogue::game_object::item::Item> __boots = std::nullopt;
+    std::optional<superrogue::game_object::item::Item> __weapon_melee = std::nullopt;
+    std::optional<superrogue::game_object::item::Item> __weapon_distant = std::nullopt;
+    std::vector<superrogue::game_object::item::Potion> __potions = {};
     int __potions_max;
 public:
     Inventory(int potions_max = DEFAULT_POTIONS_MAX) noexcept;
-    void set_helmet(optional<Item> helmet);
-    optional<Item> get_helmet() const noexcept;
-    void set_armor(optional<Item> armor);
-    optional<Item> get_armor() const noexcept;
-    void set_boots(optional<Item> boots);
-    optional<Item> get_boots() const noexcept;
-    void set_weapon_melee(optional<Item> weapon_melee);
-    optional<Item> get_weapon_melee() const noexcept;
-    void set_weapon_distant(optional<Item> weapon_distant);
-    optional<Item> get_weapon_distant() const noexcept;
-    void add_potion(Potion potion) noexcept;
-    vector<Potion> get_potions() const noexcept;
-    Potion use_potion(int potion_i);
+    void set_helmet(std::optional<superrogue::game_object::item::Item> helmet);
+    std::optional<superrogue::game_object::item::Item> get_helmet() const noexcept;
+    void set_armor(std::optional<superrogue::game_object::item::Item> armor);
+    std::optional<superrogue::game_object::item::Item> get_armor() const noexcept;
+    void set_boots(std::optional<superrogue::game_object::item::Item> boots);
+    std::optional<superrogue::game_object::item::Item> get_boots() const noexcept;
+    void set_weapon_melee(std::optional<superrogue::game_object::item::Item> weapon_melee);
+    std::optional<superrogue::game_object::item::Item> get_weapon_melee() const noexcept;
+    void set_weapon_distant(std::optional<superrogue::game_object::item::Item> weapon_distant);
+    std::optional<superrogue::game_object::item::Item> get_weapon_distant() const noexcept;
+    void add_potion(superrogue::game_object::item::Potion potion) noexcept;
+    std::vector<superrogue::game_object::item::Potion> get_potions() const noexcept;
+    superrogue::game_object::item::Potion use_potion(int potion_i);
 };
 };

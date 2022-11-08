@@ -4,33 +4,23 @@
 #include "model/game_object/character/Person.h"
 #include "model/game_object/character/CharacterAction.h"
 #include "model/game_object/character/class/enemy/IEnemyClass.h"
+#include "model/game_object/character/class/enemy/Ordinary.h"
 #include "model/abstract.h"
-
-using superrogue::game_object::character::IEnemyClass;
-using superrogue::game_object::character::ICharacter;
-using superrogue::game_object::character::Person;
-using superrogue::game_object::character::Enemy;
-using superrogue::game_object::character::CharacterAction;
-using superrogue::abstract::Position;
+#include "exceptions/exceptions.h"
 
 
 namespace superrogue::map {
-// struct CharacterWithPosition {
-//     ICharacter character;
-//     Position pos;
-// };
-
-struct PersonWithPosition {
-    Person preson;
-    Position pos;
-    PersonWithPosition(Person person) {}; // : person(person) {};   // FIXME
+struct WithPosition {
+    superrogue::abstract::Position pos;
 };
 
-struct EnemyWithPosition {
-    Enemy enemy;
-    Position pos;
-    vector<Position> area;  // where enemy can be
-    EnemyWithPosition(Enemy enemy) : enemy(enemy) {};
+struct PersonWithPosition : superrogue::game_object::character::Person, WithPosition {
+    PersonWithPosition(superrogue::game_object::character::Person person) : superrogue::game_object::character::Person(person) {};
+};
+
+struct EnemyWithPosition : superrogue::game_object::character::Enemy, WithPosition {
+    std::vector<superrogue::abstract::Position> area;  // where enemy can be
+    EnemyWithPosition(superrogue::game_object::character::Enemy enemy) : superrogue::game_object::character::Enemy(enemy) {};
 };
 
 struct MapOptions {
@@ -42,14 +32,16 @@ class Map {
     MapOptions __map_options;
     void generate_map_and_door();
     void set_positions();
-    vector<Position> visible_cells(const Position& pos, int radius, bool ignore_walls, const vector<Position>& area);
-    bool __step(CharacterAction action);
+    std::vector<superrogue::abstract::Position> visible_cells(const superrogue::abstract::Position& pos, int radius, bool ignore_walls, const std::vector<superrogue::abstract::Position>& area);
+    bool __step_anybody(superrogue::game_object::character::CharacterAction action, WithPosition anybody);
+    bool __action_person(superrogue::game_object::character::CharacterAction action);
+    void __action_enemy(superrogue::game_object::character::CharacterAction action, EnemyWithPosition enemy);
 public:
-    vector<EnemyWithPosition> enemies_with_positions;
+    std::vector<EnemyWithPosition> enemies_with_positions;
     PersonWithPosition person_with_position;
-    vector<vector<bool>> map;
-    Position door;
-    Map(vector<Enemy> enemies, Person person, MapOptions map_options);
-    bool step(CharacterAction action);
+    std::vector<std::vector<bool>> map;
+    superrogue::abstract::Position door;
+    Map(std::vector<superrogue::game_object::character::Enemy> enemies, superrogue::game_object::character::Person person, MapOptions map_options);
+    bool step(superrogue::game_object::character::CharacterAction action);
 };
 };
