@@ -3,13 +3,19 @@
 #include <ncurses.h>
 #include <memory>
 
-namespace NCurses {
+namespace Ncurses {
 
 class Ncurses;
 
 class NcursesWindow {
 public:
+    using NcursesWIndowPtr = std::shared_ptr<NcursesWindow>;
+    ~NcursesWindow();
+
     void drawElement(char c, size_t x, size_t y);
+
+    void resize(size_t w, size_t h);
+    void moveTo(size_t x, size_t y);
 
 private:
     NcursesWindow(WINDOW *_win, size_t h, size_t w, size_t x, size_t y);
@@ -19,21 +25,23 @@ private:
     size_t h, w;
     size_t y, x;
 
-    friend class Ncurses;
+    friend class NcursesAPI;
 };
 
-class Ncurses {
+class NcursesAPI {
 public:
-    using NcursesPtr = std::shared_ptr<Ncurses>;
+    using NcursesAPIPtr = std::shared_ptr<NcursesAPI>;
+    ~NcursesAPI();
 
-    static NcursesPtr getInstance();
 
-    NcursesWindow getWindow(size_t h, size_t w, size_t x, size_t y);
+    static NcursesAPIPtr getInstance();
+
+    NcursesWindow::NcursesWIndowPtr getWindow(size_t h, size_t w, size_t x, size_t y);
 
 private:
-    Ncurses();
+    NcursesAPI();
 
-    static NcursesPtr ncurses;
+    static NcursesAPIPtr ncurses;
 };
 
 }
