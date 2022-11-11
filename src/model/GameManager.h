@@ -9,9 +9,9 @@
 
 
 namespace superrogue::game_manager {
-typedef std::__1::__bind<std::__1::uniform_int_distribution<int>, std::__1::mt19937> uniform_int_gen;
-typedef std::__1::__bind<std::__1::uniform_real_distribution<float>, std::__1::mt19937> uniform_float_gen;
-typedef std::__1::__bind<std::__1::normal_distribution<float>, std::__1::mt19937> normal_dist;
+typedef std::__bind<std::uniform_int_distribution<int>, std::mt19937> uniform_int_gen;
+typedef std::__bind<std::uniform_real_distribution<float>, std::mt19937> uniform_float_gen;
+typedef std::__bind<std::normal_distribution<float>, std::mt19937> normal_dist;
 
 struct GameOptions {
     int enemies_count;

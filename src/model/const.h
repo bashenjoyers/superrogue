@@ -17,4 +17,5 @@ const int POINTS_IN_LVL = POINTS_LVL_UP + POINTS_IN_LVL_ITEMS;
 const float WEAKNESS_K = 0.7;
 const int HEALTH_LVL_K = 5;
 const float CHARACTERISTIC_STANDARD_DEVIATION = 0.35;
+const int DISTANT_RANGE = 3;
 };

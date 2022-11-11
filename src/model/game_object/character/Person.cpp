@@ -47,13 +47,26 @@ void Person::punch() {
     before_any_action();
 }
 
-Characteristics Person::get_full_characteristics(bool melee = true) {    // TODO(do it adequately)
+bool Person::change_weapon() {
+    if (weapon_melee && !inventory.get_weapon_distant().has_value())
+        return false;
+    weapon_melee = !weapon_melee;
+    return true;
+}
+
+bool Person::is_weapon_melee() {
+    return weapon_melee;
+}
+
+void Person::take_item() {}
+
+Characteristics Person::get_full_characteristics() {    // TODO(do it adequately)
     Characteristics full_characteristics = this->characteristics;
     vector<optional<Item>> items = {
         inventory.get_helmet(),
         inventory.get_armor(),
         inventory.get_boots(),
-        melee ? inventory.get_weapon_melee() : inventory.get_weapon_distant()
+        weapon_melee ? inventory.get_weapon_melee() : inventory.get_weapon_distant()
     };
     for (optional<Item> item : items) {
         if (item.has_value())

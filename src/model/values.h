@@ -13,8 +13,39 @@
 
 
 namespace superrogue::values {
-static const std::unordered_map<StuffType, superrogue::game_object::item::Item> items = {  // TODO + 2
-    {StuffType::HAUBERK, superrogue::game_object::item::Item("hauberk", "good old hauberk", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::ARMOR)}
+static const std::unordered_map<StuffType, superrogue::game_object::item::Item> items = {
+    {StuffType::HELM, superrogue::game_object::item::Item("helm", "good old hauberk", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::HELMET)},
+    {StuffType::CAP, superrogue::game_object::item::Item("cap", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::HELMET)},
+    {StuffType::PANAMA, superrogue::game_object::item::Item("panama", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::HELMET)},
+    {StuffType::HAT, superrogue::game_object::item::Item("hat", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::HELMET)},
+    
+    {StuffType::HAUBERK, superrogue::game_object::item::Item("hauberk", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::ARMOR)},
+    {StuffType::TUNIC, superrogue::game_object::item::Item("tunic", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::ARMOR)},
+    {StuffType::JACKET, superrogue::game_object::item::Item("jacket", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::ARMOR)},
+    {StuffType::T_SHIRT, superrogue::game_object::item::Item("t_shirt", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::ARMOR)},
+    
+    {StuffType::SNEAKERS, superrogue::game_object::item::Item("sneakers", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::BOOTS)},
+    {StuffType::SLIPPERS, superrogue::game_object::item::Item("slippers", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::BOOTS)},
+    {StuffType::BOOTS, superrogue::game_object::item::Item("boots", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::BOOTS)},
+    {StuffType::SANDALS, superrogue::game_object::item::Item("sandals", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::BOOTS)},
+    
+    {StuffType::SWORD, superrogue::game_object::item::Item("sword", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_MELEE)},
+    {StuffType::KATANA, superrogue::game_object::item::Item("katana", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_MELEE)},
+    {StuffType::KNIFE, superrogue::game_object::item::Item("knife", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_MELEE)},
+    {StuffType::SABER, superrogue::game_object::item::Item("saber", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_MELEE)},
+    {StuffType::BITA, superrogue::game_object::item::Item("bita", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_MELEE)},
+    {StuffType::MACE, superrogue::game_object::item::Item("mace", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_MELEE)},
+    {StuffType::SPEAR, superrogue::game_object::item::Item("spear", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_MELEE)},
+    {StuffType::NUNCHUCKS, superrogue::game_object::item::Item("nunchucks", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_MELEE)},
+    
+    {StuffType::PISTOL, superrogue::game_object::item::Item("pistol", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_DISTANT)},
+    {StuffType::GUN, superrogue::game_object::item::Item("gun", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_DISTANT)},
+    {StuffType::RIFLE, superrogue::game_object::item::Item("rifle", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_DISTANT)},
+    {StuffType::AUTOMATIC_RIFLE, superrogue::game_object::item::Item("automatic_rifle", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_DISTANT)},
+    {StuffType::BOW, superrogue::game_object::item::Item("bow", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_DISTANT)},
+    {StuffType::CROSSBOW, superrogue::game_object::item::Item("crossbow", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_DISTANT)},
+    {StuffType::SLING, superrogue::game_object::item::Item("sling", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_DISTANT)},
+    {StuffType::DIRKS, superrogue::game_object::item::Item("dirks", "", Characteristics(0, 3, 0, -1, 0), superrogue::game_object::item::ItemType::WEAPON_DISTANT)}
 };
 
 static const std::unordered_map<PotionType, superrogue::game_object::item::Potion> potions = {
@@ -29,7 +60,7 @@ static const std::unordered_map<PotionType, superrogue::game_object::item::Potio
 };
 
 static std::vector<superrogue::game_object::character::IEnemyClass> enemy_classes = {   // TODO add
-    superrogue::game_object::character::Ordinary("just lucky person")
+    superrogue::game_object::character::Ordinary("ordinary enemy")
 };
 
 static std::vector<superrogue::game_object::character::IPersonClass> person_classes = { // TODO add

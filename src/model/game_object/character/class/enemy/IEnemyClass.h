@@ -6,12 +6,18 @@
 
 
 namespace superrogue::game_object::character {
+struct EnemySettings {
+    int visible_radius = DEFAULT_VISIBLE_RADIUS;
+    bool ignore_walls = false;
+    float intellect = 1;
+};
+
 class IEnemyClass : public ICharacterClass {
+    EnemySettings __settings;
 public:
-    int visible_radius;   // TODO(to class, set const)
-    bool ignore_walls;
-    IEnemyClass(std::string description) noexcept : ICharacterClass(description), visible_radius(DEFAULT_VISIBLE_RADIUS), ignore_walls(false) {}
-    superrogue::game_object::character::CharacterAction strategy(std::vector<superrogue::abstract::Position>& cells, superrogue::abstract::Position& pos, superrogue::abstract::Position& person_pos) noexcept { return superrogue::game_object::character::CharacterAction::POTION; };   // TODO(virtual + templates?)
+    EnemySettings get_settings() { return __settings; };
+    IEnemyClass(std::string description, EnemySettings settings) noexcept : ICharacterClass(description), __settings(settings) {}
+    superrogue::game_object::character::CharacterAction strategy(std::vector<superrogue::abstract::MapEntityWithPosition>& cells, superrogue::abstract::Position& pos) noexcept { return superrogue::game_object::character::CharacterAction::WAIT; };
     virtual ~IEnemyClass() {}
 };
 };

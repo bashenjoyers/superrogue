@@ -17,6 +17,10 @@ float IEnemy::get_intellect() const noexcept {
     return __intellect;
 }
 
-IEnemy::IEnemy(string name, Characteristics characteristics, IEnemyClass enemy_class, float intellect) noexcept :
-    ICharacter(name, enemy_class.get_description(), characteristics), __enemy_class(enemy_class), __intellect(intellect) {};
+float IEnemy::get_attack_range() const noexcept {
+    return attack_range;
+}
+
+IEnemy::IEnemy(string name, Characteristics characteristics, IEnemyClass enemy_class, float intellect, int attack_range) noexcept :
+    ICharacter(name, enemy_class.get_description(), characteristics), __enemy_class(enemy_class), __intellect(intellect), attack_range(attack_range) {};
 };

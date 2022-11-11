@@ -14,6 +14,7 @@ enum class CharacterAction {
     PUNCH_LEFT,
     POTION,
     CHANGE_ITEM,
+    WAIT,
 };
 
 inline const std::string to_string(CharacterAction action) {
@@ -29,6 +30,7 @@ inline const std::string to_string(CharacterAction action) {
         case CharacterAction::PUNCH_LEFT:       return "punch left";
         case CharacterAction::POTION:           return "potion";
         case CharacterAction::CHANGE_ITEM:      return "change item";
+        case CharacterAction::WAIT:             return "wait";
         default:      throw superrogue::exception::GameObjectException("wrong CharacterAction");
     }
 }

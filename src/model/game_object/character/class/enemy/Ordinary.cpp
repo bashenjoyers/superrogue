@@ -3,13 +3,14 @@
 using std::string;
 using std::vector;
 using superrogue::abstract::Position;
+using superrogue::abstract::MapEntityWithPosition;
 using superrogue::game_object::character::CharacterAction;
 
 
 namespace superrogue::game_object::character {
-Ordinary::Ordinary(string description) noexcept : IEnemyClass(description) {}
+Ordinary::Ordinary(string description, EnemySettings settings) noexcept : IEnemyClass(description, settings) {}
 
-CharacterAction Ordinary::strategy(vector<Position>& cells, Position& pos, Position& person_pos) noexcept {
-    return CharacterAction::POTION;
+CharacterAction Ordinary::strategy(vector<MapEntityWithPosition>& cells, Position& pos) noexcept {
+    return CharacterAction::WAIT;
 }
 };

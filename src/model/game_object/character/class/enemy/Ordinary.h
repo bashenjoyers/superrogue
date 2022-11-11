@@ -7,7 +7,7 @@ class Ordinary : public IEnemyClass {
 public:
     const int visible_radius = DEFAULT_VISIBLE_RADIUS;
     const bool ignore_walls = false;
-    Ordinary(std::string description) noexcept;
-    superrogue::game_object::character::CharacterAction strategy(std::vector<superrogue::abstract::Position>& cells, superrogue::abstract::Position& pos, superrogue::abstract::Position& person_pos) noexcept;
+    Ordinary(std::string description, EnemySettings settings = EnemySettings()) noexcept;
+    CharacterAction strategy(std::vector<superrogue::abstract::MapEntityWithPosition>& cells, superrogue::abstract::Position& pos) noexcept;
 };
 };
