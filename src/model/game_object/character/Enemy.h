@@ -7,10 +7,13 @@
 
 namespace superrogue::game_object::character {
 class Enemy : public IEnemy {
+    int id;
 public:
     void step() override;
     void punch() override;
-    Enemy(std::string name, Characteristics characteristics, superrogue::game_object::character::IEnemyClass enemy_class, float intellect, int attack_range = 1) noexcept;
+    bool operator==(const Enemy& other) const noexcept;
+    bool operator<(const Enemy& other) const noexcept;
+    Enemy(int id, std::string name, Characteristics characteristics, superrogue::game_object::character::IEnemyClass enemy_class, float intellect, int attack_range = 1) noexcept;
     Enemy(const Enemy& enemy) = default;
 };
 };

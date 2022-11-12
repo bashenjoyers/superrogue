@@ -1,4 +1,4 @@
-#include "model/game_object/character/class/enemy/Ordinary.h"
+#include "model/game_object/character/class/enemy/Flying.h"
 
 using std::string;
 using std::vector;
@@ -8,9 +8,9 @@ using superrogue::game_object::character::CharacterAction;
 
 
 namespace superrogue::game_object::character {
-Ordinary::Ordinary(string description, EnemySettings settings) noexcept : IEnemyClass(description, settings) {}
+Flying::Flying(string description, EnemySettings settings) noexcept : IEnemyClass(description, settings) {}
 
-CharacterAction Ordinary::strategy(vector<MapEntityWithPosition>& cells, Position& pos) noexcept {
+CharacterAction Flying::strategy(vector<MapEntityWithPosition>& cells, Position& pos) noexcept {
     // TODO
     return CharacterAction::WAIT;
 }

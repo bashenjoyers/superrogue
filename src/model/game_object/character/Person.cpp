@@ -61,7 +61,7 @@ bool Person::is_weapon_melee() {
 void Person::take_item() {}
 
 Characteristics Person::get_full_characteristics() {    // TODO(do it adequately)
-    Characteristics full_characteristics = this->characteristics;
+    Characteristics full_characteristics = this->get_characteristics();
     vector<optional<Item>> items = {
         inventory.get_helmet(),
         inventory.get_armor(),
@@ -70,12 +70,12 @@ Characteristics Person::get_full_characteristics() {    // TODO(do it adequately
     };
     for (optional<Item> item : items) {
         if (item.has_value())
-            full_characteristics += item.value().characteristics;
+            full_characteristics += item.value().get_characteristics();
     }
     for (Potion potion : __used_potions) {
-        full_characteristics += potion.characteristics;
+        full_characteristics += potion.get_characteristics();
     }
-    return full_characteristics;   
+    return full_characteristics;
 }
 
 Person::Person(string name, Characteristics characteristics, IPersonClass person_class, Inventory inventory) noexcept :

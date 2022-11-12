@@ -7,10 +7,6 @@
 
 
 namespace superrogue::game_object::character {
-static std::mt19937::result_type rand_seed = time(0);
-typedef std::__bind<std::uniform_real_distribution<float>, std::mt19937> uniform_float_gen;
-static uniform_float_gen intellect_gen = std::bind(std::uniform_real_distribution<float>(0,1), std::mt19937(rand_seed));
-
 class IEnemy : public ICharacter {
     superrogue::game_object::character::IEnemyClass __enemy_class;
     float __intellect;

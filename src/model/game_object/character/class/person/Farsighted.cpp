@@ -1,0 +1,8 @@
+#include "model/game_object/character/class/person/Farsighted.h"
+
+using std::string;
+
+
+namespace superrogue::game_object::character {
+Farsighted::Farsighted(string description, PersonSettings settings) noexcept : IPersonClass(description, settings) {}
+};

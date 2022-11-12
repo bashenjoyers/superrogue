@@ -1,26 +1,50 @@
 #include "model/map/Map.h"
 
 using std::vector;
+using std::set;
+using std::shared_ptr;
+using std::optional;
+using std::max;
 using superrogue::game_object::character::IEnemyClass;
 using superrogue::game_object::character::Person;
 using superrogue::game_object::character::Enemy;
 using superrogue::game_object::character::CharacterAction;
+using superrogue::game_object::character::ICharacter;
 using superrogue::abstract::Position;
 using superrogue::abstract::MapEntityWithPosition;
-using superrogue::exception::StepException;
 using superrogue::abstract::MapEntity;
-using superrogue::game_object::character::ICharacter;
+using superrogue::abstract::GameStatus;
+using superrogue::exception::StepException;
+using superrogue::game_object::item::Potion;
+using superrogue::game_object::item::Item;
+using superrogue::game_object::item::IItem;
+using superrogue::exception::GameObjectException;
+using superrogue::game_object::item::ItemType;
+using superrogue::map::PersonWithPosition;
 
 
 namespace superrogue::map {
-Map::Map(vector<Enemy> enemies, Person person, MapOptions map_options) : 
+MapInfo::MapInfo(vector<MapEntityWithPosition> map_positions, PersonWithPosition person) : map_positions(map_positions) {
+    name = person.get_name();
+    characteristics = person.get_full_characteristics();
+    description = person.get_description();
+    inventory = person.inventory;
+    weapon_melee = person.is_weapon_melee();
+}
+
+Map::Map(set<Enemy> enemies, Person person, MapOptions map_options) : 
     person_with_position(PersonWithPosition(person)), __map_options(map_options) {
     enemies_with_positions = {};
     for (Enemy enemy : enemies) {
-        enemies_with_positions.push_back(EnemyWithPosition(enemy));
+        enemies_with_positions.insert(EnemyWithPosition(enemy));
     }
     generate_map_and_door();     // create map and door
     set_positions();    // set person and enemies positions, enemies areas
+    game_status = GameStatus::IN_PROGRESS;
+}
+
+GameStatus Map::get_game_status() {
+    return game_status;
 }
 
 void Map::set_positions() {
@@ -31,8 +55,15 @@ void Map::generate_map_and_door() {
     // TODO
 }
 
-vector<MapEntityWithPosition> Map::visible_cells(const Position& pos, int radius, bool ignore_walls, const vector<Position>& area) {
+vector<MapEntityWithPosition> Map::visible_cells(const Position& pos, int radius, bool ignore_walls = false, const vector<Position>& area = {}) {
+    // if area is empty - no limits for it
     // TODO (return cells visible from position)
+    if (area.size() == 0) {
+
+    } else {
+
+    }
+    return {};
 }
 
 bool Map::in_map(int x, int y) {
@@ -41,16 +72,35 @@ bool Map::in_map(int x, int y) {
 
 bool Map::is_vacant_cell(int x, int y) {
     MapEntity map_entity = map[x][y];
-    return map_entity == MapEntity::FLOOR ||  map_entity == MapEntity::ITEM;
+    return map_entity == MapEntity::FLOOR || map_entity == MapEntity::ITEM || map_entity == MapEntity::POTION || map_entity == MapEntity::DOOR;
+}
+
+bool Map::is_door_cell(int x, int y) {
+    MapEntity map_entity = map[x][y];
+    return map_entity == MapEntity::DOOR;
 }
 
 bool Map::is_anybody_cell(int x, int y) {
     MapEntity map_entity = map[x][y];
-    return map_entity == MapEntity::PERSON ||  map_entity == MapEntity::ENEMY;
+    return map_entity == MapEntity::PERSON || map_entity == MapEntity::ENEMY;
+}
+
+MapEntity Map::get_cell_type(Position pos) {
+    auto it_item = items.find(pos);
+    if (it_item == items.end()) {
+        return MapEntity::FLOOR;
+    }
+    if (typeid(it_item->second) == typeid(Potion)) 
+        return MapEntity::POTION;
+    return MapEntity::ITEM;
 }
 
 bool Map::step(CharacterAction action) {
-    if (!__action_person(action)) {
+    if (action == CharacterAction::CHANGE_ITEM) {
+        change_item();
+        return true;
+    }
+    if (get_game_status() != GameStatus::IN_PROGRESS || !__action_person(action)) {
         return false;
     }
     for (EnemyWithPosition enemy_with_position : enemies_with_positions) {
@@ -64,19 +114,60 @@ bool Map::step(CharacterAction action) {
     return true;
 }
 
-bool Map::punch_cells_in_order(vector<Position> positions, Characteristics characteristics) {
+MapInfo Map::get_map_info() {
+    int radius = person_with_position.get_person_class().get_settings().visible_radius;
+    vector<MapEntityWithPosition> map_positions = visible_cells(person_with_position.pos, radius);
+    return MapInfo(map_positions, person_with_position);
+}
+
+optional<IItem> Map::drop_item() {
+    int luck = person_with_position.get_full_characteristics().luck;
+    if (drop_gen() < luck) {
+        int i = drop_gen_i();
+        if (i > superrogue::values::items.size()) {
+            i -= superrogue::values::items.size();
+            return superrogue::values::potions.at(superrogue::values::potions_types[i]);
+        }
+        return superrogue::values::items.at(superrogue::values::items_types[i]);
+    }
+    return std::nullopt;
+};
+
+void Map::punch_cells_in_order(vector<Position> positions, Characteristics characteristics) {
     for (Position pos : positions) {
-        if (!in_map(pos.x, pos.y)) 
+        if (!in_map(pos.x, pos.y))
             break;
         if (is_anybody_cell(pos.x, pos.y)) {
             if (person_with_position.pos == pos) {
-                return punch(person_with_position, characteristics);
+                if (punch(person_with_position, characteristics)) {     // person dead;
+                    game_status = GameStatus::END;
+                    return;
+                }
             }
             else {
+                bool punched = false;
+                EnemyWithPosition* erased_enemy = nullptr;
                 for (EnemyWithPosition enemy_with_position2 : enemies_with_positions) {
                     if (enemy_with_position2.pos == pos) {
-                        return punch(enemy_with_position2, characteristics);
+                        if (punch(enemy_with_position2, characteristics)) {
+                            punched = true;
+                            erased_enemy = &enemy_with_position2;
+                            break;
+                        }
                     }   
+                }
+                if (punched) {
+                    if (erased_enemy == nullptr) {
+                        optional<IItem> item = drop_item();
+                        if (item == std::nullopt) {
+                            map[erased_enemy->pos.x][erased_enemy->pos.y] = get_cell_type(erased_enemy->pos);
+                        } else {
+                            items.insert({erased_enemy->pos, item.value()});
+                            map[erased_enemy->pos.x][erased_enemy->pos.y] = (typeid(item.value()) == typeid(Potion)) ? MapEntity::POTION : MapEntity::ITEM;
+                        }
+                        enemies_with_positions.erase(*erased_enemy);
+                    }
+                    return;
                 }
             }
         }
@@ -87,11 +178,43 @@ bool Map::punch_cells_in_order(vector<Position> positions, Characteristics chara
             break;
         }
     }
-    return false;
 }
 
 bool Map::punch(ICharacter character, Characteristics characteristics) {
-    // TODO   
+    Characteristics character_characteristics;
+    if ((typeid(character) == typeid(PersonWithPosition))) {
+        character_characteristics = dynamic_cast<PersonWithPosition*>(&character)->get_full_characteristics();
+    }
+    else {
+        character_characteristics = character.get_characteristics();
+    }
+    float dodge_chance = DEFAULT_DODGE_CHANCE;
+    if (character_characteristics.dexterity > characteristics.dexterity) {
+        dodge_chance = max(1 - (float)character_characteristics.dexterity / characteristics.dexterity, dodge_chance);
+    }
+    if (dodge_gen() <= dodge_chance) {
+        return false;
+    }
+    int damage = characteristics.damage - character_characteristics.armor;
+    return character.damaged(damage);
+}
+
+bool Map::__any_step_anybody(WithPosition anybody, Position pos) {
+    if (is_door_cell(anybody.pos.x, anybody.pos.y)) {
+        if ((typeid(anybody) == typeid(PersonWithPosition))) {
+            map[anybody.pos.x][anybody.pos.y] = get_cell_type(anybody.pos);
+            map[pos.x][pos.y] = MapEntity::PERSON;
+            anybody.pos = pos;
+            game_status = GameStatus::NEXT_LVL;
+            return true;
+        }
+    } else {
+        map[anybody.pos.x][anybody.pos.y] = get_cell_type(anybody.pos);   // FIXME(update later: mb WALL)
+        map[pos.x][pos.y] = (typeid(anybody) == typeid(PersonWithPosition)) ? MapEntity::PERSON : MapEntity::ENEMY;
+        anybody.pos = pos;
+        return true;
+    }
+    return false;
 }
 
 bool Map::__step_anybody(CharacterAction action, WithPosition anybody) {
@@ -100,31 +223,94 @@ bool Map::__step_anybody(CharacterAction action, WithPosition anybody) {
     {
     case CharacterAction::STEP_FORWARD:
         if (anybody.pos.x + 1 < __map_options.width && is_vacant_cell(anybody.pos.x + 1, anybody.pos.y)) {
-            anybody.pos.x += 1;
-            step_was = true;
+            Position new_pos = Position(anybody.pos.x + 1, anybody.pos.y);
+            step_was = __any_step_anybody(anybody, new_pos);
         }
         break;
     case CharacterAction::STEP_RIGHT:
         if (anybody.pos.y + 1 < __map_options.height && is_vacant_cell(anybody.pos.x, anybody.pos.y + 1)) {
-            anybody.pos.y += 1;
-            step_was = true;
+            Position new_pos = Position(anybody.pos.x, anybody.pos.y + 1);
+            step_was = __any_step_anybody(anybody, new_pos);
         }
     case CharacterAction::STEP_BACK:
         if (anybody.pos.x - 1 >= 0 && is_vacant_cell(anybody.pos.x - 1, anybody.pos.y)) {
-            anybody.pos.x -= 1;
-            step_was = true;
+            Position new_pos = Position(anybody.pos.x - 1, anybody.pos.y);
+            step_was = __any_step_anybody(anybody, new_pos);
         }
         break;
     case CharacterAction::STEP_LEFT:
         if (anybody.pos.y - 1 >= 0 && is_vacant_cell(anybody.pos.x, anybody.pos.y - 1)) {
-            anybody.pos.y -= 1;
-            step_was = true;
+            Position new_pos = Position(anybody.pos.x, anybody.pos.y - 1);
+            step_was = __any_step_anybody(anybody, new_pos);
         }
         break;
     default:
         break;
     }
     return step_was;
+}
+
+void Map::change_item() {
+    person_with_position.take_item();
+    auto it_item = items.find(person_with_position.pos);
+    if (it_item != items.end()) {
+        if (typeid(it_item->second) == typeid(Potion)) {
+            person_with_position.inventory.add_potion(*dynamic_cast<Potion*>(&it_item->second));
+        } else {
+            optional<Item> item_before = std::nullopt;
+            Item item = *dynamic_cast<Item*>(&it_item->second);
+            switch (item.get_item_type())
+            {
+            case ItemType::HELMET:
+                item_before = person_with_position.inventory.get_helmet();
+                person_with_position.inventory.set_helmet(item);
+                if (item_before.has_value()) {
+                    items[person_with_position.pos] = item_before.value();
+                } else {
+                    items.erase(it_item);
+                }
+                break;
+            case ItemType::ARMOR:
+                item_before = person_with_position.inventory.get_armor();
+                person_with_position.inventory.set_armor(item);
+                if (item_before.has_value()) {
+                    items[person_with_position.pos] = item_before.value();
+                } else {
+                    items.erase(it_item);
+                }
+                break;
+            case ItemType::BOOTS:
+                item_before = person_with_position.inventory.get_boots();
+                person_with_position.inventory.set_boots(item);
+                if (item_before.has_value()) {
+                    items[person_with_position.pos] = item_before.value();
+                } else {
+                    items.erase(it_item);
+                }
+                break;
+            case ItemType::WEAPON_MELEE:
+                item_before = person_with_position.inventory.get_weapon_melee();
+                person_with_position.inventory.set_weapon_melee(item);
+                if (item_before.has_value()) {
+                    items[person_with_position.pos] = item_before.value();
+                } else {
+                    items.erase(it_item);
+                }
+                break;
+            case ItemType::WEAPON_DISTANT:
+                item_before = person_with_position.inventory.get_weapon_distant();
+                person_with_position.inventory.set_weapon_distant(item);
+                if (item_before.has_value()) {
+                    items[person_with_position.pos] = item_before.value();
+                } else {
+                    items.erase(it_item);
+                }
+                break;
+            default:
+                throw GameObjectException("wrong item type");
+            }
+        }
+    }
 }
 
 bool Map::__action_person(CharacterAction action) {
@@ -138,28 +324,32 @@ bool Map::__action_person(CharacterAction action) {
         for (int i = 1; i <= range; i++) {
             positions.push_back(Position(pos.x + i, pos.y));
         }
-        punch_cells_in_order(positions, person_with_position.characteristics);
+        person_with_position.punch();
+        punch_cells_in_order(positions, person_with_position.get_full_characteristics());
         correct = true;
         break;
     case CharacterAction::PUNCH_RIGHT:
     for (int i = 1; i <= range; i++) {
             positions.push_back(Position(pos.x, pos.y + i));
         }
-        punch_cells_in_order(positions, person_with_position.characteristics);
+        person_with_position.punch();
+        punch_cells_in_order(positions, person_with_position.get_full_characteristics());
         correct = true;
         break;
     case CharacterAction::PUNCH_BACK:
     for (int i = 1; i <= range; i++) {
             positions.push_back(Position(pos.x - i, pos.y));
         }
-        punch_cells_in_order(positions, person_with_position.characteristics);
+        person_with_position.punch();
+        punch_cells_in_order(positions, person_with_position.get_full_characteristics());
         correct = true;
         break;
     case CharacterAction::PUNCH_LEFT:
     for (int i = 1; i <= range; i++) {
             positions.push_back(Position(pos.x, pos.y - i));
         }
-        punch_cells_in_order(positions, person_with_position.characteristics);
+        person_with_position.punch();
+        punch_cells_in_order(positions, person_with_position.get_full_characteristics());
         correct = true;
         break;
     case CharacterAction::POTION:
@@ -167,8 +357,6 @@ bool Map::__action_person(CharacterAction action) {
         correct = true;
         break;
     case CharacterAction::CHANGE_ITEM:
-        person_with_position.take_item();   // FIXME
-        correct = true;
         break;
     case CharacterAction::WAIT:
         correct = true;
@@ -194,28 +382,32 @@ void Map::__action_enemy(CharacterAction action, EnemyWithPosition enemy_with_po
         for (int i = 1; i <= range; i++) {
             positions.push_back(Position(pos.x + i, pos.y));
         }
-        punch_cells_in_order(positions, enemy_with_position.characteristics);
+        enemy_with_position.punch();
+        punch_cells_in_order(positions, enemy_with_position.get_characteristics());
         correct = true;
         break;
     case CharacterAction::PUNCH_RIGHT:
         for (int i = 1; i <= range; i++) {
             positions.push_back(Position(pos.x, pos.y + i));
         }
-        punch_cells_in_order(positions, enemy_with_position.characteristics);
+        enemy_with_position.punch();
+        punch_cells_in_order(positions, enemy_with_position.get_characteristics());
         correct = true;
         break;
     case CharacterAction::PUNCH_BACK:
         for (int i = 1; i <= range; i++) {
             positions.push_back(Position(pos.x - i, pos.y));
         }
-        punch_cells_in_order(positions, enemy_with_position.characteristics);
+        enemy_with_position.punch();
+        punch_cells_in_order(positions, enemy_with_position.get_characteristics());
         correct = true;
         break;
     case CharacterAction::PUNCH_LEFT:
         for (int i = 1; i <= range; i++) {
             positions.push_back(Position(pos.x, pos.y - i));
         }
-        punch_cells_in_order(positions, enemy_with_position.characteristics);
+        enemy_with_position.punch();
+        punch_cells_in_order(positions, enemy_with_position.get_characteristics());
         correct = true;
         break;
     case CharacterAction::POTION:

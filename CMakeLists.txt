@@ -40,11 +40,27 @@ add_executable(
         src/model/game_object/character/class/ICharacterClass.cpp
         src/model/game_object/character/class/ICharacterClass.h
         src/model/game_object/character/class/person/Lucky.h
+        src/model/game_object/character/class/person/Farsighted.cpp
         src/model/game_object/character/class/person/Lucky.cpp
+        src/model/game_object/character/class/person/Wise.cpp
+        src/model/game_object/character/class/person/Secretive.h
+        src/model/game_object/character/class/person/Wise.h
+        src/model/game_object/character/class/person/Farsighted.h
+        src/model/game_object/character/class/person/Alchemist.cpp
+        src/model/game_object/character/class/person/Alchemist.h
         src/model/game_object/character/class/person/IPersonClass.h
+        src/model/game_object/character/class/person/Secretive.cpp
+        src/model/game_object/character/class/enemy/Indifferent.h
         src/model/game_object/character/class/enemy/Ordinary.cpp
+        src/model/game_object/character/class/enemy/Indifferent.cpp
         src/model/game_object/character/class/enemy/IEnemyClass.h
+        src/model/game_object/character/class/enemy/Agressive.h
+        src/model/game_object/character/class/enemy/Flying.cpp
+        src/model/game_object/character/class/enemy/Flying.h
+        src/model/game_object/character/class/enemy/Traveler.cpp
+        src/model/game_object/character/class/enemy/Traveler.h
         src/model/game_object/character/class/enemy/Ordinary.h
+        src/model/game_object/character/class/enemy/Agressive.cpp
         src/model/game_object/item/IItem.h
         src/model/game_object/item/IItem.cpp
         src/model/game_object/item/potions/Potion.h

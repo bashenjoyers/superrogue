@@ -19,7 +19,7 @@ public:
     bool is_weapon_melee();
     void take_item();
     Characteristics get_full_characteristics();
-    Person(std::string name, Characteristics characteristics, IPersonClass person_class, superrogue::inventory::Inventory inventory = superrogue::inventory::Inventory(DEFAULT_POTIONS_MAX)) noexcept;
+    Person(std::string name, superrogue::Characteristics characteristics, superrogue::game_object::character::IPersonClass person_class, superrogue::inventory::Inventory inventory = superrogue::inventory::Inventory(DEFAULT_POTIONS_MAX)) noexcept;
     Person(const Person& person) = default;
     Person() {};
 };
