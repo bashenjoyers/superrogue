@@ -14,16 +14,29 @@ public:
 
     void drawElement(char c, size_t x, size_t y);
 
-    void resize(size_t w, size_t h);
-    void moveTo(size_t x, size_t y);
+    void resize(size_t newW, size_t newH);
+    void moveTo(size_t newX, size_t newY);
 
+    void clear();
+    void clearViewport();
+
+    void setName(const std::string &newName);
+    void unsetName();
 private:
     NcursesWindow(WINDOW *_win, size_t h, size_t w, size_t x, size_t y);
+
+    void drawBox();
+
 
     WINDOW *win;
 
     size_t h, w;
     size_t y, x;
+
+    bool named = false;
+    std::string name;
+
+    size_t bordersOffset = 1;
 
     friend class NcursesAPI;
 };
@@ -37,6 +50,8 @@ public:
     static NcursesAPIPtr getInstance();
 
     NcursesWindow::NcursesWIndowPtr getWindow(size_t h, size_t w, size_t x, size_t y);
+    size_t getXsize();
+    size_t getYsize();
 
 private:
     NcursesAPI();
