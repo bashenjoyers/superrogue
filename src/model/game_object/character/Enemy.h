@@ -13,7 +13,7 @@ public:
     void punch() override;
     bool operator==(const Enemy& other) const noexcept;
     bool operator<(const Enemy& other) const noexcept;
-    Enemy(int id, std::string name, Characteristics characteristics, superrogue::game_object::character::IEnemyClass enemy_class, float intellect, int attack_range = 1) noexcept;
+    Enemy(int id, std::string name, Characteristics characteristics, superrogue::game_object::character::IEnemyClass enemy_class) noexcept;
     Enemy(const Enemy& enemy) = default;
 };
 };

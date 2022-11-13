@@ -16,9 +16,13 @@ using superrogue::map::Map;
 using superrogue::map::MapOptions;
 using superrogue::values::enemy_classes;
 using superrogue::values::person_classes;
+using superrogue::values::get_enemy_class;
+using superrogue::values::get_person_class;
 using superrogue::values::firstnames;
 using superrogue::values::lastnames;
 using superrogue::exception::GameObjectException;
+using superrogue::game_object::character::EnemySettings;
+using superrogue::game_object::character::PersonSettings;
 
 
 namespace superrogue::game_manager {
@@ -52,7 +56,8 @@ Person GameManager::generate_person() noexcept {
     string firstname = firstnames[__generator.firstname_i_gen()];
     string lastname = lastnames[__generator.lastname_i_gen()];
     Characteristics characteristics = generate_characteristics();
-    IPersonClass person_class = person_classes[__generator.person_class_i_gen()];
+    PersonSettings settings = PersonSettings();
+    IPersonClass person_class = get_person_class(person_classes[__generator.person_class_i_gen()], settings);
     if (typeid(person_class) == typeid(Lucky)) {
         characteristics.luck = max(characteristics.luck, LUCKY_LUCK);
     }
@@ -65,7 +70,10 @@ set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
         string firstname = firstnames[__generator.firstname_i_gen()];
         string lastname = lastnames[__generator.lastname_i_gen()];
         Characteristics characteristics = generate_characteristics(WEAKNESS_K);
-        IEnemyClass enemy_class = enemy_classes[__generator.enemy_class_i_gen()];
+        EnemySettings settings = EnemySettings();
+        settings.attack_range = __generator.melee_gen() ? 1 : 3;
+        settings.intellect = __generator.intellect_gen();
+        IEnemyClass enemy_class = get_enemy_class(enemy_classes[__generator.enemy_class_i_gen()], settings);
         if (typeid(enemy_class) == typeid(Ordinary)) {
             switch (__generator.characteristic_i_gen())
             {
@@ -86,8 +94,7 @@ set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
                 break;
             }
         }
-        float intellect = __generator.intellect_gen();
-        Enemy enemy = Enemy(i, lastname + " " + firstname, characteristics, enemy_class, intellect);
+        Enemy enemy = Enemy(i, lastname + " " + firstname, characteristics, enemy_class);
         enemies.insert(enemy);
     }
     return enemies;

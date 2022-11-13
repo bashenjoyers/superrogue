@@ -10,13 +10,29 @@ enum class MapEntity {
     FLOOR,
     ITEM,
     POTION,
-    DOOR,
+    DOOR
 };
 
 enum class GameStatus {
     IN_PROGRESS,
     NEXT_LVL,
     END
+};
+
+enum class PersonClass {
+    ALCHEMIST,
+    FARSIGHTED,
+    LUCKY,
+    SECRETIVE,
+    WISE
+};
+
+enum class EnemyClass {
+    AGRESSIVE,
+    FLYING,
+    INDIFFERENT,
+    ORDINARY,
+    TRAVELER
 };
 
 struct Position {

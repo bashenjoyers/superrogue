@@ -75,20 +75,56 @@ static const std::unordered_map<PotionType, superrogue::game_object::item::Potio
 static const std::vector<PotionType> potions_types = {PotionType::DAMAGE_POTION, PotionType::DAMAGE_LONG_POTION, PotionType::ARMOR_POTION, PotionType::ARMOR_LONG_POTION, 
     PotionType::HEALTH_POTION, PotionType::HEALTH_BIG_POTION, PotionType::DEXTERITY_POTION, PotionType::DEXTERITY_LONG_POTION};
 
-static std::vector<superrogue::game_object::character::IEnemyClass> enemy_classes = {
-    superrogue::game_object::character::Agressive("Hates everyone (if he sees at least someone (not necessarily a character), he strives to reach him and kill)"),
-    superrogue::game_object::character::Flying("Looks down on everyone (can ignore all obstacles (walls))"),
-    superrogue::game_object::character::Indifferent("He doesn't care about anyone (ignores everyone if he doesn't start hitting first)"),
-    superrogue::game_object::character::Ordinary("Ordinary enemy (without any special features. It has an increased one of the characteristics)"),
-    superrogue::game_object::character::Traveler("Can be anywhere he wants (it can be located anywhere on the map)")
+static superrogue::game_object::character::IEnemyClass get_enemy_class(superrogue::abstract::EnemyClass enemy_class, superrogue::game_object::character::EnemySettings settings) {
+    switch (enemy_class)
+    {
+    case superrogue::abstract::EnemyClass::AGRESSIVE:
+        return superrogue::game_object::character::Agressive("Hates everyone (if he sees at least someone (not necessarily a character), he strives to reach him and kill)", settings);
+    case superrogue::abstract::EnemyClass::FLYING:
+        return superrogue::game_object::character::Flying("Looks down on everyone (can ignore all obstacles (walls))", settings);
+    case superrogue::abstract::EnemyClass::INDIFFERENT:
+        return superrogue::game_object::character::Indifferent("He doesn't care about anyone (ignores everyone if he doesn't start hitting first)", settings);
+    case superrogue::abstract::EnemyClass::ORDINARY:
+        return superrogue::game_object::character::Ordinary("Ordinary enemy (without any special features. It has an increased one of the characteristics)", settings);
+    case superrogue::abstract::EnemyClass::TRAVELER:
+        return superrogue::game_object::character::Traveler("Can be anywhere he wants (it can be located anywhere on the map)", settings);
+    default:
+        throw exception::GameObjectException("wrong PersonClass");
+    }
 };
 
-static std::vector<superrogue::game_object::character::IPersonClass> person_classes = {
-    superrogue::game_object::character::Alchemist("A novice alchemist (can have up to 7 potions)"),
-    superrogue::game_object::character::Farsighted("Can see far away (the field of view is 2 times larger than the standard one)"),
-    superrogue::game_object::character::Lucky("Just lucky person (has luck >= 0.9)"),
-    superrogue::game_object::character::Secretive("Unrealistically secretive one (the field of view of opponents is 2 times smaller for the character)"),
-    superrogue::game_object::character::Wise("The wisest elder (can see the areas where opponents may be located)")
+static std::vector<superrogue::abstract::EnemyClass> enemy_classes = {
+    superrogue::abstract::EnemyClass::AGRESSIVE,
+    superrogue::abstract::EnemyClass::FLYING,
+    superrogue::abstract::EnemyClass::INDIFFERENT,
+    superrogue::abstract::EnemyClass::ORDINARY,
+    superrogue::abstract::EnemyClass::TRAVELER
+};
+
+static superrogue::game_object::character::IPersonClass get_person_class(superrogue::abstract::PersonClass person_class, superrogue::game_object::character::PersonSettings settings) {
+    switch (person_class)
+    {
+    case superrogue::abstract::PersonClass::ALCHEMIST:
+        return superrogue::game_object::character::Alchemist("A novice alchemist (can have up to 7 potions)", settings);
+    case superrogue::abstract::PersonClass::FARSIGHTED:
+        return superrogue::game_object::character::Farsighted("Can see far away (the field of view is 2 times larger than the standard one)", settings);
+    case superrogue::abstract::PersonClass::LUCKY:
+        return superrogue::game_object::character::Lucky("Just lucky person (has luck >= 0.9)", settings);
+    case superrogue::abstract::PersonClass::SECRETIVE:
+        return superrogue::game_object::character::Secretive("Unrealistically secretive one (the field of view of opponents is 2 times smaller for the character)", settings);
+    case superrogue::abstract::PersonClass::WISE:
+        return superrogue::game_object::character::Wise("The wisest elder (can see the areas where opponents may be located)", settings);
+    default:
+        throw exception::GameObjectException("wrong PersonClass");
+    }
+};
+
+static std::vector<superrogue::abstract::PersonClass> person_classes = {
+    superrogue::abstract::PersonClass::ALCHEMIST,
+    superrogue::abstract::PersonClass::FARSIGHTED,
+    superrogue::abstract::PersonClass::LUCKY,
+    superrogue::abstract::PersonClass::SECRETIVE,
+    superrogue::abstract::PersonClass::WISE
 };
 
 static std::vector<std::string> firstnames = {

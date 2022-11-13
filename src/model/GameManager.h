@@ -28,6 +28,7 @@ struct Generator {
     uniform_int_gen firstname_i_gen = std::bind(std::uniform_int_distribution<int>(0, superrogue::values::firstnames.size() - 1), std::mt19937(rand_seed));
     uniform_int_gen lastname_i_gen = std::bind(std::uniform_int_distribution<int>(0, superrogue::values::lastnames.size() - 1), std::mt19937(rand_seed));
     uniform_float_gen intellect_gen = std::bind(std::uniform_real_distribution<float>(0,1), std::mt19937(rand_seed));
+    uniform_int_gen melee_gen = std::bind(std::uniform_int_distribution<int>(0,1), std::mt19937(rand_seed));
     uniform_int_gen characteristic_i_gen = std::bind(std::uniform_int_distribution<int>(0, 3), std::mt19937(rand_seed));
     Generator() = default;
 };
