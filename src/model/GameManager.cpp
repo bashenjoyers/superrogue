@@ -1,5 +1,7 @@
 #include "model/GameManager.h"
 #include "exceptions/exceptions.h"
+#include "model/generator.h"
+#include "model/values.h"
 
 using std::string;
 using std::vector;
@@ -39,25 +41,25 @@ vector<IEvent> GameManager::events() noexcept {
 
 GameOptions GameManager::generate_game_options() noexcept {
     GameOptions options = GameOptions();
-    options.enemies_count = __generator.enemies_count_gen();
+    options.enemies_count = generator::enemies_count_gen(superrogue::values::generator);
     return options;
 }
 
 Characteristics GameManager::generate_characteristics(float characteristic_k = 1) noexcept {
     int points = int(__level * POINTS_IN_LVL * characteristic_k);
     int health_default = int(__level * HEALTH_LVL_K * characteristic_k);
-    int damage = int(__generator.characteristic_gen() / PARAMETER_COUNT * points);
-    int armor = int(__generator.characteristic_gen() / PARAMETER_COUNT * points);
-    int health = int(__generator.characteristic_gen() / PARAMETER_COUNT * points);
-    int dexterity = int(__generator.characteristic_gen() / PARAMETER_COUNT * points);
-    int luck = __generator.luck_gen();
+    int damage = int(generator::characteristic_gen(superrogue::values::generator) / PARAMETER_COUNT * points);
+    int armor = int(generator::characteristic_gen(superrogue::values::generator) / PARAMETER_COUNT * points);
+    int health = int(generator::characteristic_gen(superrogue::values::generator) / PARAMETER_COUNT * points);
+    int dexterity = int(generator::characteristic_gen(superrogue::values::generator) / PARAMETER_COUNT * points);
+    int luck = generator::luck_gen(superrogue::values::generator);
     return Characteristics(damage, armor, health_default + health, dexterity, luck);
 }
 
 Person GameManager::generate_person() noexcept {
-    string firstname = firstnames[__generator.firstname_i_gen()];
-    string lastname = lastnames[__generator.lastname_i_gen()];
-    PersonClass person_classes_name = person_classes[__generator.person_class_i_gen()];
+    string firstname = firstnames[generator::firstname_i_gen(superrogue::values::generator)];
+    string lastname = lastnames[generator::lastname_i_gen(superrogue::values::generator)];
+    PersonClass person_classes_name = person_classes[generator::person_class_i_gen(superrogue::values::generator)];
     PersonSettings settings = PersonSettings();
     if (person_classes_name == PersonClass::FARSIGHTED) {
         settings.visible_radius = settings.visible_radius * 2;
@@ -73,16 +75,16 @@ Person GameManager::generate_person() noexcept {
 set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
     set<Enemy> enemies = {};
     for (int i = 0; i < game_options.enemies_count; i++) {
-        string firstname = firstnames[__generator.firstname_i_gen()];
-        string lastname = lastnames[__generator.lastname_i_gen()];
+        string firstname = firstnames[generator::firstname_i_gen(superrogue::values::generator)];
+        string lastname = lastnames[generator::lastname_i_gen(superrogue::values::generator)];
         Characteristics characteristics = generate_characteristics(WEAKNESS_K);
         EnemySettings settings = EnemySettings();
-        settings.attack_range = __generator.melee_gen() ? 1 : DISTANT_RANGE;
-        settings.intellect = __generator.intellect_gen();
-        EnemyClass enemy_class_name = enemy_classes[__generator.enemy_class_i_gen()];
+        settings.attack_range = generator::melee_gen(superrogue::values::generator) ? 1 : DISTANT_RANGE;
+        settings.intellect = generator::intellect_gen(superrogue::values::generator);
+        EnemyClass enemy_class_name = enemy_classes[generator::enemy_class_i_gen(superrogue::values::generator)];
         IEnemyClass enemy_class = get_enemy_class(enemy_class_name, settings);
         if (enemy_class_name == EnemyClass::ORDINARY) {
-            switch (__generator.characteristic_i_gen())
+            switch (generator::characteristic_i_gen(superrogue::values::generator))
             {
             case 0:
                 characteristics.armor *= 2;

@@ -1,4 +1,5 @@
 #include "model/map/Map.h"
+#include "model/values.h"
 
 using std::vector;
 using std::set;
@@ -126,8 +127,8 @@ MapInfo Map::get_map_info() {
 
 optional<IItem> Map::drop_item() {
     int luck = person_with_position.get_full_characteristics().luck;
-    if (drop_gen() < luck) {
-        int i = drop_gen_i();
+    if (drop_gen(superrogue::values::generator) < luck) {
+        int i = drop_gen_i(superrogue::values::generator);
         if (i > superrogue::values::items_types.size()) {
             i -= superrogue::values::items_types.size();
             return superrogue::values::get_potion(superrogue::values::potions_types[i], level);
@@ -197,7 +198,7 @@ bool Map::punch(ICharacter character, Characteristics characteristics) {
     if (character_characteristics.dexterity > characteristics.dexterity) {
         dodge_chance = max(1 - (float)character_characteristics.dexterity / characteristics.dexterity, dodge_chance);
     }
-    if (dodge_gen() <= dodge_chance) {
+    if (dodge_gen(superrogue::values::generator) <= dodge_chance) {
         return false;
     }
     int damage = characteristics.damage - character_characteristics.armor;

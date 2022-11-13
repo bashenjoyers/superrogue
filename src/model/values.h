@@ -208,4 +208,6 @@ static std::vector<std::string> lastnames = {
     "quick",
     "big"
 };
+
+static std::random_device generator;
 };

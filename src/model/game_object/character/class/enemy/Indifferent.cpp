@@ -1,4 +1,5 @@
 #include "model/game_object/character/class/enemy/Indifferent.h"
+#include "model/values.h"
 
 using std::string;
 using std::vector;
@@ -44,8 +45,8 @@ CharacterAction Indifferent::strategy(vector<MapEntityWithPosition>& cells, Posi
         }
     }
     if (!disturbed) {
-        auto position_gen = std::bind(std::uniform_int_distribution<int>(0, possible_actions.size() - 1), std::mt19937(rand_seed));
-        return possible_actions[position_gen()];
+        std::uniform_int_distribution<int> position_gen(0, possible_actions.size() - 1);
+        return possible_actions[position_gen(superrogue::values::generator)];
     }
     if (person_pos == nullptr) {
         if (get_settings().intellect > 0.5) {
@@ -53,8 +54,8 @@ CharacterAction Indifferent::strategy(vector<MapEntityWithPosition>& cells, Posi
             int dy = last_character_position.y - pos.y;
             return default_fight_behavior(dx, dy, possible_actions, false);
         }
-        auto position_gen = std::bind(std::uniform_int_distribution<int>(0, possible_actions.size() - 1), std::mt19937(rand_seed));
-        return possible_actions[position_gen()];
+        std::uniform_int_distribution<int> position_gen(0, possible_actions.size() - 1);
+        return possible_actions[position_gen(superrogue::values::generator)];
     }
     last_character_position = *person_pos;
     int dx = person_pos->x - pos.x;

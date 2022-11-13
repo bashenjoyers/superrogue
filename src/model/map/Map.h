@@ -14,12 +14,9 @@
 
 
 namespace superrogue::map {
-typedef std::__bind<std::uniform_int_distribution<int>, std::mt19937> uniform_int_gen;
-typedef std::__bind<std::uniform_real_distribution<float>, std::mt19937> uniform_float_gen;
-static std::mt19937::result_type rand_seed = time(0);
-static uniform_float_gen dodge_gen = std::bind(std::uniform_real_distribution<float>(0,1), std::mt19937(rand_seed));
-static uniform_float_gen drop_gen = std::bind(std::uniform_real_distribution<float>(0,1), std::mt19937(rand_seed));
-static uniform_int_gen drop_gen_i = std::bind(std::uniform_int_distribution<int>(0, superrogue::values::items_types.size() + superrogue::values::potions_types.size() - 1), std::mt19937(rand_seed));
+static std::uniform_real_distribution<float> dodge_gen(0, 1);
+static std::uniform_real_distribution<float> drop_gen(0, 1);
+static std::uniform_int_distribution<int> drop_gen_i(0, superrogue::values::items_types.size() + superrogue::values::potions_types.size() - 1);
 
 struct WithPosition {
     superrogue::abstract::Position pos;

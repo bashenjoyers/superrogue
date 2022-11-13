@@ -1,6 +1,5 @@
 #pragma once
 #include <random>
-#include <time.h>
 #include "model/game_object/character/class/ICharacterClass.h"
 #include "model/abstract.h"
 #include "model/game_object/character/CharacterAction.h"
@@ -18,7 +17,6 @@ struct EnemySettings {
 class IEnemyClass : public ICharacterClass {
     EnemySettings __settings;
 public:
-    std::mt19937::result_type rand_seed = time(0);
     EnemySettings get_settings() const noexcept;
     virtual superrogue::abstract::MapEntity get_map_entity() const noexcept { return superrogue::abstract::MapEntity::ENEMY; };
     bool is_vacant(superrogue::abstract::MapEntity map_entity);

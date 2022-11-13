@@ -1,4 +1,5 @@
 #include "model/game_object/character/class/enemy/Agressive.h"
+#include "model/values.h"
 
 using std::string;
 using std::vector;
@@ -51,8 +52,8 @@ CharacterAction Agressive::strategy(vector<MapEntityWithPosition>& cells, Positi
             int dy = last_character_position.y - pos.y;
             return default_fight_behavior(dx, dy, possible_actions, false);
         }
-        auto position_gen = std::bind(std::uniform_int_distribution<int>(0, possible_actions.size() - 1), std::mt19937(rand_seed));
-        return possible_actions[position_gen()];
+        std::uniform_int_distribution<int> position_gen(0, possible_actions.size() - 1);
+        return possible_actions[position_gen(superrogue::values::generator)];
     }
     last_character_position = *anybody_pos;
     int dx = anybody_pos->x - pos.x;
