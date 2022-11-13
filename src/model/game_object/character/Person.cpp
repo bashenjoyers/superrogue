@@ -10,7 +10,7 @@ using superrogue::game_object::item::Item;
 
 
 namespace superrogue::game_object::character {
-void Person::before_any_action() {      // TODO(do it adequately)
+void Person::before_any_action() {      // FIXME(do it adequately)
     vector<int> delete_potions_i = {};
     int i = 0;
     for (Potion potion : __used_potions) {
@@ -37,6 +37,12 @@ void Person::before_any_action() {      // TODO(do it adequately)
 void Person::potion(int potion_i) {
     before_any_action();
     Potion potion = inventory.use_potion(potion_i);
+    int health = potion.get_characteristics().health;
+    if (health != 0) {     // health potion
+        this->add_health(health);
+    } else {
+        __used_potions.push_back(potion);
+    }
 }
 
 void Person::step() {
@@ -60,7 +66,7 @@ bool Person::is_weapon_melee() {
 
 void Person::take_item() {}
 
-Characteristics Person::get_full_characteristics() {    // TODO(do it adequately)
+Characteristics Person::get_full_characteristics() {    // FIXME(do it adequately)
     Characteristics full_characteristics = this->get_characteristics();
     vector<optional<Item>> items = {
         inventory.get_helmet(),

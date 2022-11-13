@@ -4,7 +4,12 @@
 namespace superrogue::abstract {
 enum class MapEntity {
     PERSON, 
-    ENEMY,
+    ENEMY,  // only if the class of the enemy is not known (he is smart enough to hide it)
+    ENEMY_AGRESSIVE,
+    ENEMY_FLYING,
+    ENEMY_INDIFFERENT,
+    ENEMY_ORDINARY,
+    ENEMY_TRAVELER,
     WALL, 
     SHADOW, 
     FLOOR,

@@ -23,6 +23,7 @@ static uniform_int_gen drop_gen_i = std::bind(std::uniform_int_distribution<int>
 
 struct WithPosition {
     superrogue::abstract::Position pos;
+    virtual ~WithPosition() {};
 };
 
 struct PersonWithPosition : superrogue::game_object::character::Person, WithPosition {
@@ -52,6 +53,7 @@ struct MapInfo {
 
 class Map {
     MapOptions __map_options;
+    int level;
     std::set<EnemyWithPosition> enemies_with_positions;
     PersonWithPosition person_with_position;
     std::vector<std::vector<superrogue::abstract::MapEntity>> map;
@@ -77,7 +79,7 @@ class Map {
     void generate_map_and_door();
     void set_positions();
 public:
-    Map(std::set<superrogue::game_object::character::Enemy> enemies, superrogue::game_object::character::Person person, MapOptions map_options);
+    Map(std::set<superrogue::game_object::character::Enemy> enemies, superrogue::game_object::character::Person person, MapOptions map_options, int level);
     abstract::GameStatus get_game_status();
     bool step(superrogue::game_object::character::CharacterAction action);
     superrogue::map::MapInfo get_map_info();

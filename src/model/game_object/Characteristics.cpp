@@ -13,7 +13,7 @@ Characteristics Characteristics::operator+ (Characteristics const &other)  {
         throw GameObjectException("luck items should be 0");
     }
     return Characteristics(this->damage + other.damage, this->armor + other.armor, 
-        this->health + other.health, this->dexterity + other.dexterity, this->luck);   // FIXME(health)
+        this->health + other.health, this->dexterity + other.dexterity, this->luck);
 }
 
 Characteristics Characteristics::operator+= (Characteristics const &other) {

@@ -59,6 +59,7 @@ add_executable(
         src/model/game_object/character/class/enemy/Flying.h
         src/model/game_object/character/class/enemy/Traveler.cpp
         src/model/game_object/character/class/enemy/Traveler.h
+        src/model/game_object/character/class/enemy/IEnemyClass.cpp
         src/model/game_object/character/class/enemy/Ordinary.h
         src/model/game_object/character/class/enemy/Agressive.cpp
         src/model/game_object/item/IItem.h

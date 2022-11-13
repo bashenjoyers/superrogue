@@ -32,8 +32,8 @@ MapInfo::MapInfo(vector<MapEntityWithPosition> map_positions, PersonWithPosition
     weapon_melee = person.is_weapon_melee();
 }
 
-Map::Map(set<Enemy> enemies, Person person, MapOptions map_options) : 
-    person_with_position(PersonWithPosition(person)), __map_options(map_options) {
+Map::Map(set<Enemy> enemies, Person person, MapOptions map_options, int level) : 
+    person_with_position(PersonWithPosition(person)), __map_options(map_options), level(level) {
     enemies_with_positions = {};
     for (Enemy enemy : enemies) {
         enemies_with_positions.insert(EnemyWithPosition(enemy));
@@ -82,7 +82,10 @@ bool Map::is_door_cell(int x, int y) {
 
 bool Map::is_anybody_cell(int x, int y) {
     MapEntity map_entity = map[x][y];
-    return map_entity == MapEntity::PERSON || map_entity == MapEntity::ENEMY;
+    
+    return map_entity == MapEntity::PERSON || map_entity == MapEntity::ENEMY || map_entity == MapEntity::ENEMY_AGRESSIVE || 
+        map_entity == MapEntity::ENEMY_FLYING || map_entity == MapEntity::ENEMY_INDIFFERENT || 
+        map_entity == MapEntity::ENEMY_ORDINARY || map_entity == MapEntity::ENEMY_TRAVELER;
 }
 
 MapEntity Map::get_cell_type(Position pos) {
@@ -90,7 +93,8 @@ MapEntity Map::get_cell_type(Position pos) {
     if (it_item == items.end()) {
         return MapEntity::FLOOR;
     }
-    if (typeid(it_item->second) == typeid(Potion)) 
+    IItem iitem = it_item->second;
+    if (typeid(iitem) == typeid(Potion)) 
         return MapEntity::POTION;
     return MapEntity::ITEM;
 }
@@ -124,11 +128,11 @@ optional<IItem> Map::drop_item() {
     int luck = person_with_position.get_full_characteristics().luck;
     if (drop_gen() < luck) {
         int i = drop_gen_i();
-        if (i > superrogue::values::items.size()) {
-            i -= superrogue::values::items.size();
-            return superrogue::values::potions.at(superrogue::values::potions_types[i]);
+        if (i > superrogue::values::items_types.size()) {
+            i -= superrogue::values::items_types.size();
+            return superrogue::values::get_potion(superrogue::values::potions_types[i], level);
         }
-        return superrogue::values::items.at(superrogue::values::items_types[i]);
+        return superrogue::values::get_item(superrogue::values::items_types[i], level);    
     }
     return std::nullopt;
 };
@@ -163,7 +167,8 @@ void Map::punch_cells_in_order(vector<Position> positions, Characteristics chara
                             map[erased_enemy->pos.x][erased_enemy->pos.y] = get_cell_type(erased_enemy->pos);
                         } else {
                             items.insert({erased_enemy->pos, item.value()});
-                            map[erased_enemy->pos.x][erased_enemy->pos.y] = (typeid(item.value()) == typeid(Potion)) ? MapEntity::POTION : MapEntity::ITEM;
+                            IItem iitem = item.value();
+                            map[erased_enemy->pos.x][erased_enemy->pos.y] = (typeid(iitem) == typeid(Potion)) ? MapEntity::POTION : MapEntity::ITEM;
                         }
                         enemies_with_positions.erase(*erased_enemy);
                     }
@@ -210,7 +215,11 @@ bool Map::__any_step_anybody(WithPosition anybody, Position pos) {
         }
     } else {
         map[anybody.pos.x][anybody.pos.y] = get_cell_type(anybody.pos);   // FIXME(update later: mb WALL)
-        map[pos.x][pos.y] = (typeid(anybody) == typeid(PersonWithPosition)) ? MapEntity::PERSON : MapEntity::ENEMY;
+        if (typeid(anybody) == typeid(PersonWithPosition)) {
+            map[pos.x][pos.y] = MapEntity::PERSON;
+        } else {
+            map[pos.x][pos.y] = dynamic_cast<EnemyWithPosition*>(&anybody)->get_enemy_class().get_map_entity();
+        }
         anybody.pos = pos;
         return true;
     }
@@ -254,7 +263,8 @@ void Map::change_item() {
     person_with_position.take_item();
     auto it_item = items.find(person_with_position.pos);
     if (it_item != items.end()) {
-        if (typeid(it_item->second) == typeid(Potion)) {
+        IItem iitem = it_item->second;
+        if (typeid(iitem) == typeid(Potion)) {
             person_with_position.inventory.add_potion(*dynamic_cast<Potion*>(&it_item->second));
         } else {
             optional<Item> item_before = std::nullopt;

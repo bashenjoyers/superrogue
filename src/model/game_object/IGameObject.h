@@ -13,7 +13,8 @@ public:
     std::string get_name() const noexcept;
     virtual std::string get_description() const noexcept;
     virtual superrogue::Characteristics get_characteristics() const noexcept;
-    bool damaged(int value);    // return is game_object destroed
+    void add_health(int value) noexcept;
+    virtual bool damaged(int value);    // return is game_object destroed
     IGameObject(std::string name, std::string description, superrogue::Characteristics characteristics) noexcept;
     IGameObject() {};
     virtual ~IGameObject() {}

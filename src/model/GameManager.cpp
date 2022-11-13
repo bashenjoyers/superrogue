@@ -23,6 +23,8 @@ using superrogue::values::lastnames;
 using superrogue::exception::GameObjectException;
 using superrogue::game_object::character::EnemySettings;
 using superrogue::game_object::character::PersonSettings;
+using superrogue::abstract::PersonClass;
+using superrogue::abstract::EnemyClass;
 
 
 namespace superrogue::game_manager {
@@ -55,12 +57,16 @@ Characteristics GameManager::generate_characteristics(float characteristic_k = 1
 Person GameManager::generate_person() noexcept {
     string firstname = firstnames[__generator.firstname_i_gen()];
     string lastname = lastnames[__generator.lastname_i_gen()];
-    Characteristics characteristics = generate_characteristics();
+    PersonClass person_classes_name = person_classes[__generator.person_class_i_gen()];
     PersonSettings settings = PersonSettings();
-    IPersonClass person_class = get_person_class(person_classes[__generator.person_class_i_gen()], settings);
-    if (typeid(person_class) == typeid(Lucky)) {
+    if (person_classes_name == PersonClass::FARSIGHTED) {
+        settings.visible_radius = settings.visible_radius * 2;
+    }
+    Characteristics characteristics = generate_characteristics();
+    if (person_classes_name == PersonClass::LUCKY) {
         characteristics.luck = max(characteristics.luck, LUCKY_LUCK);
     }
+    IPersonClass person_class = get_person_class(person_classes_name, settings);
     return Person(lastname + " " + firstname, characteristics, person_class);
 }
 
@@ -71,10 +77,11 @@ set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
         string lastname = lastnames[__generator.lastname_i_gen()];
         Characteristics characteristics = generate_characteristics(WEAKNESS_K);
         EnemySettings settings = EnemySettings();
-        settings.attack_range = __generator.melee_gen() ? 1 : 3;
+        settings.attack_range = __generator.melee_gen() ? 1 : DISTANT_RANGE;
         settings.intellect = __generator.intellect_gen();
-        IEnemyClass enemy_class = get_enemy_class(enemy_classes[__generator.enemy_class_i_gen()], settings);
-        if (typeid(enemy_class) == typeid(Ordinary)) {
+        EnemyClass enemy_class_name = enemy_classes[__generator.enemy_class_i_gen()];
+        IEnemyClass enemy_class = get_enemy_class(enemy_class_name, settings);
+        if (enemy_class_name == EnemyClass::ORDINARY) {
             switch (__generator.characteristic_i_gen())
             {
             case 0:
@@ -104,6 +111,6 @@ Map GameManager::generate_map() noexcept {  // TODO(add user level up)
     __level++;
     GameOptions game_options = generate_game_options();
     set<Enemy> enemies = generate_enemies(game_options);
-    return Map(enemies, person, __map_options);
+    return Map(enemies, person, __map_options, __level);
 }
 };

@@ -7,7 +7,6 @@
 using std::cout;
 using std::string;
 using superrogue::game_object::item::Potion;
-using superrogue::values::potions;
 using superrogue::PotionType;
 using superrogue::game_manager::GameManager;
 using superrogue::map::MapOptions;
