@@ -13,6 +13,7 @@ public:
     ~NcursesWindow();
 
     void drawElement(char c, size_t x, size_t y);
+    void drawString(const std::string &s, size_t x, size_t y);
 
     void resize(size_t newW, size_t newH);
     void moveTo(size_t newX, size_t newY);

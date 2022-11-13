@@ -27,4 +27,13 @@ char CharConverter::convertItem(game_object::item::ItemType item)
 {
     return 'c';
 }
+
+char CharConverter::convertPotion() {
+    return 'p';
+}
+
+char CharConverter::convertVoidItem() {
+    return '$';
+}
+
 }

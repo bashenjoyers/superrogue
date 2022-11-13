@@ -15,6 +15,8 @@ class CharConverter {
 public:
     std::vector<std::vector<char>> convertMap(std::shared_ptr<map::Map> map);
     char convertItem(game_object::item::ItemType item);
+    char convertPotion();
+    char convertVoidItem();
     
 private:
     std::unordered_map<std::string, char> gameMapping;
