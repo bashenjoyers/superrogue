@@ -10,8 +10,8 @@ namespace superrogue::view
     void CursesFactory::resync() {
         Ncurses::NcursesAPI::NcursesAPIPtr ncurses = Ncurses::NcursesAPI::getInstance();
         inf = TerminalInfo {
-            .h = ncurses->getYsize(),
-            .w = ncurses->getXsize()
+            .w = ncurses->getXsize(),
+            .h = ncurses->getYsize()
         };
 
         if (mainMenuRenderer)
@@ -34,14 +34,15 @@ namespace superrogue::view
     
     std::shared_ptr<CursesInventoryRenderer> CursesFactory::buildInventoryRenderer()
     {
-        
+        inventoryRenderer = std::make_shared<CursesInventoryRenderer>(getInventoryWindowConfig());
+        return inventoryRenderer;
     }
     
     WindowConfig CursesFactory::getMapWindowConfig()
     {
         return WindowConfig {
-            .height = inf.h,
             .width = (size_t) ((float) inf.w - (float) inf.w * invMapCoef),
+            .height = inf.h,
             .xPos = (size_t) ((float) inf.w * invMapCoef),
             .yPos = 0
         };
@@ -50,8 +51,8 @@ namespace superrogue::view
     WindowConfig CursesFactory::getInventoryWindowConfig()
     {
         return WindowConfig {
-            .height = inf.h,
             .width = (size_t) ((float) inf.w * invMapCoef),
+            .height = inf.h,
             .xPos = 0,
             .yPos = 0
         };
@@ -60,8 +61,8 @@ namespace superrogue::view
     WindowConfig CursesFactory::getMainMenuWindowConfig()
     {
         return WindowConfig {
-            .height = inf.h,
             .width = inf.w,
+            .height = inf.h,
             .xPos = 0,
             .yPos = 0
         };

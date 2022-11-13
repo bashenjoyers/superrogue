@@ -8,6 +8,9 @@ include_directories("src")
 
 set(TARGET_NAME "${PROJECT_NAME}")
 
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
+
 add_executable(
         ${PROJECT_NAME}
         src/main.cpp
@@ -56,4 +59,10 @@ add_executable(
         src/model/inventory/Inventory.h
         src/model/inventory/Inventory.cpp
         src/view/const.h
+        src/view/Renderer.cpp
+        src/view/Curses/CursesRenderer.cpp
+        src/view/Curses/CursesFactory.cpp
+        src/view/Curses/CursesAPI.cpp
+        src/view/Converters/CharDataConverter.cpp
 )
+target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})

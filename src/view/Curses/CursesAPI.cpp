@@ -1,5 +1,8 @@
 #include "CursesAPI.h"
 
+#include <vector>
+#include <iostream>
+
 #define NOECHO_MODE 1
 
 namespace Ncurses
@@ -14,7 +17,13 @@ NcursesWindow::~NcursesWindow() {
 NcursesAPI::NcursesAPIPtr NcursesAPI::ncurses = nullptr;
 
 void NcursesWindow::drawElement(char c, size_t x, size_t y) {
-    mvwprintw(win, bordersOffset + y, bordersOffset + x, "%c", c);          // TODO handle out of range
+    mvwaddch(win, bordersOffset + y, bordersOffset + x, c);          // TODO handle out of range
+    wrefresh(win);
+    refresh();
+}
+
+void NcursesWindow::drawString(const std::string &s, size_t x, size_t y) {
+    mvwprintw(win, bordersOffset + y, bordersOffset + x, "%s", s.c_str());
     wrefresh(win);
     refresh();
 }
@@ -105,6 +114,5 @@ NcursesAPI::NcursesAPI() {
     #if NOECHO_MODE
     noecho();
     #endif
-
 }
 }
