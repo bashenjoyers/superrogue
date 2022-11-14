@@ -12,8 +12,8 @@ public:
     using NcursesWIndowPtr = std::shared_ptr<NcursesWindow>;
     ~NcursesWindow();
 
-    void drawElement(char c, size_t x, size_t y);
-    void drawString(const std::string &s, size_t x, size_t y);
+    void drawElement(char c, size_t x, size_t y, bool highlighted = false);
+    void drawString(const std::string &s, size_t x, size_t y, bool highlighted = false);
 
     void resize(size_t newW, size_t newH);
     void moveTo(size_t newX, size_t newY);
@@ -40,6 +40,14 @@ private:
     size_t bordersOffset = 1;
 
     friend class NcursesAPI;
+};
+
+
+class NcursesMenu {
+public:
+
+private:
+    
 };
 
 class NcursesAPI {

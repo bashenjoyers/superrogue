@@ -16,14 +16,18 @@ NcursesWindow::~NcursesWindow() {
 
 NcursesAPI::NcursesAPIPtr NcursesAPI::ncurses = nullptr;
 
-void NcursesWindow::drawElement(char c, size_t x, size_t y) {
+void NcursesWindow::drawElement(char c, size_t x, size_t y, bool highlighted) {
+    if (highlighted) wattron(win, A_STANDOUT);
     mvwaddch(win, bordersOffset + y, bordersOffset + x, c);          // TODO handle out of range
+    if (highlighted) wattroff(win, A_STANDOUT);
     wrefresh(win);
     refresh();
 }
 
-void NcursesWindow::drawString(const std::string &s, size_t x, size_t y) {
+void NcursesWindow::drawString(const std::string &s, size_t x, size_t y, bool highlighted) {
+    if (highlighted) wattron(win, A_STANDOUT);
     mvwprintw(win, bordersOffset + y, bordersOffset + x, "%s", s.c_str());
+    if (highlighted) wattroff(win, A_STANDOUT);
     wrefresh(win);
     refresh();
 }

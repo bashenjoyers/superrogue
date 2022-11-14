@@ -35,21 +35,19 @@ void CursesInventoryRenderer::render(RenderInfo info) {
 
     auto potions = inventory->get_potions();
     size_t curRow = 0;
-    size_t padding = 1;
-    size_t symNamePadding = 3;
+
     for (auto potion: potions) {
-        char symbol = conv.convertPotion();
-        potionsWin->drawElement(symbol, padding, curRow);
-        potionsWin->drawString(potion.get_name(), padding + 1 + symNamePadding, curRow);
+        renderPotion(potion, curRow, curRow == info.potionsCursor);
         curRow++;
     }
 
     {
-        renderItem(inventory->get_armor());
-        renderItem(inventory->get_boots());
-        renderItem(inventory->get_helmet());
-        renderItem(inventory->get_weapon_distant());
-        renderItem(inventory->get_weapon_melee());
+        using superrogue::game_object::item::ItemType;
+        renderItem(inventory->get_armor(), ItemType::ARMOR, info.equipmentCursor == ItemType::ARMOR);
+        renderItem(inventory->get_boots(), ItemType::BOOTS, info.equipmentCursor == ItemType::BOOTS);
+        renderItem(inventory->get_helmet(), ItemType::HELMET, info.equipmentCursor == ItemType::HELMET);
+        renderItem(inventory->get_weapon_distant(), ItemType::WEAPON_DISTANT, info.equipmentCursor == ItemType::WEAPON_DISTANT);
+        renderItem(inventory->get_weapon_melee(), ItemType::WEAPON_MELEE, info.equipmentCursor == ItemType::WEAPON_MELEE);
     }
 }
 
@@ -63,25 +61,34 @@ void CursesInventoryRenderer::resetWindow(WindowConfig newConf) {
     potionsWin->moveTo(conf.xPos + 1, conf.yPos + 1 + eqTypeCnt + 2);
 }
 
-void CursesInventoryRenderer::renderItem(std::optional<superrogue::game_object::item::Item> item) {
+void CursesInventoryRenderer::renderPotion(Potion p, size_t row, bool selected) {
+    size_t padding = 1;         //todo
+    size_t symNamePadding = 3;
+
+    char symbol = conv.convertPotion();
+    potionsWin->drawElement(symbol, padding, row, selected);
+    potionsWin->drawString(p.get_name(), padding + 1 + symNamePadding, row);
+}
+
+void CursesInventoryRenderer::renderItem(std::optional<superrogue::game_object::item::Item> item, game_object::item::ItemType type, bool selected) {
     using superrogue::game_object::item::Item;
+
+    char symbol = conv.convertItem(type);
+    size_t padding = 1;
+    size_t symNamePadding = 3;
+    size_t row = getItemRowOffset(type);
+    equipmentWin->drawElement(symbol, padding, row, selected);
+
     if (!item.has_value()) return;
 
     Item i = item.value();
-    size_t row = getItemRowOffset(i);                //todo pass only type
-    char symbol = conv.convertItem(i.get_item_type());
-
-    size_t padding = 1;
-    size_t symNamePadding = 3;
-
-    equipmentWin->drawElement(symbol, padding, row);
     equipmentWin->drawString(i.get_name(), padding + 1 + symNamePadding, row);
 }
 
-size_t CursesInventoryRenderer::getItemRowOffset(const superrogue::game_object::item::Item &item) {
+size_t CursesInventoryRenderer::getItemRowOffset(superrogue::game_object::item::ItemType type) {
     using superrogue::game_object::item::ItemType;
 
-    switch (item.get_item_type()) {
+    switch (type) {
         case ItemType::ARMOR : {
             return 0;
         } break;

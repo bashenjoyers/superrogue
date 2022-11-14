@@ -37,8 +37,9 @@ public:
     virtual void resetWindow(WindowConfig newConf) override;
     
 private:
-    void renderItem(std::optional<superrogue::game_object::item::Item> item);
-    size_t getItemRowOffset(const superrogue::game_object::item::Item &item);
+    void renderPotion(Potion p, size_t row, bool selected);
+    void renderItem(std::optional<superrogue::game_object::item::Item> item, game_object::item::ItemType type, bool selected);
+    size_t getItemRowOffset(superrogue::game_object::item::ItemType type);
 
     Ncurses::NcursesWindow::NcursesWIndowPtr equipmentWin;
     Ncurses::NcursesWindow::NcursesWIndowPtr potionsWin;
