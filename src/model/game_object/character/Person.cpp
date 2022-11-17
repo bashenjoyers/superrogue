@@ -1,9 +1,11 @@
 #include "model/game_object/character/Person.h"
+#include "exceptions/exceptions.h"
 #include "model/const.h"
 
 using std::optional;
 using std::string;
 using std::vector;
+using superrogue::exception::GameObjectException;
 using superrogue::game_object::item::Item;
 using superrogue::game_object::item::Potion;
 using superrogue::inventory::Inventory;
@@ -61,7 +63,8 @@ void Person::take_item() const noexcept {}
 
 Characteristics
 Person::get_full_characteristics() const noexcept { // FIXME(do it adequately)
-  Characteristics full_characteristics = this->get_characteristics();
+  Characteristics full_characteristics =
+      get_characteristics() + level_characteristics;
   vector<optional<Item>> items = {
       inventory.get_helmet(), inventory.get_armor(), inventory.get_boots(),
       weapon_melee ? inventory.get_weapon_melee()
@@ -74,6 +77,17 @@ Person::get_full_characteristics() const noexcept { // FIXME(do it adequately)
     full_characteristics += potion.get_characteristics();
   }
   return full_characteristics;
+}
+
+void Person::level_up(Characteristics characteristics) {
+  if (characteristics.luck != 0 || characteristics.health != 0 ||
+      (characteristics.armor + characteristics.damage +
+           characteristics.dexterity !=
+       POINTS_LVL_UP)) {
+    throw GameObjectException("too many points in lvl_up");
+  }
+  level_characteristics += characteristics;
+  level_characteristics.health += HEALTH_LVL_K;
 }
 
 Person::Person(string name, Characteristics characteristics,

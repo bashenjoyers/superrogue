@@ -7,6 +7,7 @@
 namespace superrogue::game_object::character {
 class Person : public IPerson {
   bool weapon_melee = true;
+  Characteristics level_characteristics = Characteristics();
   std::vector<superrogue::game_object::item::Potion> used_potions = {};
   void before_any_action();
 
@@ -19,6 +20,7 @@ public:
   bool is_weapon_melee() const noexcept;
   void take_item() const noexcept;
   Characteristics get_full_characteristics() const noexcept;
+  void level_up(Characteristics characteristics);
   Person(std::string name, superrogue::Characteristics characteristics,
          superrogue::game_object::character::IPersonClass person_class,
          superrogue::inventory::Inventory inventory =

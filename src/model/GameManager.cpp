@@ -19,6 +19,7 @@ using superrogue::game_object::character::Lucky;
 using superrogue::game_object::character::Ordinary;
 using superrogue::game_object::character::Person;
 using superrogue::game_object::character::PersonSettings;
+using superrogue::inventory::Inventory;
 using superrogue::map::Map;
 using superrogue::map::MapOptions;
 using superrogue::values::enemy_classes;
@@ -78,8 +79,13 @@ Person GameManager::generate_person() noexcept {
   if (person_classes_name == PersonClass::LUCKY) {
     characteristics.luck = max(characteristics.luck, LUCKY_LUCK);
   }
+  int potions_max = (person_classes_name == PersonClass::ALCHEMIST)
+                        ? POTIONS_MAX_ALCHEMIST
+                        : DEFAULT_POTIONS_MAX;
+  Inventory inventory = Inventory(potions_max);
   IPersonClass person_class = get_person_class(person_classes_name, settings);
-  return Person(lastname + " " + firstname, characteristics, person_class);
+  return Person(lastname + " " + firstname, characteristics, person_class,
+                inventory);
 }
 
 set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
@@ -123,7 +129,11 @@ set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
   return enemies;
 }
 
-Map GameManager::generate_map() noexcept { // TODO(add user level up)
+void GameManager::person_level_up(Characteristics characteristics) {
+  person.level_up(characteristics);
+}
+
+Map GameManager::generate_map() noexcept {
   level++;
   GameOptions game_options = generate_game_options();
   set<Enemy> enemies = generate_enemies(game_options);

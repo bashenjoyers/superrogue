@@ -4,5 +4,5 @@ using std::string;
 
 namespace superrogue::game_object::character {
 Alchemist::Alchemist(string description, PersonSettings settings)
-    : IPersonClass(description, settings) {} // TODO
+    : IPersonClass(description, settings) {}
 }; // namespace superrogue::game_object::character

@@ -10,7 +10,7 @@ using superrogue::game_object::item::ItemType;
 using superrogue::game_object::item::Potion;
 
 namespace superrogue::inventory {
-Inventory::Inventory(int potions_max) : __potions_max(potions_max) {}
+Inventory::Inventory(int potions_max) : potions_max(potions_max) {}
 
 void Inventory::set_helmet(optional<Item> helmet) {
   if (!helmet.has_value() && helmet.value().get_item_type() != ItemType::HELMET)
@@ -59,7 +59,7 @@ optional<Item> Inventory::get_weapon_distant() const noexcept {
 }
 
 void Inventory::add_potion(Potion potion) noexcept {
-  if (potions.size() == __potions_max) {
+  if (potions.size() == potions_max) {
     use_potion(0);
     potions.push_back(potion);
   }

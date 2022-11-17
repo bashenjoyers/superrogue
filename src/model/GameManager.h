@@ -23,6 +23,7 @@ class GameManager {
   Characteristics
   generate_characteristics(float characteristic_k) const noexcept;
   GameOptions generate_game_options() noexcept;
+  void person_level_up(Characteristics characteristics);
 
 public:
   GameManager(superrogue::map::MapOptions map_options);

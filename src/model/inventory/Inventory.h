@@ -14,7 +14,7 @@ class Inventory {
   std::optional<superrogue::game_object::item::Item> weapon_distant =
       std::nullopt;
   std::vector<superrogue::game_object::item::Potion> potions = {};
-  int __potions_max;
+  int potions_max;
 
 public:
   Inventory(int potions_max = DEFAULT_POTIONS_MAX);
