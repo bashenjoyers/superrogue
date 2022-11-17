@@ -1,7 +1,7 @@
 #pragma once
 
 #include <map>
-#include "IEvent.h"
+#include "controller/events/IEvent.h"
 
 using namespace superrogue::controller::event;
 

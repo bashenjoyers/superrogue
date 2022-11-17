@@ -16,7 +16,7 @@ add_executable(
     src/main.cpp
     src/exceptions/exceptions.cpp
     src/exceptions/exceptions.h
-    src/controller/IEvent.h
+        src/controller/events/IEvent.h
     src/controller/const.h
     src/model/abstract.h
     src/model/values.h

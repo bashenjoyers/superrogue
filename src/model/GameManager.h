@@ -1,4 +1,4 @@
-#include "controller/IEvent.h"
+#include "controller/events/IEvent.h"
 #include "model/game_object/character/Enemy.h"
 #include "model/game_object/character/Person.h"
 #include "model/map/Map.h"
