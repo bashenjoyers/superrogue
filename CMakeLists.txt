@@ -63,6 +63,7 @@ add_executable(
     src/controller/events/uiEvent/MovePotionDownEvent.h
     src/controller/events/uiEvent/ActionUIEvent.cpp
     src/controller/events/uiEvent/MovePotionUpEvent.h
+    src/controller/events/EmptyEvent.cpp
     src/model/abstract.h
     src/model/values.h
     src/model/GameManager.cpp
@@ -134,5 +135,6 @@ add_executable(
     src/view/Converters/CharDataConverter.h
     src/view/Converters/CharDataConverter.cpp
     src/view/Converters/GameDataConverter.h
+    src/Boot.cpp
 )
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
