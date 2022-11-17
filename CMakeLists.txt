@@ -16,12 +16,58 @@ add_executable(
     src/main.cpp
     src/exceptions/exceptions.cpp
     src/exceptions/exceptions.h
-        src/controller/events/IEvent.h
+    src/controller/CursorState.cpp
+    src/controller/CursorState.h
+    src/controller/UserKeysListener.h
+    src/controller/EventProvider.cpp
+    src/controller/UserKeysListener.cpp
+    src/controller/EventProvider.h
+    src/controller/GameController.cpp
+    src/controller/GameController.h
     src/controller/const.h
+    src/controller/events/ModelEvent.cpp
+    src/controller/events/UIEvent.h
+    src/controller/events/UIEvent.cpp
+    src/controller/events/IEvent.h
+    src/controller/events/IEvent.cpp
+    src/controller/events/ModelEvent.h
+    src/controller/events/modelEvent/PunchForwardModelEvent.cpp
+    src/controller/events/modelEvent/PunchRightModelEvent.cpp
+    src/controller/events/modelEvent/ChangeItemModelEvent.h
+    src/controller/events/modelEvent/WaitModelEvent.cpp
+    src/controller/events/modelEvent/StepForwardModelEvent.cpp
+    src/controller/events/modelEvent/PotionModelEvent.cpp
+    src/controller/events/modelEvent/PunchBackModelEvent.h
+    src/controller/events/modelEvent/WaitModelEvent.h
+    src/controller/events/modelEvent/StepLeftModelEvent.cpp
+    src/controller/events/modelEvent/ChangeItemModelEvent.cpp
+    src/controller/events/modelEvent/StepLeftModelEvent.h
+    src/controller/events/modelEvent/PunchLeftModelEvent.cpp
+    src/controller/events/modelEvent/StepRightModelEvent.h
+    src/controller/events/modelEvent/StepForwardModelEvent.h
+    src/controller/events/modelEvent/PotionModelEvent.h
+    src/controller/events/modelEvent/PunchForwardModelEvent.h
+    src/controller/events/modelEvent/PunchBackModelEvent.cpp
+    src/controller/events/modelEvent/StepBackModelEvent.cpp
+    src/controller/events/modelEvent/PunchLeftModelEvent.h
+    src/controller/events/modelEvent/StepBackModelEvent.h
+    src/controller/events/modelEvent/PunchRightModelEvent.h
+    src/controller/events/modelEvent/StepRightModelEvent.cpp
+    src/controller/events/uiEvent/MovePotionUpEvent.cpp
+    src/controller/events/uiEvent/MovePotionDownEvent.cpp
+    src/controller/events/uiEvent/MoveEquipmentDownEvent.h
+    src/controller/events/uiEvent/MoveEquipmentUpEvent.h
+    src/controller/events/uiEvent/ActionUIEvent.h
+    src/controller/events/uiEvent/MoveEquipmentDownEvent.cpp
+    src/controller/events/uiEvent/MoveEquipmentUpEvent.cpp
+    src/controller/events/uiEvent/MovePotionDownEvent.h
+    src/controller/events/uiEvent/ActionUIEvent.cpp
+    src/controller/events/uiEvent/MovePotionUpEvent.h
     src/model/abstract.h
     src/model/values.h
     src/model/GameManager.cpp
     src/model/GameManager.h
+    src/model/generator.h
     src/model/const.h
     src/model/map/Map.h
     src/model/map/Map.cpp
@@ -75,22 +121,18 @@ add_executable(
     src/model/game_object/item/stuff/Item.cpp
     src/model/inventory/Inventory.h
     src/model/inventory/Inventory.cpp
+    src/view/Observers.h
+    src/view/Renderer.h
     src/view/const.h
-        src/view/const.h
-        src/view/Renderer.cpp
-        src/view/Curses/CursesRenderer.cpp
-        src/view/Curses/CursesFactory.cpp
-        src/view/Curses/CursesAPI.cpp
-        src/view/Converters/CharDataConverter.cpp
-        src/controller/EventProvider.cpp
-        src/controller/EventProvider.h
-        src/controller/GameController.cpp
-        src/controller/UserKeysListener.cpp
-        src/controller/events/uiEvent/ActionUIEvent.cpp
-        src/controller/events/uiEvent/ActionUIEvent.h src/controller/events/uiEvent/MoveEquipmentUpEvent.cpp src/controller/events/uiEvent/MoveEquipmentUpEvent.h
-        src/controller/events/uiEvent/MoveEquipmentDownEvent.cpp src/controller/events/uiEvent/MoveEquipmentDownEvent.h
-    src/controller/events/UIEvent.cpp
-    src/controller/events/IEvent.cpp
-        src/controller/CursorState.cpp src/controller/CursorState.h src/controller/events/uiEvent/MovePotionDownEvent.cpp src/controller/events/uiEvent/MovePotionDownEvent.h src/controller/events/uiEvent/MovePotionUpEvent.cpp src/controller/events/uiEvent/MovePotionUpEvent.h)
+    src/view/Renderer.cpp
+    src/view/Curses/CursesAPI.cpp
+    src/view/Curses/CursesRenderer.cpp
+    src/view/Curses/CursesAPI.h
+    src/view/Curses/CursesFactory.cpp
+    src/view/Curses/CursesRenderer.h
+    src/view/Curses/CursesFactory.h
+    src/view/Converters/CharDataConverter.h
+    src/view/Converters/CharDataConverter.cpp
+    src/view/Converters/GameDataConverter.h
+)
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
-
