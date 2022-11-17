@@ -2,7 +2,7 @@
 
 using std::string;
 
-
 namespace superrogue::game_object::character {
-Alchemist::Alchemist(string description, PersonSettings settings) : IPersonClass(description, settings) {}   // TODO
-};
+Alchemist::Alchemist(string description, PersonSettings settings)
+    : IPersonClass(description, settings) {} // TODO
+}; // namespace superrogue::game_object::character

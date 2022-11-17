@@ -1,39 +1,38 @@
 #pragma once
 
-
 namespace superrogue {
 enum class StuffType {
-    HELM,
-    CAP,
-    PANAMA,
-    HAT,
+  HELM,
+  CAP,
+  PANAMA,
+  HAT,
 
-    HAUBERK,
-    TUNIC, 
-    JACKET,
-    T_SHIRT,
+  HAUBERK,
+  TUNIC,
+  JACKET,
+  T_SHIRT,
 
-    SNEAKERS,
-    SLIPPERS,
-    BOOTS,
-    SANDALS,
+  SNEAKERS,
+  SLIPPERS,
+  BOOTS,
+  SANDALS,
 
-    SWORD,
-    KATANA,
-    KNIFE,
-    SABER,
-    BITA,
-    MACE,
-    SPEAR,
-    NUNCHUCKS, 
+  SWORD,
+  KATANA,
+  KNIFE,
+  SABER,
+  BITA,
+  MACE,
+  SPEAR,
+  NUNCHUCKS,
 
-    PISTOL,
-    GUN,
-    RIFLE,
-    AUTOMATIC_RIFLE,
-    BOW,
-    CROSSBOW,
-    SLING,
-    DIRKS
+  PISTOL,
+  GUN,
+  RIFLE,
+  AUTOMATIC_RIFLE,
+  BOW,
+  CROSSBOW,
+  SLING,
+  DIRKS
 };
 };
