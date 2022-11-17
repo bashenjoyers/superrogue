@@ -7,4 +7,8 @@ namespace superrogue::controller {
         std::shared_ptr<IEvent> event = keysListener->onKeyPressed(userKey);
         event->execute();
     }
+
+    std::shared_ptr<CursorState> GameController::getCursorState() {
+        return cursorState;
+    }
 }

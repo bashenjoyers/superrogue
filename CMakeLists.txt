@@ -94,6 +94,6 @@ add_executable(
         src/controller/events/uiEvent/MoveDownUIEvent.cpp src/controller/events/uiEvent/MoveDownUIEvent.h
     src/controller/events/UIEvent.cpp
     src/controller/events/IEvent.cpp
-)
+        src/controller/CursorState.cpp src/controller/CursorState.h)
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
 

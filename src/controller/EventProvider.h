@@ -12,6 +12,6 @@ namespace superrogue::controller {
         std::shared_ptr<event::IEvent> getEventByKey(int key);
 
     private:
-        std::map<int, IEvent> keyMapping;
+        std::map<int, std::shared_ptr<event::IEvent>> keyMapping;
     };
 }
