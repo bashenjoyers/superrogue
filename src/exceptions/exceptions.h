@@ -20,4 +20,9 @@ class StepException : public GameObjectException {
 public:
   explicit StepException(const std::string &message);
 };
+
+class EventException : public GameObjectException {
+public:
+  explicit EventException(const std::string &message);
+};
 }; // namespace superrogue::exception
