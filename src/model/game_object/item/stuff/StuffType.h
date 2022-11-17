@@ -1,8 +1,38 @@
 #pragma once
 
-
 namespace superrogue {
-enum class StuffType {  // TODO add +3
-    HAUBERK
+enum class StuffType {
+  HELM,
+  CAP,
+  PANAMA,
+  HAT,
+
+  HAUBERK,
+  TUNIC,
+  JACKET,
+  T_SHIRT,
+
+  SNEAKERS,
+  SLIPPERS,
+  BOOTS,
+  SANDALS,
+
+  SWORD,
+  KATANA,
+  KNIFE,
+  SABER,
+  BITA,
+  MACE,
+  SPEAR,
+  NUNCHUCKS,
+
+  PISTOL,
+  GUN,
+  RIFLE,
+  AUTOMATIC_RIFLE,
+  BOW,
+  CROSSBOW,
+  SLING,
+  DIRKS
 };
 };

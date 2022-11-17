@@ -1,19 +1,17 @@
 #pragma once
+#include "model/game_object/IGameObject.h"
 #include <iostream>
 #include <string>
-#include "model/game_object/IGameObject.h"
-
-using std::string;
-
 
 namespace superrogue::game_object::character {
 class ICharacter : public IGameObject {
 public:
-    virtual string get_description() const noexcept override = 0;
-    virtual void step() = 0;
-    virtual void punch() = 0;
-    ICharacter(string name, string description, Characteristics characteristics) noexcept;
-    ICharacter() {};
-    virtual ~ICharacter() {}
+  virtual std::string get_description() const noexcept override { return ""; };
+  virtual void step(){};
+  virtual void punch(){};
+  ICharacter(std::string name, std::string description,
+             Characteristics characteristics);
+  ICharacter(){};
+  virtual ~ICharacter() {}
 };
-};
+}; // namespace superrogue::game_object::character

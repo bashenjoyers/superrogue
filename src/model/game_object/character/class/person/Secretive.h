@@ -2,8 +2,9 @@
 #include "model/game_object/character/class/person/IPersonClass.h"
 
 namespace superrogue::game_object::character {
-class Lucky : public IPersonClass {
+class Secretive : public IPersonClass {
 public:
-  Lucky(std::string description, PersonSettings settings = PersonSettings());
+  Secretive(std::string description,
+            PersonSettings settings = PersonSettings());
 };
 }; // namespace superrogue::game_object::character

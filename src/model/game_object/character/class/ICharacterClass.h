@@ -2,15 +2,13 @@
 #include <iostream>
 #include <string>
 
-using std::string;
-
-
 namespace superrogue::game_object::character {
 class ICharacterClass {
-    string __description;
+  std::string description;
+
 public:
-    string get_description() const noexcept;
-    ICharacterClass(string description) noexcept;
-    virtual ~ICharacterClass() {}
+  std::string get_description() const noexcept;
+  ICharacterClass(std::string description = "");
+  virtual ~ICharacterClass() {}
 };
-};
+}; // namespace superrogue::game_object::character

@@ -1,6 +1,5 @@
-#include "model/game_object/character/class/enemy/Ordinary.h"
+#include "model/game_object/character/class/enemy/Flying.h"
 #include "model/values.h"
-#include <vector>
 
 using std::string;
 using std::vector;
@@ -10,17 +9,17 @@ using superrogue::abstract::Position;
 using superrogue::game_object::character::CharacterAction;
 
 namespace superrogue::game_object::character {
-Ordinary::Ordinary(string description, EnemySettings settings)
+Flying::Flying(string description, EnemySettings settings)
     : IEnemyClass(description, settings) {}
 
-MapEntity Ordinary::get_map_entity() const noexcept {
+MapEntity Flying::get_map_entity() const noexcept {
   if (get_settings().intellect < 0.9)
-    return MapEntity::ENEMY_ORDINARY;
+    return MapEntity::ENEMY_FLYING;
   return MapEntity::ENEMY;
 }
 
-CharacterAction Ordinary::strategy(vector<MapEntityWithPosition> &cells,
-                                   Position &pos) noexcept {
+CharacterAction Flying::strategy(vector<MapEntityWithPosition> &cells,
+                                 Position &pos) noexcept { // TODO
   Position *person_pos = nullptr;
   vector<CharacterAction> possible_actions = {CharacterAction::WAIT};
   for (MapEntityWithPosition cell : cells) {
