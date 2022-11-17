@@ -4,18 +4,18 @@
 
 using std::string;
 using superrogue::Characteristics;
-using std::min;
+using std::max;
 
 namespace superrogue::game_object {
-IGameObject::IGameObject(string name, string description, Characteristics characteristics) noexcept : 
-    __name(name), __description(description), characteristics(characteristics) {}
+IGameObject::IGameObject(string name, string description, Characteristics characteristics) : 
+    name(name), description(description), characteristics(characteristics) {}
 
 string IGameObject::get_name() const noexcept {
-    return this->__name;
+    return this->name;
 }
 
 string IGameObject::get_description() const noexcept {
-    return this->__description;
+    return this->description;
 }
 
 Characteristics IGameObject::get_characteristics() const noexcept {
@@ -26,8 +26,8 @@ void IGameObject::add_health(int value) noexcept {
     characteristics.health += value;
 }
 
-bool IGameObject::damaged(int value) {
-    characteristics.health = min(characteristics.health - value, 0);
+bool IGameObject::damaged(int value) noexcept {
+    characteristics.health = max(characteristics.health - value, 0);
     return characteristics.health == 0;
 }
 };

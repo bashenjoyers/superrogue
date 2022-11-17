@@ -11,17 +11,17 @@ using superrogue::abstract::MapEntity;
 
 
 namespace superrogue::game_object::character {
-IEnemyClass::IEnemyClass(string description, EnemySettings settings) noexcept : ICharacterClass(description), __settings(settings) {}
+IEnemyClass::IEnemyClass(string description, EnemySettings settings) : ICharacterClass(description), settings(settings) {}
 
 EnemySettings IEnemyClass::get_settings() const noexcept { 
-    return __settings;
+    return settings;
 }
 
-bool IEnemyClass::is_vacant(superrogue::abstract::MapEntity map_entity) {
+bool IEnemyClass::is_vacant(superrogue::abstract::MapEntity map_entity) const noexcept { 
     return map_entity == MapEntity::FLOOR || map_entity == MapEntity::ITEM || map_entity == MapEntity::POTION;
 }
 
-CharacterAction IEnemyClass::default_fight_behavior(int dx, int dy, vector<CharacterAction>& possible_actions, bool can_punch) {    // FIXME(do it adequately)
+CharacterAction IEnemyClass::default_fight_behavior(int dx, int dy, vector<CharacterAction>& possible_actions, bool can_punch)  const noexcept {    // FIXME(do it adequately)
     if (dx <= dy) {
         if (dx == 0) {
             if (dy > 0) {

@@ -5,6 +5,6 @@
 namespace superrogue::game_object::character {
 class Secretive : public IPersonClass {
 public:
-    Secretive(std::string description, PersonSettings settings=PersonSettings()) noexcept;
+    Secretive(std::string description, PersonSettings settings=PersonSettings());
 };
 };

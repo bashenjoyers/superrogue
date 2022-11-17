@@ -4,5 +4,5 @@ using std::string;
 
 
 namespace superrogue::game_object::character {
-Farsighted::Farsighted(string description, PersonSettings settings) noexcept : IPersonClass(description, settings) {}
+Farsighted::Farsighted(string description, PersonSettings settings) : IPersonClass(description, settings) {}
 };

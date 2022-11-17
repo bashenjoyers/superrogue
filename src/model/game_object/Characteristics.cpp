@@ -5,7 +5,7 @@ using superrogue::exception::GameObjectException;
 
 
 namespace superrogue {
-Characteristics::Characteristics(int damage, int armor, int health, int dexterity, float luck) noexcept : 
+Characteristics::Characteristics(int damage, int armor, int health, int dexterity, float luck) : 
     damage(damage), armor(armor), health(health), luck(luck), dexterity(dexterity) {}
 
 Characteristics Characteristics::operator+ (Characteristics const &other)  {

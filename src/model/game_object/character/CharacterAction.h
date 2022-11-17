@@ -31,7 +31,8 @@ inline const std::string to_string(CharacterAction action) {
         case CharacterAction::POTION:           return "potion";
         case CharacterAction::CHANGE_ITEM:      return "change item";
         case CharacterAction::WAIT:             return "wait";
-        default:      throw superrogue::exception::GameObjectException("wrong CharacterAction");
+        default:
+            throw superrogue::exception::GameObjectException("wrong CharacterAction");
     }
 }
 };

@@ -4,5 +4,5 @@ using std::string;
 
 
 namespace superrogue::game_object::character {
-Lucky::Lucky(string description, PersonSettings settings) noexcept : IPersonClass(description, settings) {}
+Lucky::Lucky(string description, PersonSettings settings) : IPersonClass(description, settings) {}
 };

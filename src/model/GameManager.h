@@ -14,12 +14,12 @@ struct GameOptions {
 };
 
 class GameManager {
-    int __level = 0;
+    int level = 0;
     superrogue::game_object::character::Person person;
-    superrogue::map::MapOptions __map_options;
+    superrogue::map::MapOptions map_options;
     superrogue::game_object::character::Person generate_person() noexcept;
     std::set<superrogue::game_object::character::Enemy> generate_enemies(GameOptions game_options);
-    Characteristics generate_characteristics(float characteristic_k) noexcept;
+    Characteristics generate_characteristics(float characteristic_k) const noexcept;
     GameOptions generate_game_options() noexcept;
 public:
     GameManager(superrogue::map::MapOptions map_options);

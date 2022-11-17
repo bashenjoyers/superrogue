@@ -34,7 +34,7 @@ MapInfo::MapInfo(vector<MapEntityWithPosition> map_positions, PersonWithPosition
 }
 
 Map::Map(set<Enemy> enemies, Person person, MapOptions map_options, int level) : 
-    person_with_position(PersonWithPosition(person)), __map_options(map_options), level(level) {
+    person_with_position(PersonWithPosition(person)), map_options(map_options), level(level) {
     enemies_with_positions = {};
     for (Enemy enemy : enemies) {
         enemies_with_positions.insert(EnemyWithPosition(enemy));
@@ -44,19 +44,19 @@ Map::Map(set<Enemy> enemies, Person person, MapOptions map_options, int level) :
     game_status = GameStatus::IN_PROGRESS;
 }
 
-GameStatus Map::get_game_status() {
+GameStatus Map::get_game_status() const noexcept {
     return game_status;
 }
 
-void Map::set_positions() {
+void Map::set_positions() const noexcept {
     // TODO
 }
 
-void Map::generate_map_and_door() {
+void Map::generate_map_and_door() const noexcept {
     // TODO
 }
 
-vector<MapEntityWithPosition> Map::visible_cells(const Position& pos, int radius, bool ignore_walls = false, const vector<Position>& area = {}) {
+vector<MapEntityWithPosition> Map::visible_cells(const Position& pos, int radius, bool ignore_walls = false, const vector<Position>& area = {}) const noexcept {
     // if area is empty - no limits for it
     // TODO (return cells visible from position)
     if (area.size() == 0) {
@@ -67,29 +67,28 @@ vector<MapEntityWithPosition> Map::visible_cells(const Position& pos, int radius
     return {};
 }
 
-bool Map::in_map(int x, int y) {
-    return x >= 0 && y >= 0 && x < __map_options.width && y < __map_options.height;
+bool Map::in_map(int x, int y) const noexcept {
+    return x >= 0 && y >= 0 && x < map_options.width && y < map_options.height;
 }
 
-bool Map::is_vacant_cell(int x, int y) {
+bool Map::is_vacant_cell(int x, int y) const noexcept {
     MapEntity map_entity = map[x][y];
     return map_entity == MapEntity::FLOOR || map_entity == MapEntity::ITEM || map_entity == MapEntity::POTION || map_entity == MapEntity::DOOR;
 }
 
-bool Map::is_door_cell(int x, int y) {
+bool Map::is_door_cell(int x, int y) const noexcept {
     MapEntity map_entity = map[x][y];
     return map_entity == MapEntity::DOOR;
 }
 
-bool Map::is_anybody_cell(int x, int y) {
+bool Map::is_anybody_cell(int x, int y) const noexcept {
     MapEntity map_entity = map[x][y];
-    
     return map_entity == MapEntity::PERSON || map_entity == MapEntity::ENEMY || map_entity == MapEntity::ENEMY_AGRESSIVE || 
         map_entity == MapEntity::ENEMY_FLYING || map_entity == MapEntity::ENEMY_INDIFFERENT || 
         map_entity == MapEntity::ENEMY_ORDINARY || map_entity == MapEntity::ENEMY_TRAVELER;
 }
 
-MapEntity Map::get_cell_type(Position pos) {
+MapEntity Map::get_cell_type(Position pos) const noexcept {
     auto it_item = items.find(pos);
     if (it_item == items.end()) {
         return MapEntity::FLOOR;
@@ -105,7 +104,7 @@ bool Map::step(CharacterAction action) {
         change_item();
         return true;
     }
-    if (get_game_status() != GameStatus::IN_PROGRESS || !__action_person(action)) {
+    if (get_game_status() != GameStatus::IN_PROGRESS || !action_person(action)) {
         return false;
     }
     for (EnemyWithPosition enemy_with_position : enemies_with_positions) {
@@ -114,18 +113,18 @@ bool Map::step(CharacterAction action) {
         bool ignore_walls = enemy_class.get_settings().ignore_walls;
         vector<MapEntityWithPosition> cells = visible_cells(enemy_with_position.pos, radius, ignore_walls, enemy_with_position.area);
         CharacterAction enemy_action = enemy_class.strategy(cells, enemy_with_position.pos);
-        __action_enemy(enemy_action, enemy_with_position);
+        action_enemy(enemy_action, enemy_with_position);
     }
     return true;
 }
 
-MapInfo Map::get_map_info() {
+MapInfo Map::get_map_info() const noexcept {
     int radius = person_with_position.get_person_class().get_settings().visible_radius;
     vector<MapEntityWithPosition> map_positions = visible_cells(person_with_position.pos, radius);
     return MapInfo(map_positions, person_with_position);
 }
 
-optional<IItem> Map::drop_item() {
+optional<IItem> Map::drop_item() const noexcept {
     int luck = person_with_position.get_full_characteristics().luck;
     if (drop_gen(superrogue::values::generator) < luck) {
         int i = drop_gen_i(superrogue::values::generator);
@@ -138,7 +137,7 @@ optional<IItem> Map::drop_item() {
     return std::nullopt;
 };
 
-void Map::punch_cells_in_order(vector<Position> positions, Characteristics characteristics) {
+void Map::punch_cells_in_order(vector<Position> positions, Characteristics characteristics) noexcept {
     for (Position pos : positions) {
         if (!in_map(pos.x, pos.y))
             break;
@@ -186,7 +185,7 @@ void Map::punch_cells_in_order(vector<Position> positions, Characteristics chara
     }
 }
 
-bool Map::punch(ICharacter character, Characteristics characteristics) {
+bool Map::punch(ICharacter character, Characteristics characteristics) noexcept {
     Characteristics character_characteristics;
     if ((typeid(character) == typeid(PersonWithPosition))) {
         character_characteristics = dynamic_cast<PersonWithPosition*>(&character)->get_full_characteristics();
@@ -205,7 +204,7 @@ bool Map::punch(ICharacter character, Characteristics characteristics) {
     return character.damaged(damage);
 }
 
-bool Map::__any_step_anybody(WithPosition anybody, Position pos) {
+bool Map::any_step_anybody(WithPosition anybody, Position pos) noexcept {
     if (is_door_cell(anybody.pos.x, anybody.pos.y)) {
         if ((typeid(anybody) == typeid(PersonWithPosition))) {
             map[anybody.pos.x][anybody.pos.y] = get_cell_type(anybody.pos);
@@ -227,31 +226,31 @@ bool Map::__any_step_anybody(WithPosition anybody, Position pos) {
     return false;
 }
 
-bool Map::__step_anybody(CharacterAction action, WithPosition anybody) {
+bool Map::step_anybody(CharacterAction action, WithPosition anybody) noexcept {
     bool step_was = false;
     switch (action)
     {
     case CharacterAction::STEP_FORWARD:
-        if (anybody.pos.x + 1 < __map_options.width && is_vacant_cell(anybody.pos.x + 1, anybody.pos.y)) {
+        if (anybody.pos.x + 1 < map_options.width && is_vacant_cell(anybody.pos.x + 1, anybody.pos.y)) {
             Position new_pos = Position(anybody.pos.x + 1, anybody.pos.y);
-            step_was = __any_step_anybody(anybody, new_pos);
+            step_was = any_step_anybody(anybody, new_pos);
         }
         break;
     case CharacterAction::STEP_RIGHT:
-        if (anybody.pos.y + 1 < __map_options.height && is_vacant_cell(anybody.pos.x, anybody.pos.y + 1)) {
+        if (anybody.pos.y + 1 < map_options.height && is_vacant_cell(anybody.pos.x, anybody.pos.y + 1)) {
             Position new_pos = Position(anybody.pos.x, anybody.pos.y + 1);
-            step_was = __any_step_anybody(anybody, new_pos);
+            step_was = any_step_anybody(anybody, new_pos);
         }
     case CharacterAction::STEP_BACK:
         if (anybody.pos.x - 1 >= 0 && is_vacant_cell(anybody.pos.x - 1, anybody.pos.y)) {
             Position new_pos = Position(anybody.pos.x - 1, anybody.pos.y);
-            step_was = __any_step_anybody(anybody, new_pos);
+            step_was = any_step_anybody(anybody, new_pos);
         }
         break;
     case CharacterAction::STEP_LEFT:
         if (anybody.pos.y - 1 >= 0 && is_vacant_cell(anybody.pos.x, anybody.pos.y - 1)) {
             Position new_pos = Position(anybody.pos.x, anybody.pos.y - 1);
-            step_was = __any_step_anybody(anybody, new_pos);
+            step_was = any_step_anybody(anybody, new_pos);
         }
         break;
     default:
@@ -324,7 +323,7 @@ void Map::change_item() {
     }
 }
 
-bool Map::__action_person(CharacterAction action) {
+bool Map::action_person(CharacterAction action) {
     bool correct = false;
     int range = person_with_position.is_weapon_melee() ? 1 : DISTANT_RANGE;
     Position pos = person_with_position.pos;
@@ -373,7 +372,7 @@ bool Map::__action_person(CharacterAction action) {
         correct = true;
         break;
     default:
-        if (__step_anybody(action, person_with_position)) {
+        if (step_anybody(action, person_with_position)) {
             person_with_position.step();
             correct = true;
         }
@@ -382,7 +381,7 @@ bool Map::__action_person(CharacterAction action) {
     return correct;
 }
 
-void Map::__action_enemy(CharacterAction action, EnemyWithPosition enemy_with_position) {   // FIXME(copypaste)
+void Map::action_enemy(CharacterAction action, EnemyWithPosition enemy_with_position) {   // FIXME(copypaste)
     bool correct = false;
     int range = enemy_with_position.get_attack_range();
     Position pos = enemy_with_position.pos;
@@ -429,7 +428,7 @@ void Map::__action_enemy(CharacterAction action, EnemyWithPosition enemy_with_po
         correct = true; 
         break;
     default:
-        if (__step_anybody(action, enemy_with_position)) {
+        if (step_anybody(action, enemy_with_position)) {
             enemy_with_position.step();
             correct = true;
         }

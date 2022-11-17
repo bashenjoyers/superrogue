@@ -5,6 +5,6 @@
 namespace superrogue::game_object::character {
 class Alchemist : public IPersonClass {
 public:
-    Alchemist(std::string description, PersonSettings settings=PersonSettings()) noexcept;
+    Alchemist(std::string description, PersonSettings settings=PersonSettings());
 };
 };

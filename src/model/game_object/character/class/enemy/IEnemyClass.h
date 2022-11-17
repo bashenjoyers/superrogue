@@ -15,14 +15,14 @@ struct EnemySettings {
 };
 
 class IEnemyClass : public ICharacterClass {
-    EnemySettings __settings;
+    EnemySettings settings;
 public:
     EnemySettings get_settings() const noexcept;
     virtual superrogue::abstract::MapEntity get_map_entity() const noexcept { return superrogue::abstract::MapEntity::ENEMY; };
-    bool is_vacant(superrogue::abstract::MapEntity map_entity);
-    superrogue::game_object::character::CharacterAction default_fight_behavior(int dx, int dy, std::vector<superrogue::game_object::character::CharacterAction>& possible_actions, bool can_punch = true);
+    bool is_vacant(superrogue::abstract::MapEntity map_entity) const noexcept;
+    superrogue::game_object::character::CharacterAction default_fight_behavior(int dx, int dy, std::vector<superrogue::game_object::character::CharacterAction>& possible_actions, bool can_punch = true) const noexcept;
     superrogue::game_object::character::CharacterAction strategy(std::vector<superrogue::abstract::MapEntityWithPosition>& cells, superrogue::abstract::Position& pos) noexcept;
-    IEnemyClass(std::string description, EnemySettings settings) noexcept;
+    IEnemyClass(std::string description, EnemySettings settings);
     virtual ~IEnemyClass() {}
 protected:
     superrogue::abstract::Position last_character_position;

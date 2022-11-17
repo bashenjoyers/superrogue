@@ -10,7 +10,7 @@ using superrogue::abstract::MapEntity;
 
 
 namespace superrogue::game_object::character {
-Indifferent::Indifferent(string description, EnemySettings settings) noexcept : IEnemyClass(description, settings) {}
+Indifferent::Indifferent(string description, EnemySettings settings) : IEnemyClass(description, settings) {}
 
 void Indifferent::disturb() noexcept {
     disturbed = true;

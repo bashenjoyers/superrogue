@@ -5,6 +5,6 @@
 namespace superrogue::game_object::character {
 class Wise : public IPersonClass {
 public:
-    Wise(std::string description, PersonSettings settings=PersonSettings()) noexcept;
+    Wise(std::string description, PersonSettings settings=PersonSettings());
 };
 };

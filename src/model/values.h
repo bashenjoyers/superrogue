@@ -21,81 +21,115 @@
 
 
 namespace superrogue::values {
-static const std::vector<StuffType> items_types = {StuffType::HELM, StuffType::CAP, StuffType::PANAMA, StuffType::HAT, StuffType::HAUBERK, StuffType::TUNIC, StuffType::JACKET, 
-    StuffType::T_SHIRT, StuffType::SNEAKERS, StuffType::SLIPPERS, StuffType::BOOTS, StuffType::SANDALS, StuffType::SWORD, StuffType::KATANA, StuffType::KNIFE, StuffType::SABER, 
-    StuffType::BITA, StuffType::MACE, StuffType::SPEAR, StuffType::NUNCHUCKS, StuffType::PISTOL, StuffType::GUN, StuffType::RIFLE, StuffType::AUTOMATIC_RIFLE, StuffType::BOW, 
-    StuffType::CROSSBOW, StuffType::SLING, StuffType::DIRKS};
+static const std::vector<StuffType> items_types = {
+    StuffType::HELM, 
+    StuffType::CAP, 
+    StuffType::PANAMA, 
+    StuffType::HAT, 
+    StuffType::HAUBERK, 
+    StuffType::TUNIC, 
+    StuffType::JACKET, 
+    StuffType::T_SHIRT, 
+    StuffType::SNEAKERS, 
+    StuffType::SLIPPERS, 
+    StuffType::BOOTS, 
+    StuffType::SANDALS, 
+    StuffType::SWORD, 
+    StuffType::KATANA, 
+    StuffType::KNIFE, 
+    StuffType::SABER, 
+    StuffType::BITA, 
+    StuffType::MACE, 
+    StuffType::SPEAR, 
+    StuffType::NUNCHUCKS, 
+    StuffType::PISTOL, 
+    StuffType::GUN, 
+    StuffType::RIFLE, 
+    StuffType::AUTOMATIC_RIFLE, 
+    StuffType::BOW, 
+    StuffType::CROSSBOW, 
+    StuffType::SLING, 
+    StuffType::DIRKS
+};
 
-static superrogue::game_object::item::Item get_item(StuffType stuff_type, int characteristics_k) {  // FIXME(add discription)
+static superrogue::game_object::item::Item get_item(StuffType stuff_type, int characteristics_k) {
     switch (stuff_type)
     {
     case StuffType::HELM:
         return superrogue::game_object::item::Item("helm", "good old hauberk", Characteristics(0, 3, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::HELMET);
     case StuffType::CAP:
-        return superrogue::game_object::item::Item("cap", "", Characteristics(0, 1, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::HELMET);
+        return superrogue::game_object::item::Item("cap", "good old cap", Characteristics(0, 1, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::HELMET);
     case StuffType::PANAMA:
-        return superrogue::game_object::item::Item("panama", "", Characteristics(0, 0, 0, 2, 0) * characteristics_k, superrogue::game_object::item::ItemType::HELMET);
+        return superrogue::game_object::item::Item("panama", "good old panama", Characteristics(0, 0, 0, 2, 0) * characteristics_k, superrogue::game_object::item::ItemType::HELMET);
     case StuffType::HAT:
-        return superrogue::game_object::item::Item("hat", "", Characteristics(0, 2, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::HELMET);
+        return superrogue::game_object::item::Item("hat", "good old hat", Characteristics(0, 2, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::HELMET);
     
     case StuffType::HAUBERK:
-        return superrogue::game_object::item::Item("hauberk", "", Characteristics(0, 3, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::ARMOR);
+        return superrogue::game_object::item::Item("hauberk", "good old hauberk", Characteristics(0, 3, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::ARMOR);
     case StuffType::TUNIC:
-        return superrogue::game_object::item::Item("tunic", "", Characteristics(0, 2, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::ARMOR);
+        return superrogue::game_object::item::Item("tunic", "good old tunic", Characteristics(0, 2, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::ARMOR);
     case StuffType::JACKET:
-        return superrogue::game_object::item::Item("jacket", "", Characteristics(0, 1, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::ARMOR);
+        return superrogue::game_object::item::Item("jacket", "good old jacket", Characteristics(0, 1, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::ARMOR);
     case StuffType::T_SHIRT:
-        return superrogue::game_object::item::Item("t_shirt", "", Characteristics(0, 0, 0, 2, 0) * characteristics_k, superrogue::game_object::item::ItemType::ARMOR);
+        return superrogue::game_object::item::Item("t_shirt", "good old t_shirt", Characteristics(0, 0, 0, 2, 0) * characteristics_k, superrogue::game_object::item::ItemType::ARMOR);
     
     case StuffType::SNEAKERS:
-        return superrogue::game_object::item::Item("sneakers", "", Characteristics(0, 0, 0, 2, 0) * characteristics_k, superrogue::game_object::item::ItemType::BOOTS);
+        return superrogue::game_object::item::Item("sneakers", "good old sneakers", Characteristics(0, 0, 0, 2, 0) * characteristics_k, superrogue::game_object::item::ItemType::BOOTS);
     case StuffType::SLIPPERS:
-        return superrogue::game_object::item::Item("slippers", "", Characteristics(1, 2, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::BOOTS);
+        return superrogue::game_object::item::Item("slippers", "good old slippers", Characteristics(1, 2, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::BOOTS);
     case StuffType::BOOTS:
-        return superrogue::game_object::item::Item("boots", "", Characteristics(0, 2, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::BOOTS);
+        return superrogue::game_object::item::Item("boots", "good old boots", Characteristics(0, 2, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::BOOTS);
     case StuffType::SANDALS:
-        return superrogue::game_object::item::Item("sandals", "", Characteristics(0, 1, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::BOOTS);
+        return superrogue::game_object::item::Item("sandals", "good old sandals", Characteristics(0, 1, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::BOOTS);
     
     case StuffType::SWORD:
-        return superrogue::game_object::item::Item("sword", "", Characteristics(4, -1, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
+        return superrogue::game_object::item::Item("sword", "good old sword", Characteristics(4, -1, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
     case StuffType::KATANA:
-        return superrogue::game_object::item::Item("katana", "", Characteristics(2, 0, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
+        return superrogue::game_object::item::Item("katana", "good old katana", Characteristics(2, 0, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
     case StuffType::KNIFE:
-        return superrogue::game_object::item::Item("knife", "", Characteristics(2, -1, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
+        return superrogue::game_object::item::Item("knife", "good old knife", Characteristics(2, -1, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
     case StuffType::SABER:
-        return superrogue::game_object::item::Item("saber", "", Characteristics(3, -1, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
+        return superrogue::game_object::item::Item("saber", "good old saber", Characteristics(3, -1, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
     case StuffType::BITA:
-        return superrogue::game_object::item::Item("bita", "", Characteristics(1, 0, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
+        return superrogue::game_object::item::Item("bita", "good old bita", Characteristics(1, 0, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
     case StuffType::MACE:
-        return superrogue::game_object::item::Item("mace", "", Characteristics(3, 0, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
+        return superrogue::game_object::item::Item("mace", "good old mace", Characteristics(3, 0, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
     case StuffType::SPEAR:
-        return superrogue::game_object::item::Item("spear", "", Characteristics(3, 0, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
+        return superrogue::game_object::item::Item("spear", "good old spear", Characteristics(3, 0, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
     case StuffType::NUNCHUCKS:
-        return superrogue::game_object::item::Item("nunchucks", "", Characteristics(2, -2, 0, 2, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
+        return superrogue::game_object::item::Item("nunchucks", "good old nunchucks", Characteristics(2, -2, 0, 2, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_MELEE);
     
     case StuffType::PISTOL:
-        return superrogue::game_object::item::Item("pistol", "", Characteristics(2, 0, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
+        return superrogue::game_object::item::Item("pistol", "good old pistol", Characteristics(2, 0, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
     case StuffType::GUN:
-        return superrogue::game_object::item::Item("gun", "", Characteristics(3, -1, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
+        return superrogue::game_object::item::Item("gun", "good old gun", Characteristics(3, -1, 0, 0, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
     case StuffType::RIFLE:
-        return superrogue::game_object::item::Item("rifle", "", Characteristics(3, 0, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
+        return superrogue::game_object::item::Item("rifle", "good old rifle", Characteristics(3, 0, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
     case StuffType::AUTOMATIC_RIFLE:
-        return superrogue::game_object::item::Item("automatic_rifle", "", Characteristics(4, -1, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
+        return superrogue::game_object::item::Item("automatic_rifle", "good old automatic_rifle", Characteristics(4, -1, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
     case StuffType::BOW:
-        return superrogue::game_object::item::Item("bow", "", Characteristics(1, 0, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
+        return superrogue::game_object::item::Item("bow", "good old bow", Characteristics(1, 0, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
     case StuffType::CROSSBOW:
-        return superrogue::game_object::item::Item("crossbow", "", Characteristics(2, -1, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
+        return superrogue::game_object::item::Item("crossbow", "good old crossbow", Characteristics(2, -1, 0, 1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
     case StuffType::SLING:
-        return superrogue::game_object::item::Item("sling", "", Characteristics(2, 1, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
+        return superrogue::game_object::item::Item("sling", "good old sling", Characteristics(2, 1, 0, -1, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
     case StuffType::DIRKS:
-        return superrogue::game_object::item::Item("dirks", "", Characteristics(1, -1, 0, 2, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
+        return superrogue::game_object::item::Item("dirks", "good old dirks", Characteristics(1, -1, 0, 2, 0) * characteristics_k, superrogue::game_object::item::ItemType::WEAPON_DISTANT);
     default:
         throw exception::GameObjectException("wrong StuffType");
     }
 }
 
-static const std::vector<PotionType> potions_types = {PotionType::DAMAGE_POTION, PotionType::DAMAGE_LONG_POTION, PotionType::ARMOR_POTION, PotionType::ARMOR_LONG_POTION, 
-    PotionType::HEALTH_POTION, PotionType::HEALTH_BIG_POTION, PotionType::DEXTERITY_POTION, PotionType::DEXTERITY_LONG_POTION};
+static const std::vector<PotionType> potions_types = {
+    PotionType::DAMAGE_POTION, 
+    PotionType::DAMAGE_LONG_POTION, 
+    PotionType::ARMOR_POTION, 
+    PotionType::ARMOR_LONG_POTION, 
+    PotionType::HEALTH_POTION, 
+    PotionType::HEALTH_BIG_POTION, 
+    PotionType::DEXTERITY_POTION, 
+    PotionType::DEXTERITY_LONG_POTION
+};
 
 static superrogue::game_object::item::Potion get_potion(PotionType potion_type, int characteristics_k) {
     switch (potion_type)

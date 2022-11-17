@@ -7,15 +7,15 @@
 
 namespace superrogue::inventory {
 class Inventory {
-    std::optional<superrogue::game_object::item::Item> __helmet = std::nullopt;
-    std::optional<superrogue::game_object::item::Item> __armor = std::nullopt;
-    std::optional<superrogue::game_object::item::Item> __boots = std::nullopt;
-    std::optional<superrogue::game_object::item::Item> __weapon_melee = std::nullopt;
-    std::optional<superrogue::game_object::item::Item> __weapon_distant = std::nullopt;
-    std::vector<superrogue::game_object::item::Potion> __potions = {};
+    std::optional<superrogue::game_object::item::Item> helmet = std::nullopt;
+    std::optional<superrogue::game_object::item::Item> armor = std::nullopt;
+    std::optional<superrogue::game_object::item::Item> boots = std::nullopt;
+    std::optional<superrogue::game_object::item::Item> weapon_melee = std::nullopt;
+    std::optional<superrogue::game_object::item::Item> weapon_distant = std::nullopt;
+    std::vector<superrogue::game_object::item::Potion> potions = {};
     int __potions_max;
 public:
-    Inventory(int potions_max = DEFAULT_POTIONS_MAX) noexcept;
+    Inventory(int potions_max = DEFAULT_POTIONS_MAX);
     void set_helmet(std::optional<superrogue::game_object::item::Item> helmet);
     std::optional<superrogue::game_object::item::Item> get_helmet() const noexcept;
     void set_armor(std::optional<superrogue::game_object::item::Item> armor);

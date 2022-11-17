@@ -9,7 +9,7 @@ void Enemy::step() {}
 
 void Enemy::punch() {}
 
-Enemy::Enemy(int id, string name, Characteristics characteristics, IEnemyClass enemy_class) noexcept :
+Enemy::Enemy(int id, string name, Characteristics characteristics, IEnemyClass enemy_class) :
     IEnemy(name, characteristics, enemy_class) {};
 
 bool Enemy::operator==(const Enemy& other) const noexcept {

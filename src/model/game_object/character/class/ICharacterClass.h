@@ -5,10 +5,10 @@
 
 namespace superrogue::game_object::character {
 class ICharacterClass {
-    std::string __description;
+    std::string description;
 public:
     std::string get_description() const noexcept;
-    ICharacterClass(std::string description = "") noexcept;
+    ICharacterClass(std::string description = "");
     virtual ~ICharacterClass() {}
 };
 };

@@ -6,6 +6,6 @@
 namespace superrogue::game_object::character {
 class Farsighted : public IPersonClass {
 public:
-    Farsighted(std::string description, PersonSettings settings=PersonSettings(superrogue::DEFAULT_VISIBLE_RADIUS)) noexcept;
+    Farsighted(std::string description, PersonSettings settings=PersonSettings(superrogue::DEFAULT_VISIBLE_RADIUS));
 };
 };

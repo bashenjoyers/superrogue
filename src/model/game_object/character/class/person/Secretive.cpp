@@ -4,5 +4,5 @@ using std::string;
 
 
 namespace superrogue::game_object::character {
-Secretive::Secretive(string description, PersonSettings settings) noexcept : IPersonClass(description, settings) {}   // TODO
+Secretive::Secretive(string description, PersonSettings settings) : IPersonClass(description, settings) {}   // TODO
 };

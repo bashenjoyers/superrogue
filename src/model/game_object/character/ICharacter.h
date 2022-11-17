@@ -10,7 +10,7 @@ public:
     virtual std::string get_description() const noexcept override { return ""; };
     virtual void step() {};
     virtual void punch() {};
-    ICharacter(std::string name, std::string description, Characteristics characteristics) noexcept;
+    ICharacter(std::string name, std::string description, Characteristics characteristics);
     ICharacter() {};
     virtual ~ICharacter() {}
 };

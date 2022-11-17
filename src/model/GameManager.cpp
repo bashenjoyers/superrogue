@@ -30,7 +30,7 @@ using superrogue::abstract::EnemyClass;
 
 
 namespace superrogue::game_manager {
-GameManager::GameManager(MapOptions map_options) : __map_options(map_options) {
+GameManager::GameManager(MapOptions map_options) : map_options(map_options) {
     person = generate_person();
 }
 
@@ -45,9 +45,9 @@ GameOptions GameManager::generate_game_options() noexcept {
     return options;
 }
 
-Characteristics GameManager::generate_characteristics(float characteristic_k = 1) noexcept {
-    int points = int(__level * POINTS_IN_LVL * characteristic_k);
-    int health_default = int(__level * HEALTH_LVL_K * characteristic_k);
+Characteristics GameManager::generate_characteristics(float characteristic_k = 1) const noexcept {
+    int points = int(level * POINTS_IN_LVL * characteristic_k);
+    int health_default = int(level * HEALTH_LVL_K * characteristic_k);
     int damage = int(generator::characteristic_gen(superrogue::values::generator) / PARAMETER_COUNT * points);
     int armor = int(generator::characteristic_gen(superrogue::values::generator) / PARAMETER_COUNT * points);
     int health = int(generator::characteristic_gen(superrogue::values::generator) / PARAMETER_COUNT * points);
@@ -110,9 +110,9 @@ set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
 }
 
 Map GameManager::generate_map() noexcept {  // TODO(add user level up)
-    __level++;
+    level++;
     GameOptions game_options = generate_game_options();
     set<Enemy> enemies = generate_enemies(game_options);
-    return Map(enemies, person, __map_options, __level);
+    return Map(enemies, person, map_options, level);
 }
 };

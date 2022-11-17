@@ -2,10 +2,10 @@
 
 
 namespace superrogue::exception {
-GameObjectException::GameObjectException(const std::string& message) : __message(message) {};
+GameObjectException::GameObjectException(const std::string& message) : message(message) {};
 
 const char* GameObjectException::what() const noexcept {
-    return __message.c_str();
+    return message.c_str();
 }
 
 InventoryException::InventoryException(const std::string& message) : GameObjectException(message) {};

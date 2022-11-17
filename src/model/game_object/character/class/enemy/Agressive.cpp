@@ -10,7 +10,7 @@ using superrogue::abstract::MapEntity;
 
 
 namespace superrogue::game_object::character {
-Agressive::Agressive(string description, EnemySettings settings) noexcept : IEnemyClass(description, settings) {}
+Agressive::Agressive(string description, EnemySettings settings) : IEnemyClass(description, settings) {}
 
 MapEntity Agressive::get_map_entity() const noexcept {
     if (get_settings().intellect < 0.9)

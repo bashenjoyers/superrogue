@@ -4,7 +4,7 @@
 
 namespace superrogue::exception {
 class GameObjectException : public std::exception {
-    std::string __message;
+    std::string message;
 public:
     explicit GameObjectException(const std::string& message);
 

@@ -11,7 +11,7 @@ using superrogue::abstract::MapEntity;
 
 
 namespace superrogue::game_object::character {
-Ordinary::Ordinary(string description, EnemySettings settings) noexcept : IEnemyClass(description, settings) {}
+Ordinary::Ordinary(string description, EnemySettings settings) : IEnemyClass(description, settings) {}
 
 MapEntity Ordinary::get_map_entity() const noexcept {
     if (get_settings().intellect < 0.9)

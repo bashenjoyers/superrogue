@@ -7,12 +7,12 @@
 
 namespace superrogue::game_object::character {
 class IPerson : public ICharacter {
-    IPersonClass __person_class;
+    IPersonClass person_class;
 public:
     std::string get_description() const noexcept override;
     virtual void potion(int potion_i) = 0;
     IPersonClass get_person_class() const noexcept;
-    IPerson(std::string name, superrogue::Characteristics characteristics, superrogue::game_object::character::IPersonClass person_class) noexcept;
+    IPerson(std::string name, superrogue::Characteristics characteristics, superrogue::game_object::character::IPersonClass person_class);
     IPerson() {};
     virtual ~IPerson() {}
 };
