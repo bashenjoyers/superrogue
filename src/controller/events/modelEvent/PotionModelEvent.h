@@ -11,6 +11,6 @@ public:
     PotionModelEvent(std::shared_ptr<superrogue::map::Map> map, std::shared_ptr<superrogue::controller::CursorState> cursor_state); 
 private:
     std::shared_ptr<superrogue::controller::CursorState> cursor_state;
-    void map_action() override;
+    void _execute() override;
 };
 }

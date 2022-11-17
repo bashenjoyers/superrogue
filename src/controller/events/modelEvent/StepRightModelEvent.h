@@ -9,6 +9,6 @@ class StepRightModelEvent : public ModelEvent {
 public:
     StepRightModelEvent(std::shared_ptr<superrogue::map::Map> map); 
 private:
-    void map_action() override;
+    void _execute() override;
 };
 }

@@ -14,9 +14,9 @@ public:
 
     void resync();
 
-    std::shared_ptr<CursesMapRenderer> buildMapRenderer();
-    std::shared_ptr<CursesMainMenuRenderer> buildMainMenuRenderer();
-    std::shared_ptr<CursesInventoryRenderer> buildInventoryRenderer();
+    std::shared_ptr<CursesMapRenderer> getMapRenderer();
+    std::shared_ptr<CursesMainMenuRenderer> getMainMenuRenderer();
+    std::shared_ptr<CursesInventoryRenderer> getInventoryRenderer();
     
 
 private:

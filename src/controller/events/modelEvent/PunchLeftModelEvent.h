@@ -9,6 +9,6 @@ class PunchLeftModelEvent : public ModelEvent {
 public:
     PunchLeftModelEvent(std::shared_ptr<superrogue::map::Map> map); 
 private:
-    void map_action() override;
+    void _execute() override;
 };
 }

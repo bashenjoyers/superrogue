@@ -13,7 +13,7 @@ using superrogue::exception::EventException;
 namespace superrogue::controller::event {
 PotionModelEvent::PotionModelEvent(std::shared_ptr<superrogue::map::Map> map, std::shared_ptr<superrogue::controller::CursorState> cursor_state) : ModelEvent(map), cursor_state(cursor_state) {};
 
-void PotionModelEvent::map_action() {
+void PotionModelEvent::_execute() {
     size_t cursor_res = cursor_state->getPotionsCursor();
     switch (cursor_res)
     {

@@ -18,6 +18,8 @@ class Inventory {
 
 public:
   Inventory(int potions_max = DEFAULT_POTIONS_MAX);
+  static Inventory getEmptyInventory();
+
   void set_helmet(std::optional<superrogue::game_object::item::Item> helmet);
   std::optional<superrogue::game_object::item::Item>
   get_helmet() const noexcept;

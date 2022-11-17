@@ -8,7 +8,6 @@ using std::make_shared;
 
 namespace superrogue::controller::event {
 void ModelEvent::notify() {
-    map_action();
     for (auto observer: observers) {
         shared_ptr<MapInfo> map_info = make_shared<MapInfo>(map->get_map_info());
         observer->handleEvent(map_info);

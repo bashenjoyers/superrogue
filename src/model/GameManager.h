@@ -1,3 +1,5 @@
+#pragma once
+
 #include "controller/events/IEvent.h"
 #include "model/game_object/character/Enemy.h"
 #include "model/game_object/character/Person.h"
@@ -28,6 +30,6 @@ class GameManager {
 public:
   GameManager(superrogue::map::MapOptions map_options);
   std::vector<superrogue::controller::event::IEvent> events() noexcept;
-  superrogue::map::Map generate_map() noexcept;
+  std::shared_ptr<superrogue::map::Map> generate_map() noexcept;
 };
 }; // namespace superrogue::game_manager

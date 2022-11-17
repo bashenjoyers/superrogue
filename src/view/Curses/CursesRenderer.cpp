@@ -30,7 +30,8 @@ CursesInventoryRenderer::CursesInventoryRenderer(WindowConfig conf) : CursesRend
 }
 
 void CursesInventoryRenderer::render(RenderInfo info) {
-    auto inventory = info.mapInfo->inventory;
+    auto inventory = superrogue::inventory::Inventory::getEmptyInventory();
+    if (info.mapInfo != nullptr) inventory = info.mapInfo->inventory;
 
     auto potions = inventory.get_potions();
     size_t curRow = 0;
@@ -89,23 +90,23 @@ size_t CursesInventoryRenderer::getItemRowOffset(superrogue::game_object::item::
 
     switch (type) {
         case ItemType::ARMOR : {
-            return 0;
-        } break;
-
-        case ItemType::BOOTS : {
             return 1;
         } break;
 
-        case ItemType::HELMET : {
+        case ItemType::BOOTS : {
             return 2;
         } break;
 
+        case ItemType::HELMET : {
+            return 0;
+        } break;
+
         case ItemType::WEAPON_DISTANT : {
-            return 3;
+            return 4;
         } break;
 
         case ItemType::WEAPON_MELEE : {
-            return 4;
+            return 3;
         } break;
 
         default : {

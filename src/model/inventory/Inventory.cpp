@@ -12,6 +12,10 @@ using superrogue::game_object::item::Potion;
 namespace superrogue::inventory {
 Inventory::Inventory(int potions_max) : potions_max(potions_max) {}
 
+Inventory Inventory::getEmptyInventory() {
+  return Inventory();
+}
+
 void Inventory::set_helmet(optional<Item> helmet) {
   if (!helmet.has_value() && helmet.value().get_item_type() != ItemType::HELMET)
     throw InventoryException("wrong set item helmet");

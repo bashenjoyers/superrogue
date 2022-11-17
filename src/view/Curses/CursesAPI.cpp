@@ -76,7 +76,7 @@ NcursesWindow::NcursesWindow(WINDOW *_win, size_t h, size_t w, size_t x, size_t 
 
 void NcursesWindow::drawBox() {
     box(win, 0, 0);
-    mvwprintw(win, 0, 1, "%s: %d x %d", "window", h, w);
+    mvwprintw(win, 0, 1, "%s: %ld x %ld", "window", h, w);
     wrefresh(win);
 }
 
@@ -96,7 +96,7 @@ NcursesWindow::NcursesWIndowPtr NcursesAPI::getWindow(size_t h, size_t w, size_t
     WINDOW *newWin = newwin(h, w, y, x);
     refresh();
     box(newWin, 0, 0);
-    mvwprintw(newWin, 0, 1, "%s: %d x %d", "window", h, w);
+    mvwprintw(newWin, 0, 1, "%s: %ld x %ld", "window", h, w);
     wrefresh(newWin);
 
     return std::shared_ptr<NcursesWindow>(new NcursesWindow(newWin, h, w, x, y));

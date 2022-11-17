@@ -22,19 +22,19 @@ namespace superrogue::view
             inventoryRenderer->resetWindow(getInventoryWindowConfig());
     }
     
-    std::shared_ptr<CursesMapRenderer> CursesFactory::buildMapRenderer()
+    std::shared_ptr<CursesMapRenderer> CursesFactory::getMapRenderer()
     {
-        mapRenderer = std::make_shared<CursesMapRenderer>(getMapWindowConfig());
+        if (mapRenderer == nullptr) mapRenderer = std::make_shared<CursesMapRenderer>(getMapWindowConfig());
         return mapRenderer;
     }
     
-    std::shared_ptr<CursesMainMenuRenderer> CursesFactory::buildMainMenuRenderer() {
+    std::shared_ptr<CursesMainMenuRenderer> CursesFactory::getMainMenuRenderer() {
         
     }
     
-    std::shared_ptr<CursesInventoryRenderer> CursesFactory::buildInventoryRenderer()
+    std::shared_ptr<CursesInventoryRenderer> CursesFactory::getInventoryRenderer()
     {
-        inventoryRenderer = std::make_shared<CursesInventoryRenderer>(getInventoryWindowConfig());
+        if (inventoryRenderer == nullptr) inventoryRenderer = std::make_shared<CursesInventoryRenderer>(getInventoryWindowConfig());
         return inventoryRenderer;
     }
     

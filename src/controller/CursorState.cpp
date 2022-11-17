@@ -14,6 +14,7 @@ namespace superrogue::controller {
     }
 
     void CursorState::decrementPotionsCursor() {
+        if (potionsCursor == 0) potionsCursor = maxPotionsNumber;
         potionsCursor = (potionsCursor - 1) % maxPotionsNumber;
     }
 
@@ -25,7 +26,7 @@ namespace superrogue::controller {
 
     void CursorState::decrementEquipmentCursor() {
         equipmentCursor = static_cast<game_object::item::ItemType>(
-                ((int) equipmentCursor - 1) % maxEquipmentNumber
+                (maxEquipmentNumber + (((int) equipmentCursor - 1) % maxEquipmentNumber)) % maxEquipmentNumber
         );
     }
 }

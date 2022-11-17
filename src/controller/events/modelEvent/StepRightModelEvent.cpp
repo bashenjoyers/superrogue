@@ -10,7 +10,7 @@ using superrogue::game_object::character::CharacterAction;;
 namespace superrogue::controller::event {
 StepRightModelEvent::StepRightModelEvent(std::shared_ptr<superrogue::map::Map> map) : ModelEvent(map) {};
 
-void StepRightModelEvent::map_action() {
+void StepRightModelEvent::_execute() {
     map->step(CharacterAction::STEP_RIGHT);
 }
 };

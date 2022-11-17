@@ -10,7 +10,7 @@ using superrogue::game_object::character::CharacterAction;;
 namespace superrogue::controller::event {
 WaitModelEvent::WaitModelEvent(std::shared_ptr<superrogue::map::Map> map) : ModelEvent(map) {};
 
-void WaitModelEvent::map_action() {
+void WaitModelEvent::_execute() {
     map->step(CharacterAction::WAIT);
 }
 };

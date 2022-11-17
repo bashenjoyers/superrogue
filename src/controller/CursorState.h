@@ -18,9 +18,8 @@ namespace superrogue::controller {
     private:
         size_t potionsCursor = 0;
         game_object::item::ItemType equipmentCursor = game_object::item::ItemType::HELMET;
-        size_t maxPotionsNumber = 3;
-        int maxEquipmentNumber = static_cast<int>(game_object::item::ItemType::WEAPON_DISTANT);
-
+        size_t maxPotionsNumber = 3 + 1;
+        int maxEquipmentNumber = static_cast<int>(game_object::item::ItemType::WEAPON_DISTANT) + 1;
     };
 }
 

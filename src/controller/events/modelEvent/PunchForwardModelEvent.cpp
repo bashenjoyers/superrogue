@@ -10,7 +10,7 @@ using superrogue::game_object::character::CharacterAction;;
 namespace superrogue::controller::event {
 PunchForwardModelEvent::PunchForwardModelEvent(std::shared_ptr<superrogue::map::Map> map) : ModelEvent(map) {};
 
-void PunchForwardModelEvent::map_action() {
+void PunchForwardModelEvent::_execute() {
     map->step(CharacterAction::PUNCH_FORWARD);
 }
 };

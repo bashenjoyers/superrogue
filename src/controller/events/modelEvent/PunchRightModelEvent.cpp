@@ -10,7 +10,7 @@ using superrogue::game_object::character::CharacterAction;;
 namespace superrogue::controller::event {
 PunchRightModelEvent::PunchRightModelEvent(std::shared_ptr<superrogue::map::Map> map) : ModelEvent(map) {};
 
-void PunchRightModelEvent::map_action() {
+void PunchRightModelEvent::_execute() {
     map->step(CharacterAction::PUNCH_RIGHT);
 }
 };

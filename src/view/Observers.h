@@ -16,7 +16,7 @@ public:
 
 class UIObserver {
 public:
-    virtual void handleEvent(size_t potionsCursor, game_object::item::ItemType equipmentCursor) = 0;
+    virtual void handleEvent(size_t potionsCur, game_object::item::ItemType equipmentCur) = 0;
 };
 
 } // namespace superrogue

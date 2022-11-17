@@ -10,7 +10,7 @@ using superrogue::game_object::character::CharacterAction;;
 namespace superrogue::controller::event {
 ChangeItemModelEvent::ChangeItemModelEvent(std::shared_ptr<superrogue::map::Map> map) : ModelEvent(map) {};
 
-void ChangeItemModelEvent::map_action() {
+void ChangeItemModelEvent::_execute() {
     map->step(CharacterAction::CHANGE_ITEM);
 }
 };
