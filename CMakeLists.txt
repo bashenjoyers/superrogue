@@ -82,6 +82,6 @@ add_executable(
         src/view/Curses/CursesFactory.cpp
         src/view/Curses/CursesAPI.cpp
         src/view/Converters/CharDataConverter.cpp
-)
+        src/controller/EventProvider.cpp src/controller/EventProvider.h src/controller/GameController.cpp src/controller/UserKeysListener.cpp)
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
 

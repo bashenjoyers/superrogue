@@ -112,6 +112,11 @@ size_t NcursesAPI::getYsize()
     return getmaxy(stdscr);
 }
 
+int NcursesAPI::getKey()
+{
+    return getch();
+}
+
 NcursesAPI::NcursesAPI() {
     initscr();
 

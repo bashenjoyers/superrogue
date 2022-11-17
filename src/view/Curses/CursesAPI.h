@@ -62,6 +62,8 @@ public:
     size_t getXsize();
     size_t getYsize();
 
+    int getKey();
+
 private:
     NcursesAPI();
 

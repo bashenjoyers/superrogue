@@ -1,5 +1,10 @@
-#pragma once
 
 namespace superrogue::controller::event {
-class IEvent {}; // TODO(controller)
-};               // namespace superrogue::controller::event
+
+    class IEvent {
+    public:
+        virtual ~IEvent() {}
+
+        virtual void execute() = 0;
+    };
+}
