@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ModelObserver.h"
+#include "Observers.h"
 #include "model/game_object/item/stuff/Item.h"
 
 namespace superrogue::view {

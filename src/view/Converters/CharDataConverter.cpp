@@ -9,8 +9,8 @@ namespace superrogue::view
 std::vector<std::vector<char>> CharConverter::convertMap(std::shared_ptr<map::Map> map)
 {
     srand(time(NULL));
-    size_t x = map->map.size();
-    size_t y = map->map[0].size();
+    size_t x = 3;//map->map.size();
+    size_t y = 4;//map->map[0].size();
 
     std::vector<std::vector<char>> ans(x, std::vector<char>(y, '.'));
     std::transform(ans.begin(), ans.end(), ans.begin(), [](auto row) {

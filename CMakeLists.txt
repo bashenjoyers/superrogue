@@ -82,6 +82,18 @@ add_executable(
         src/view/Curses/CursesFactory.cpp
         src/view/Curses/CursesAPI.cpp
         src/view/Converters/CharDataConverter.cpp
-        src/controller/EventProvider.cpp src/controller/EventProvider.h src/controller/GameController.cpp src/controller/UserKeysListener.cpp src/controller/events/uiEvent/MoveLeftUIEvent.cpp src/controller/events/uiEvent/MoveLeftUIEvent.h src/controller/events/uiEvent/MoveRightUIEvent.cpp src/controller/events/uiEvent/MoveRightUIEvent.h src/controller/events/uiEvent/ActionUIEvent.cpp src/controller/events/uiEvent/ActionUIEvent.h src/controller/events/uiEvent/MoveUpUIEvent.cpp src/controller/events/uiEvent/MoveUpUIEvent.h src/controller/events/uiEvent/MoveDownUIEvent.cpp src/controller/events/uiEvent/MoveDownUIEvent.h)
+        src/controller/EventProvider.cpp
+        src/controller/EventProvider.h
+        src/controller/GameController.cpp
+        src/controller/UserKeysListener.cpp
+        src/controller/events/uiEvent/MoveLeftUIEvent.cpp
+        src/controller/events/uiEvent/MoveLeftUIEvent.h
+        src/controller/events/uiEvent/MoveRightUIEvent.cpp
+        src/controller/events/uiEvent/MoveRightUIEvent.h src/controller/events/uiEvent/ActionUIEvent.cpp
+        src/controller/events/uiEvent/ActionUIEvent.h src/controller/events/uiEvent/MoveUpUIEvent.cpp src/controller/events/uiEvent/MoveUpUIEvent.h
+        src/controller/events/uiEvent/MoveDownUIEvent.cpp src/controller/events/uiEvent/MoveDownUIEvent.h
+    src/controller/events/UIEvent.cpp
+    src/controller/events/IEvent.cpp
+)
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
 

@@ -14,4 +14,9 @@ public:
     virtual void handleEvent(std::shared_ptr<map::Map> map, std::shared_ptr<inventory::Inventory> inv) = 0;
 };
 
+class UIObserver {
+public:
+    virtual void handleEvent(size_t potionsCursor, game_object::item::ItemType equipmentCursor) = 0;
+};
+
 } // namespace superrogue

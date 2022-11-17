@@ -1,10 +1,21 @@
+#pragma once
+
+#include <vector>
+#include <memory>
+
+#include "view/Observers.h"
 
 namespace superrogue::controller::event {
 
-    class IEvent {
-    public:
-        virtual ~IEvent() {}
+class IEvent {
+public:
+    virtual ~IEvent() {}
 
-        virtual void execute() = 0;
-    };
+    void execute();
+
+protected:
+    virtual void _execute() = 0;
+    virtual void notify() = 0;
+};
+
 }
