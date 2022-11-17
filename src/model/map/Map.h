@@ -40,7 +40,6 @@ struct EnemyWithPosition : superrogue::game_object::character::Enemy,
 struct MapOptions {
   int height;
   int width;
-  MapOptions(int height, int width) : height(height), width(width){};
 };
 
 struct MapInfo {
