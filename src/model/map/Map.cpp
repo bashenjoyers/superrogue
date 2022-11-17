@@ -387,8 +387,16 @@ bool Map::action_person(CharacterAction action) {
                          person_with_position.get_full_characteristics());
     correct = true;
     break;
-  case CharacterAction::POTION:
-    person_with_position.potion(0); // FIXME(get potion_i)
+  case CharacterAction::POTION_1:
+    person_with_position.potion(0);
+    correct = true;
+    break;
+  case CharacterAction::POTION_2:
+    person_with_position.potion(1);
+    correct = true;
+    break;
+  case CharacterAction::POTION_3:
+    person_with_position.potion(2);
     correct = true;
     break;
   case CharacterAction::CHANGE_ITEM:
@@ -446,7 +454,11 @@ void Map::action_enemy(
     punch_cells_in_order(positions, enemy_with_position.get_characteristics());
     correct = true;
     break;
-  case CharacterAction::POTION:
+  case CharacterAction::POTION_1:
+    break;
+  case CharacterAction::POTION_2:
+    break;
+  case CharacterAction::POTION_3:
     break;
   case CharacterAction::CHANGE_ITEM:
     break;

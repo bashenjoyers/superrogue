@@ -11,7 +11,9 @@ enum class CharacterAction {
   PUNCH_RIGHT,
   PUNCH_BACK,
   PUNCH_LEFT,
-  POTION,
+  POTION_1,
+  POTION_2,
+  POTION_3,
   CHANGE_ITEM,
   WAIT,
 };
@@ -34,8 +36,12 @@ inline const std::string to_string(CharacterAction action) {
     return "punch back";
   case CharacterAction::PUNCH_LEFT:
     return "punch left";
-  case CharacterAction::POTION:
-    return "potion";
+  case CharacterAction::POTION_1:
+    return "potion1";
+  case CharacterAction::POTION_2:
+    return "potion2";
+  case CharacterAction::POTION_3:
+    return "potion3";
   case CharacterAction::CHANGE_ITEM:
     return "change item";
   case CharacterAction::WAIT:

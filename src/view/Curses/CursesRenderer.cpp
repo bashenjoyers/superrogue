@@ -61,7 +61,7 @@ void CursesInventoryRenderer::resetWindow(WindowConfig newConf) {
     potionsWin->moveTo(conf.xPos + 1, conf.yPos + 1 + eqTypeCnt + 2);
 }
 
-void CursesInventoryRenderer::renderPotion(Potion p, size_t row, bool selected) {
+void CursesInventoryRenderer::renderPotion(game_object::item::Potion p, size_t row, bool selected) {
     size_t padding = 1;         //todo
     size_t symNamePadding = 3;
 

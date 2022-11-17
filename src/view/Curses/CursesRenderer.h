@@ -37,7 +37,7 @@ public:
     virtual void resetWindow(WindowConfig newConf) override;
     
 private:
-    void renderPotion(Potion p, size_t row, bool selected);
+    void renderPotion(game_object::item::Potion p, size_t row, bool selected);
     void renderItem(std::optional<superrogue::game_object::item::Item> item, game_object::item::ItemType type, bool selected);
     size_t getItemRowOffset(superrogue::game_object::item::ItemType type);
 
