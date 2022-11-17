@@ -1,0 +1,8 @@
+//
+// Created by Dmitrii Mandelshtam on 17.11.2022.
+//
+
+#ifndef SUPERROGUE_ACTIONUIEVENT_H
+#define SUPERROGUE_ACTIONUIEVENT_H
+
+#endif //SUPERROGUE_ACTIONUIEVENT_H
