@@ -1,8 +1,12 @@
 #include "controller/events/UIEvent.h"
 
+superrogue::controller::event::UIEvent::UIEvent(std::shared_ptr<CursorState> cursorState) {
+    this->cursorState = std::move(cursorState);
+}
+
 void superrogue::controller::event::UIEvent::notify() {
     for (auto observer: observers) {
-        //observer->handleEvent();
+        observer->handleEvent(cursorState->getPotionsCursor(), cursorState->getEquipmentCursor());
     }
 }
 

@@ -1,8 +1,5 @@
-//
-// Created by Dmitrii Mandelshtam on 17.11.2022.
-//
+#pragma once
 
-#ifndef SUPERROGUE_ACTIONUIEVENT_H
-#define SUPERROGUE_ACTIONUIEVENT_H
+class ActionUIEvent {
 
-#endif //SUPERROGUE_ACTIONUIEVENT_H
+};

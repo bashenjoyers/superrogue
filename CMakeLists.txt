@@ -86,14 +86,11 @@ add_executable(
         src/controller/EventProvider.h
         src/controller/GameController.cpp
         src/controller/UserKeysListener.cpp
-        src/controller/events/uiEvent/MoveLeftUIEvent.cpp
-        src/controller/events/uiEvent/MoveLeftUIEvent.h
-        src/controller/events/uiEvent/MoveRightUIEvent.cpp
-        src/controller/events/uiEvent/MoveRightUIEvent.h src/controller/events/uiEvent/ActionUIEvent.cpp
-        src/controller/events/uiEvent/ActionUIEvent.h src/controller/events/uiEvent/MoveUpUIEvent.cpp src/controller/events/uiEvent/MoveUpUIEvent.h
-        src/controller/events/uiEvent/MoveDownUIEvent.cpp src/controller/events/uiEvent/MoveDownUIEvent.h
+        src/controller/events/uiEvent/ActionUIEvent.cpp
+        src/controller/events/uiEvent/ActionUIEvent.h src/controller/events/uiEvent/MoveEquipmentUpEvent.cpp src/controller/events/uiEvent/MoveEquipmentUpEvent.h
+        src/controller/events/uiEvent/MoveEquipmentDownEvent.cpp src/controller/events/uiEvent/MoveEquipmentDownEvent.h
     src/controller/events/UIEvent.cpp
     src/controller/events/IEvent.cpp
-        src/controller/CursorState.cpp src/controller/CursorState.h)
+        src/controller/CursorState.cpp src/controller/CursorState.h src/controller/events/uiEvent/MovePotionDownEvent.cpp src/controller/events/uiEvent/MovePotionDownEvent.h src/controller/events/uiEvent/MovePotionUpEvent.cpp src/controller/events/uiEvent/MovePotionUpEvent.h)
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
 
