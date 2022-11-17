@@ -6,8 +6,7 @@
 namespace superrogue::view {
 
 struct RenderInfo {
-    std::shared_ptr<map::Map> map;
-    std::shared_ptr<inventory::Inventory> inv;
+    std::shared_ptr<map::MapInfo> mapInfo;
     size_t potionsCursor = 0;
     game_object::item::ItemType equipmentCursor = game_object::item::ItemType::ARMOR;
 };
@@ -25,7 +24,7 @@ public:
     virtual void render(RenderInfo info) = 0;
     virtual void resetWindow(WindowConfig) = 0;
 
-    void handleEvent(std::shared_ptr<map::Map> map, std::shared_ptr<inventory::Inventory> inv) override;
+    void handleEvent(std::shared_ptr<map::MapInfo> map) override;
 
 protected:
     WindowConfig conf;

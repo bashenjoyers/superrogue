@@ -13,7 +13,7 @@ CursesMapRenderer::CursesMapRenderer(WindowConfig conf) : CursesRenderer(conf) {
 
 void CursesMapRenderer::render(RenderInfo info) {
     win->clearViewport();
-    std::vector<std::vector<char>> renderMap = conv.convertMap(info.map);
+    std::vector<std::vector<char>> renderMap = conv.convertMap(info.mapInfo);
 
     for (size_t y = 0; y < renderMap[0].size(); y++) {
         for (size_t x = 0; x < renderMap.size(); x++) {
@@ -30,10 +30,9 @@ CursesInventoryRenderer::CursesInventoryRenderer(WindowConfig conf) : CursesRend
 }
 
 void CursesInventoryRenderer::render(RenderInfo info) {
-    auto inventory = info.inv;
-    if (inventory == nullptr) return;
+    auto inventory = info.mapInfo->inventory;
 
-    auto potions = inventory->get_potions();
+    auto potions = inventory.get_potions();
     size_t curRow = 0;
 
     for (auto potion: potions) {
@@ -43,11 +42,11 @@ void CursesInventoryRenderer::render(RenderInfo info) {
 
     {
         using superrogue::game_object::item::ItemType;
-        renderItem(inventory->get_armor(), ItemType::ARMOR, info.equipmentCursor == ItemType::ARMOR);
-        renderItem(inventory->get_boots(), ItemType::BOOTS, info.equipmentCursor == ItemType::BOOTS);
-        renderItem(inventory->get_helmet(), ItemType::HELMET, info.equipmentCursor == ItemType::HELMET);
-        renderItem(inventory->get_weapon_distant(), ItemType::WEAPON_DISTANT, info.equipmentCursor == ItemType::WEAPON_DISTANT);
-        renderItem(inventory->get_weapon_melee(), ItemType::WEAPON_MELEE, info.equipmentCursor == ItemType::WEAPON_MELEE);
+        renderItem(inventory.get_armor(), ItemType::ARMOR, info.equipmentCursor == ItemType::ARMOR);
+        renderItem(inventory.get_boots(), ItemType::BOOTS, info.equipmentCursor == ItemType::BOOTS);
+        renderItem(inventory.get_helmet(), ItemType::HELMET, info.equipmentCursor == ItemType::HELMET);
+        renderItem(inventory.get_weapon_distant(), ItemType::WEAPON_DISTANT, info.equipmentCursor == ItemType::WEAPON_DISTANT);
+        renderItem(inventory.get_weapon_melee(), ItemType::WEAPON_MELEE, info.equipmentCursor == ItemType::WEAPON_MELEE);
     }
 }
 

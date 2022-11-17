@@ -6,7 +6,7 @@ namespace superrogue::view
 {
 
 //TODO FIX
-std::vector<std::vector<char>> CharConverter::convertMap(std::shared_ptr<map::Map> map)
+std::vector<std::vector<char>> CharConverter::convertMap(std::shared_ptr<map::MapInfo> mapInfo)
 {
     srand(time(NULL));
     size_t x = 3;//map->map.size();

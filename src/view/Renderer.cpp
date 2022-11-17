@@ -3,10 +3,9 @@
 
 namespace superrogue::view {
 
-void Renderer::handleEvent(std::shared_ptr<map::Map> map, std::shared_ptr<inventory::Inventory> inv) {
+void Renderer::handleEvent(std::shared_ptr<map::MapInfo> mapInfo) {
     RenderInfo info = {
-        .map = map,
-        .inv = inv
+        .mapInfo = mapInfo
     };
     render(info);
 }

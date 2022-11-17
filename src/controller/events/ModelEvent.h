@@ -11,7 +11,7 @@ public:
     ModelEvent(std::shared_ptr<superrogue::map::Map> map);
 protected:
     std::shared_ptr<superrogue::map::Map> map;
-    virtual void map_action();
+    virtual void map_action() = 0;
 private:
     void notify() override;
     std::vector<std::shared_ptr<view::ModelObserver>> observers;

@@ -11,7 +11,7 @@ namespace superrogue::view {
 // TODO in common???
 class ModelObserver {
 public:
-    virtual void handleEvent(std::shared_ptr<map::Map> map, std::shared_ptr<inventory::Inventory> inv) = 0;
+    virtual void handleEvent(std::shared_ptr<map::MapInfo> mapInfo) = 0;
 };
 
 class UIObserver {

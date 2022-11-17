@@ -1,6 +1,8 @@
 #include "model/map/Map.h"
 #include "model/values.h"
 
+#include <memory>
+
 using std::max;
 using std::optional;
 using std::set;

@@ -13,7 +13,7 @@ namespace superrogue::view {
 
 class CharConverter {
 public:
-    std::vector<std::vector<char>> convertMap(std::shared_ptr<map::Map> map);
+    std::vector<std::vector<char>> convertMap(std::shared_ptr<map::MapInfo> mapInfo);
     char convertItem(game_object::item::ItemType item);
     char convertPotion();
     char convertVoidItem();
