@@ -1,6 +1,3 @@
 #pragma once
 
-
-namespace superrogue {
-
-};
+namespace superrogue {};

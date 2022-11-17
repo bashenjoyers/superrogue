@@ -1,6 +1,5 @@
-#include "model/game_object/character/class/enemy/Ordinary.h"
+#include "model/game_object/character/class/enemy/Indifferent.h"
 #include "model/values.h"
-#include <vector>
 
 using std::string;
 using std::vector;
@@ -10,17 +9,19 @@ using superrogue::abstract::Position;
 using superrogue::game_object::character::CharacterAction;
 
 namespace superrogue::game_object::character {
-Ordinary::Ordinary(string description, EnemySettings settings)
+Indifferent::Indifferent(string description, EnemySettings settings)
     : IEnemyClass(description, settings) {}
 
-MapEntity Ordinary::get_map_entity() const noexcept {
+void Indifferent::disturb() noexcept { disturbed = true; }
+
+MapEntity Indifferent::get_map_entity() const noexcept {
   if (get_settings().intellect < 0.9)
-    return MapEntity::ENEMY_ORDINARY;
+    return MapEntity::ENEMY_INDIFFERENT;
   return MapEntity::ENEMY;
 }
 
-CharacterAction Ordinary::strategy(vector<MapEntityWithPosition> &cells,
-                                   Position &pos) noexcept {
+CharacterAction Indifferent::strategy(vector<MapEntityWithPosition> &cells,
+                                      Position &pos) noexcept {
   Position *person_pos = nullptr;
   vector<CharacterAction> possible_actions = {CharacterAction::WAIT};
   for (MapEntityWithPosition cell : cells) {
@@ -41,6 +42,11 @@ CharacterAction Ordinary::strategy(vector<MapEntityWithPosition> &cells,
         possible_actions.push_back(CharacterAction::STEP_BACK);
       }
     }
+  }
+  if (!disturbed) {
+    std::uniform_int_distribution<int> position_gen(0, possible_actions.size() -
+                                                           1);
+    return possible_actions[position_gen(superrogue::values::generator)];
   }
   if (person_pos == nullptr) {
     if (get_settings().intellect > 0.5) {

@@ -1,25 +1,25 @@
+#include "model/game_object/item/potions/Potion.h"
+#include "exceptions/exceptions.h"
+#include "model/const.h"
 #include <iostream>
 #include <string>
-#include "model/game_object/item/potions/Potion.h"
-#include "model/const.h"
-#include "exceptions/exceptions.h"
 
 using superrogue::exception::GameObjectException;
 
-
 namespace superrogue::game_object::item {
-Potion::Potion(std::string name, std::string description, Characteristics characteristics, int work_time = DEFAULT_POTION_WORK_TIME) : 
-    IItem(name, description, characteristics), __work_time(work_time) {
-        if (work_time < 0) {
-            throw GameObjectException(std::string("word_time should be more than 0"));
-        }
-    }
+Potion::Potion(std::string name, std::string description,
+               Characteristics characteristics,
+               int work_time = DEFAULT_POTION_WORK_TIME)
+    : IItem(name, description, characteristics), work_time(work_time) {
+  if (work_time < 0) {
+    throw GameObjectException(std::string("word_time should be more than 0"));
+  }
+}
 
 void Potion::step() noexcept {
-    if (__work_time > 0) __work_time--;
+  if (work_time > 0)
+    work_time--;
 }
 
-bool Potion::is_work() const noexcept {
-    return __work_time != 0;
-}
-};
+bool Potion::is_work() const noexcept { return work_time != 0; }
+}; // namespace superrogue::game_object::item

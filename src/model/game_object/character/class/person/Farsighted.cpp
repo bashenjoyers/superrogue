@@ -1,8 +1,8 @@
-#include "model/game_object/character/class/person/Lucky.h"
+#include "model/game_object/character/class/person/Farsighted.h"
 
 using std::string;
 
 namespace superrogue::game_object::character {
-Lucky::Lucky(string description, PersonSettings settings)
+Farsighted::Farsighted(string description, PersonSettings settings)
     : IPersonClass(description, settings) {}
 }; // namespace superrogue::game_object::character

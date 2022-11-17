@@ -1,6 +1,5 @@
-#include "model/game_object/character/class/enemy/Ordinary.h"
+#include "model/game_object/character/class/enemy/Agressive.h"
 #include "model/values.h"
-#include <vector>
 
 using std::string;
 using std::vector;
@@ -10,22 +9,31 @@ using superrogue::abstract::Position;
 using superrogue::game_object::character::CharacterAction;
 
 namespace superrogue::game_object::character {
-Ordinary::Ordinary(string description, EnemySettings settings)
+Agressive::Agressive(string description, EnemySettings settings)
     : IEnemyClass(description, settings) {}
 
-MapEntity Ordinary::get_map_entity() const noexcept {
+MapEntity Agressive::get_map_entity() const noexcept {
   if (get_settings().intellect < 0.9)
-    return MapEntity::ENEMY_ORDINARY;
+    return MapEntity::ENEMY_AGRESSIVE;
   return MapEntity::ENEMY;
 }
 
-CharacterAction Ordinary::strategy(vector<MapEntityWithPosition> &cells,
-                                   Position &pos) noexcept {
-  Position *person_pos = nullptr;
+CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
+                                    Position &pos) noexcept {
+  bool person_was = false;
+  Position *anybody_pos = nullptr;
   vector<CharacterAction> possible_actions = {CharacterAction::WAIT};
   for (MapEntityWithPosition cell : cells) {
-    if (cell.map_entity == MapEntity::PERSON) {
-      person_pos = &cell.pos;
+    if (!person_was && cell.map_entity == MapEntity::PERSON ||
+        cell.map_entity == MapEntity::ENEMY ||
+        cell.map_entity == MapEntity::ENEMY_AGRESSIVE ||
+        cell.map_entity == MapEntity::ENEMY_FLYING ||
+        cell.map_entity == MapEntity::ENEMY_INDIFFERENT ||
+        cell.map_entity == MapEntity::ENEMY_ORDINARY ||
+        cell.map_entity == MapEntity::ENEMY_TRAVELER) {
+      if (cell.map_entity == MapEntity::PERSON)
+        person_was = true;
+      anybody_pos = &cell.pos;
       continue;
     }
     if (cell.pos.x == pos.x) {
@@ -42,7 +50,7 @@ CharacterAction Ordinary::strategy(vector<MapEntityWithPosition> &cells,
       }
     }
   }
-  if (person_pos == nullptr) {
+  if (anybody_pos == nullptr) {
     if (get_settings().intellect > 0.5) {
       int dx = last_character_position.x - pos.x;
       int dy = last_character_position.y - pos.y;
@@ -52,9 +60,9 @@ CharacterAction Ordinary::strategy(vector<MapEntityWithPosition> &cells,
                                                            1);
     return possible_actions[position_gen(superrogue::values::generator)];
   }
-  last_character_position = *person_pos;
-  int dx = person_pos->x - pos.x;
-  int dy = person_pos->y - pos.y;
+  last_character_position = *anybody_pos;
+  int dx = anybody_pos->x - pos.x;
+  int dy = anybody_pos->y - pos.y;
   return default_fight_behavior(dx, dy, possible_actions);
 }
 }; // namespace superrogue::game_object::character
