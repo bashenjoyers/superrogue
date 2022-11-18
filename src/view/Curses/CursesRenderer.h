@@ -3,7 +3,7 @@
 #include "../Renderer.h"
 #include "../Converters/CharDataConverter.h"
 
-#include "CursesAPI.h"
+#include "common/Ncurses/CursesAPI.h"
 
 #include <optional>
 

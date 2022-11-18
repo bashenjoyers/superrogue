@@ -18,9 +18,7 @@ add_executable(
     src/exceptions/exceptions.h
     src/controller/CursorState.cpp
     src/controller/CursorState.h
-    src/controller/UserKeysListener.h
     src/controller/EventProvider.cpp
-    src/controller/UserKeysListener.cpp
     src/controller/EventProvider.h
     src/controller/GameController.cpp
     src/controller/GameController.h
@@ -126,9 +124,8 @@ add_executable(
     src/view/Renderer.h
     src/view/const.h
     src/view/Renderer.cpp
-    src/view/Curses/CursesAPI.cpp
+    src/common/Ncurses/CursesAPI.cpp
     src/view/Curses/CursesRenderer.cpp
-    src/view/Curses/CursesAPI.h
     src/view/Curses/CursesFactory.cpp
     src/view/Curses/CursesRenderer.h
     src/view/Curses/CursesFactory.h

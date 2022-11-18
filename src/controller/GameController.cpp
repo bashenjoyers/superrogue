@@ -2,20 +2,14 @@
 
 namespace superrogue::controller {
 
-GameController::GameController(std::shared_ptr<superrogue::map::Map> map) : ncursesApi(Ncurses::NcursesAPI::getInstance()),
-                                                                            cursorState(std::make_shared<CursorState>()) {
-    eventProvider = std::make_shared<EventProvider>(cursorState, map);
-}
+GameController::GameController(std::unique_ptr<EventProvider> provider) : ncursesApi(Ncurses::NcursesAPI::getInstance()),
+                                                                          eventProvider(std::move(provider)) {}
 
 
 void GameController::interact() {
     int userKey = ncursesApi->getKey();
     std::shared_ptr<IEvent> event = eventProvider->getEventByKey(userKey);
     event->execute();
-}
-
-std::shared_ptr<CursorState> GameController::getCursorState() {
-    return cursorState;
 }
 
 void GameController::addUIObserver(std::shared_ptr<superrogue::view::UIObserver> obs) {
