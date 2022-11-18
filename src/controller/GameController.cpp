@@ -2,7 +2,7 @@
 
 namespace superrogue::controller {
 
-GameController::GameController(std::shared_ptr<superrogue::map::Map> map) : ncursesApi(Ncurses::NcursesAPI::getInstance()),
+GameController::GameController(std::shared_ptr<superrogue::map::Map*> map) : ncursesApi(Ncurses::NcursesAPI::getInstance()),
                                                                             cursorState(std::make_shared<CursorState>()) {
     eventProvider = std::make_shared<EventProvider>(cursorState, map);
 }

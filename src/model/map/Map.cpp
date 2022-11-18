@@ -1,8 +1,6 @@
 #include "model/map/Map.h"
 #include "model/values.h"
 
-#include <memory>
-
 using std::max;
 using std::optional;
 using std::set;
@@ -25,7 +23,16 @@ using superrogue::game_object::item::ItemType;
 using superrogue::game_object::item::Potion;
 using superrogue::map::PersonWithPosition;
 
+
 namespace superrogue::map {
+void PersonWithPosition::set_position(Position pos) {
+  this->pos = pos;
+};
+
+void EnemyWithPosition::set_position(Position pos) {
+  this->pos = pos;
+};
+
 MapInfo::MapInfo(vector<MapEntityWithPosition> map_positions,
                  PersonWithPosition person)
     : map_positions(map_positions) {
@@ -43,31 +50,49 @@ Map::Map(set<Enemy> enemies, Person person, MapOptions map_options, int level)
   for (Enemy enemy : enemies) {
     enemies_with_positions.insert(EnemyWithPosition(enemy));
   }
-  generate_map_and_door(); // create map and door
-  set_positions();         // set person and enemies positions, enemies areas
+  generate_map_and_set_positions(); // create map and door, set person and enemies positions, enemies areas
   game_status = GameStatus::IN_PROGRESS;
 }
 
 GameStatus Map::get_game_status() const noexcept { return game_status; }
 
-void Map::set_positions() const noexcept {
-  // TODO
-}
-
-void Map::generate_map_and_door() const noexcept {
-  // TODO
+void Map::generate_map_and_set_positions() const noexcept {
+  // *map = std::vector(map_options.height, std::vector(map_options.width, MapEntity::FLOOR));
+  // for (int i = 5; i < map_options.height-5; i++) {
+  //   for (int j = 10; j < map_options.width-10; j+=5) {
+  //     map->at(i).at(j) = MapEntity::WALL;
+  //   }
+  // }
+  // map->at(0).at(5) = MapEntity::DOOR;
+  // // person_with_position.set_position(Position(3, 12));
+  // int i = 10, j = 15;
+  // for (auto enemy : enemies_with_positions) {
+  //   enemy.set_position(Position(i, j));
+  //   map->at(i).at(j) = enemy.get_enemy_class().get_map_entity();
+  //   j += 10;
+  // }
 }
 
 vector<MapEntityWithPosition>
 Map::visible_cells(const Position &pos, int radius, bool ignore_walls = false,
                    const vector<Position> &area = {}) const noexcept {
-  // if area is empty - no limits for it
-  // TODO (return cells visible from position)
-  if (area.size() == 0) {
+  // // if area is empty - no limits for it
+  // // TODO (return cells visible from position)
+  // if (area.size() == 0) {
 
-  } else {
+  // } else {
+  // }
+  // return {};
+  vector<MapEntityWithPosition> vec = {};
+  for (int i = 0; i < map_options.height; i++) {
+    for (int j = 0; j < map_options.width; j++) {
+      vec.push_back(MapEntityWithPosition {
+        .map_entity = map->at(i).at(j),
+        .pos = Position(i,j)
+      });
+    }
   }
-  return {};
+  return vec;
 }
 
 bool Map::in_map(int x, int y) const noexcept {
@@ -75,18 +100,18 @@ bool Map::in_map(int x, int y) const noexcept {
 }
 
 bool Map::is_vacant_cell(int x, int y) const noexcept {
-  MapEntity map_entity = map[x][y];
+  MapEntity map_entity = map->at(x).at(y);
   return map_entity == MapEntity::FLOOR || map_entity == MapEntity::ITEM ||
          map_entity == MapEntity::POTION || map_entity == MapEntity::DOOR;
 }
 
 bool Map::is_door_cell(int x, int y) const noexcept {
-  MapEntity map_entity = map[x][y];
+  MapEntity map_entity = map->at(x).at(y);
   return map_entity == MapEntity::DOOR;
 }
 
 bool Map::is_anybody_cell(int x, int y) const noexcept {
-  MapEntity map_entity = map[x][y];
+  MapEntity map_entity = map->at(x).at(y);
   return map_entity == MapEntity::PERSON || map_entity == MapEntity::ENEMY ||
          map_entity == MapEntity::ENEMY_AGRESSIVE ||
          map_entity == MapEntity::ENEMY_FLYING ||
@@ -178,12 +203,12 @@ void Map::punch_cells_in_order(vector<Position> positions,
           if (erased_enemy == nullptr) {
             optional<IItem> item = drop_item();
             if (item == std::nullopt) {
-              map[erased_enemy->pos.x][erased_enemy->pos.y] =
+              map->at(erased_enemy->pos.x).at(erased_enemy->pos.y) =
                   get_cell_type(erased_enemy->pos);
             } else {
               items.insert({erased_enemy->pos, item.value()});
               IItem iitem = item.value();
-              map[erased_enemy->pos.x][erased_enemy->pos.y] =
+              map->at(erased_enemy->pos.x).at(erased_enemy->pos.y) =
                   (typeid(iitem) == typeid(Potion)) ? MapEntity::POTION
                                                     : MapEntity::ITEM;
             }
@@ -225,19 +250,19 @@ bool Map::punch(ICharacter character,
 bool Map::any_step_anybody(WithPosition anybody, Position pos) noexcept {
   if (is_door_cell(anybody.pos.x, anybody.pos.y)) {
     if ((typeid(anybody) == typeid(PersonWithPosition))) {
-      map[anybody.pos.x][anybody.pos.y] = get_cell_type(anybody.pos);
-      map[pos.x][pos.y] = MapEntity::PERSON;
+      map->at(anybody.pos.x).at(anybody.pos.y) = get_cell_type(anybody.pos);
+      map->at(pos.x).at(pos.y)  = MapEntity::PERSON;
       anybody.pos = pos;
       game_status = GameStatus::NEXT_LVL;
       return true;
     }
   } else {
-    map[anybody.pos.x][anybody.pos.y] =
+    map->at(anybody.pos.x).at(anybody.pos.y) =
         get_cell_type(anybody.pos); // FIXME(update later: mb WALL)
     if (typeid(anybody) == typeid(PersonWithPosition)) {
-      map[pos.x][pos.y] = MapEntity::PERSON;
+      map->at(pos.x).at(pos.y) = MapEntity::PERSON;
     } else {
-      map[pos.x][pos.y] = dynamic_cast<EnemyWithPosition *>(&anybody)
+      map->at(pos.x).at(pos.y) = dynamic_cast<EnemyWithPosition *>(&anybody)
                               ->get_enemy_class()
                               .get_map_entity();
     }

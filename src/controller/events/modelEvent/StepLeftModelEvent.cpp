@@ -8,9 +8,9 @@ using superrogue::game_object::character::CharacterAction;;
 
 
 namespace superrogue::controller::event {
-StepLeftModelEvent::StepLeftModelEvent(std::shared_ptr<superrogue::map::Map> map) : ModelEvent(map) {};
+StepLeftModelEvent::StepLeftModelEvent(std::shared_ptr<superrogue::map::Map*> map) : ModelEvent(map) {};
 
 void StepLeftModelEvent::_execute() {
-    map->step(CharacterAction::STEP_LEFT);
+    (*map)->step(CharacterAction::STEP_LEFT);
 }
 };

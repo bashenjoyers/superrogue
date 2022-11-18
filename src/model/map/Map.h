@@ -11,6 +11,7 @@
 #include "model/values.h"
 #include <map>
 #include <set>
+#include <memory>
 
 namespace superrogue::map {
 static std::uniform_real_distribution<float> dodge_gen(0, 1);
@@ -27,7 +28,8 @@ struct WithPosition {
 struct PersonWithPosition : superrogue::game_object::character::Person,
                             WithPosition {
   PersonWithPosition(superrogue::game_object::character::Person person)
-      : superrogue::game_object::character::Person(person){};
+      : superrogue::game_object::character::Person(person), WithPosition() {};
+  void set_position(superrogue::abstract::Position pos);
 };
 
 struct EnemyWithPosition : superrogue::game_object::character::Enemy,
@@ -35,6 +37,7 @@ struct EnemyWithPosition : superrogue::game_object::character::Enemy,
   std::vector<superrogue::abstract::Position> area; // where enemy can be
   EnemyWithPosition(superrogue::game_object::character::Enemy enemy)
       : superrogue::game_object::character::Enemy(enemy){};
+  void set_position(superrogue::abstract::Position pos);
 };
 
 struct MapOptions {
@@ -59,7 +62,7 @@ class Map {
   int level;
   std::set<EnemyWithPosition> enemies_with_positions;
   PersonWithPosition person_with_position;
-  std::vector<std::vector<superrogue::abstract::MapEntity>> map;
+  std::vector<std::vector<superrogue::abstract::MapEntity>>* map;
   superrogue::abstract::Position door; // cell near the edge of map
   std::map<superrogue::abstract::Position, superrogue::game_object::item::IItem>
       items;
@@ -91,8 +94,7 @@ class Map {
                        superrogue::Characteristics characteristics) noexcept;
   bool punch(superrogue::game_object::character::ICharacter character,
              superrogue::Characteristics characteristics) noexcept;
-  void generate_map_and_door() const noexcept;
-  void set_positions() const noexcept;
+  void generate_map_and_set_positions() const noexcept;
 
 public:
   Map(std::set<superrogue::game_object::character::Enemy> enemies,

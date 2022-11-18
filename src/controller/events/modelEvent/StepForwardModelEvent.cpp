@@ -8,9 +8,9 @@ using superrogue::game_object::character::CharacterAction;;
 
 
 namespace superrogue::controller::event {
-StepForwardModelEvent::StepForwardModelEvent(std::shared_ptr<superrogue::map::Map> map) : ModelEvent(map) {};
+StepForwardModelEvent::StepForwardModelEvent(std::shared_ptr<superrogue::map::Map*> map) : ModelEvent(map) {};
 
 void StepForwardModelEvent::_execute() {
-    map->step(CharacterAction::STEP_FORWARD);
+    (*map)->step(CharacterAction::STEP_FORWARD);
 }
 };

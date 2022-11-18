@@ -13,21 +13,23 @@ include_directories(${CURSES_INCLUDE_DIR})
 
 add_executable(
     ${PROJECT_NAME}
+    src/Boot.cpp
+    src/Boot.h
     src/main.cpp
     src/exceptions/exceptions.cpp
     src/exceptions/exceptions.h
     src/controller/CursorState.cpp
     src/controller/CursorState.h
-    src/controller/UserKeysListener.h
     src/controller/EventProvider.cpp
-    src/controller/UserKeysListener.cpp
     src/controller/EventProvider.h
     src/controller/GameController.cpp
     src/controller/GameController.h
     src/controller/const.h
+    src/controller/events/EmptyEvent.h
     src/controller/events/ModelEvent.cpp
     src/controller/events/UIEvent.h
     src/controller/events/UIEvent.cpp
+    src/controller/events/EmptyEvent.cpp
     src/controller/events/IEvent.h
     src/controller/events/IEvent.cpp
     src/controller/events/ModelEvent.h
@@ -49,6 +51,7 @@ add_executable(
     src/controller/events/modelEvent/PunchForwardModelEvent.h
     src/controller/events/modelEvent/PunchBackModelEvent.cpp
     src/controller/events/modelEvent/StepBackModelEvent.cpp
+    src/controller/events/modelEvent/ModelEvents.h
     src/controller/events/modelEvent/PunchLeftModelEvent.h
     src/controller/events/modelEvent/StepBackModelEvent.h
     src/controller/events/modelEvent/PunchRightModelEvent.h
@@ -63,7 +66,6 @@ add_executable(
     src/controller/events/uiEvent/MovePotionDownEvent.h
     src/controller/events/uiEvent/ActionUIEvent.cpp
     src/controller/events/uiEvent/MovePotionUpEvent.h
-    src/controller/events/EmptyEvent.cpp
     src/model/abstract.h
     src/model/values.h
     src/model/GameManager.cpp
@@ -135,6 +137,5 @@ add_executable(
     src/view/Converters/CharDataConverter.h
     src/view/Converters/CharDataConverter.cpp
     src/view/Converters/GameDataConverter.h
-    src/Boot.cpp
 )
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})

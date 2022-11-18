@@ -12,7 +12,7 @@ namespace superrogue::controller {
 
     class GameController {
     public:
-        GameController(std::shared_ptr<superrogue::map::Map> map);
+        GameController(std::shared_ptr<superrogue::map::Map*> map);
         void interact();
         std::shared_ptr<CursorState> getCursorState();
 

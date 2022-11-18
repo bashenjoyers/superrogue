@@ -15,7 +15,7 @@ namespace superrogue::controller {
 
 class EventProvider {
 public:
-    EventProvider(std::shared_ptr<CursorState> cursorState, std::shared_ptr<superrogue::map::Map> map);
+    EventProvider(std::shared_ptr<CursorState> cursorState, std::shared_ptr<superrogue::map::Map*> map);
     std::shared_ptr<event::IEvent> getEventByKey(int key);
 
     void addUIObserver(std::shared_ptr<superrogue::view::UIObserver> obs);

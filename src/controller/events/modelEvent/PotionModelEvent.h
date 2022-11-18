@@ -8,7 +8,7 @@
 namespace superrogue::controller::event {
 class PotionModelEvent : public ModelEvent {
 public:
-    PotionModelEvent(std::shared_ptr<superrogue::map::Map> map, std::shared_ptr<superrogue::controller::CursorState> cursor_state); 
+    PotionModelEvent(std::shared_ptr<superrogue::map::Map*> map, std::shared_ptr<superrogue::controller::CursorState> cursor_state); 
 private:
     std::shared_ptr<superrogue::controller::CursorState> cursor_state;
     void _execute() override;

@@ -16,7 +16,7 @@ Boot::Boot() : gm( std::make_shared<GameManager>(MapOptions {
 
 
 void Boot::play() {
-    std::shared_ptr<Map> map = gm->generate_map();
+    std::shared_ptr<superrogue::map::Map*> map = gm->generate_map();
     gc = std::make_shared<GameController>(map);
 
     gc->addModelObserver(renderFactory.getInventoryRenderer());

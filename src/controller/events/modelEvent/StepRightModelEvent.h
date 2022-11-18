@@ -7,7 +7,7 @@
 namespace superrogue::controller::event {
 class StepRightModelEvent : public ModelEvent {
 public:
-    StepRightModelEvent(std::shared_ptr<superrogue::map::Map> map); 
+    StepRightModelEvent(std::shared_ptr<superrogue::map::Map*> map); 
 private:
     void _execute() override;
 };

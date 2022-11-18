@@ -5,7 +5,7 @@
 
 namespace superrogue::controller {
 
-    EventProvider::EventProvider(std::shared_ptr<CursorState> cursorState, std::shared_ptr<superrogue::map::Map> map) {
+    EventProvider::EventProvider(std::shared_ptr<CursorState> cursorState, std::shared_ptr<superrogue::map::Map*> map) {
         keyMapping = {
                 {'[', std::make_shared<MovePotionDownEvent>(cursorState)},
                 {']', std::make_shared<MovePotionUpEvent>(cursorState)},

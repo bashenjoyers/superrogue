@@ -2,6 +2,7 @@
 #include "exceptions/exceptions.h"
 #include "model/generator.h"
 #include "model/values.h"
+#include <memory>
 
 using std::max;
 using std::set;
@@ -133,10 +134,19 @@ void GameManager::person_level_up(Characteristics characteristics) {
   person.level_up(characteristics);
 }
 
-std::shared_ptr<superrogue::map::Map> GameManager::generate_map() noexcept {
+std::shared_ptr<Map*> GameManager::generate_map() noexcept {
   level++;
   GameOptions game_options = generate_game_options();
   set<Enemy> enemies = generate_enemies(game_options);
-  return std::make_shared<Map>(enemies, person, map_options, level);
+  if (map == nullptr) {
+    map = new Map(enemies, person, map_options, level);
+  } else {
+    *map = Map(enemies, person, map_options, level);
+  }
+  return std::make_shared<Map*>(map);
+}
+
+GameManager::~GameManager() {
+  delete map;
 }
 }; // namespace superrogue::game_manager

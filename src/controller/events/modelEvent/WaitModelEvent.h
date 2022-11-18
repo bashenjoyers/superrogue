@@ -7,7 +7,7 @@
 namespace superrogue::controller::event {
 class WaitModelEvent : public ModelEvent {
 public:
-    WaitModelEvent(std::shared_ptr<superrogue::map::Map> map); 
+    WaitModelEvent(std::shared_ptr<superrogue::map::Map*> map); 
 private:
     void _execute() override;
 };

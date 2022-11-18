@@ -16,6 +16,7 @@ struct GameOptions {
 };
 
 class GameManager {
+  superrogue::map::Map* map;
   int level = 0;
   superrogue::game_object::character::Person person;
   superrogue::map::MapOptions map_options;
@@ -30,6 +31,7 @@ class GameManager {
 public:
   GameManager(superrogue::map::MapOptions map_options);
   std::vector<superrogue::controller::event::IEvent> events() noexcept;
-  std::shared_ptr<superrogue::map::Map> generate_map() noexcept;
+  std::shared_ptr<superrogue::map::Map*> generate_map() noexcept;
+  ~GameManager();
 };
 }; // namespace superrogue::game_manager

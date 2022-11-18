@@ -7,7 +7,7 @@
 namespace superrogue::controller::event {
 class PunchLeftModelEvent : public ModelEvent {
 public:
-    PunchLeftModelEvent(std::shared_ptr<superrogue::map::Map> map); 
+    PunchLeftModelEvent(std::shared_ptr<superrogue::map::Map*> map); 
 private:
     void _execute() override;
 };

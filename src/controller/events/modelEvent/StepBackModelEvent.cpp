@@ -8,9 +8,9 @@ using superrogue::game_object::character::CharacterAction;;
 
 
 namespace superrogue::controller::event {
-StepBackModelEvent::StepBackModelEvent(std::shared_ptr<superrogue::map::Map> map) : ModelEvent(map) {};
+StepBackModelEvent::StepBackModelEvent(std::shared_ptr<superrogue::map::Map*> map) : ModelEvent(map) {};
 
 void StepBackModelEvent::_execute() {
-    map->step(CharacterAction::STEP_BACK);
+    (*map)->step(CharacterAction::STEP_BACK);
 }
 };

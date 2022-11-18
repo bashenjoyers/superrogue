@@ -11,20 +11,20 @@ using superrogue::exception::EventException;
 
 
 namespace superrogue::controller::event {
-PotionModelEvent::PotionModelEvent(std::shared_ptr<superrogue::map::Map> map, std::shared_ptr<superrogue::controller::CursorState> cursor_state) : ModelEvent(map), cursor_state(cursor_state) {};
+PotionModelEvent::PotionModelEvent(std::shared_ptr<superrogue::map::Map*> map, std::shared_ptr<superrogue::controller::CursorState> cursor_state) : ModelEvent(map), cursor_state(cursor_state) {};
 
 void PotionModelEvent::_execute() {
     size_t cursor_res = cursor_state->getPotionsCursor();
     switch (cursor_res)
     {
     case 0:
-        map->step(CharacterAction::POTION_1);
+        (*map)->step(CharacterAction::POTION_1);
         break;
     case 1:
-        map->step(CharacterAction::POTION_2);
+        (*map)->step(CharacterAction::POTION_2);
         break;
     case 2:
-        map->step(CharacterAction::POTION_3);
+        (*map)->step(CharacterAction::POTION_3);
         break;
     default:
         throw EventException("wrong potion pointer");
