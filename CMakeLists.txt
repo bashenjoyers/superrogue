@@ -120,7 +120,6 @@ add_executable(
     src/model/game_object/item/stuff/Item.cpp
     src/model/inventory/Inventory.h
     src/model/inventory/Inventory.cpp
-    src/view/Observers.h
     src/view/Renderer.h
     src/view/const.h
     src/view/Renderer.cpp

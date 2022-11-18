@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-#include "view/Observers.h"
+#include "common/Observers.h"
 
 namespace superrogue::controller::event {
 

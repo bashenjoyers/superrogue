@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/Ncurses/CursesAPI.h"
-#include "view/Observers.h"
+#include "common/Observers.h"
 
 #include "controller/EventProvider.h"
 #include "controller/CursorState.h"
