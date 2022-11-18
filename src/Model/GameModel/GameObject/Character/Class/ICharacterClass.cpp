@@ -7,4 +7,4 @@ string ICharacterClass::get_description() const noexcept { return description; }
 
 ICharacterClass::ICharacterClass(string description)
     : description(description) {}
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

@@ -8,8 +8,7 @@ class Flying : public IEnemyClass {
 public:
   Abstract::MapEntity get_map_entity() const noexcept override;
   Flying(std::string description, EnemySettings settings = EnemySettings());
-  CharacterAction
-  strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
-           Abstract::Position &pos) noexcept;
+  CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
+                           Abstract::Position &pos) noexcept;
 };
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

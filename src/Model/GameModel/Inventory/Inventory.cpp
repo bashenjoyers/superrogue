@@ -8,9 +8,7 @@ using std::vector;
 namespace GameModel::Inventory {
 Inventory::Inventory(int potions_max) : potions_max(potions_max) {}
 
-Inventory Inventory::getEmptyInventory() {
-  return Inventory();
-}
+Inventory Inventory::getEmptyInventory() { return Inventory(); }
 
 void Inventory::set_helmet(optional<Item> helmet) {
   if (!helmet.has_value() && helmet.value().get_item_type() != ItemType::HELMET)
@@ -72,4 +70,4 @@ Potion Inventory::use_potion(int potion_i) {
     throw InventoryException("use potion: wrong potion position");
   return *potions.erase(potions.begin() + potion_i);
 }
-}; // namespace superrogue::Inventory
+}; // namespace GameModel::Inventory

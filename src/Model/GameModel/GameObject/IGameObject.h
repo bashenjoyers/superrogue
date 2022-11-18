@@ -20,4 +20,4 @@ public:
   IGameObject(){};
   virtual ~IGameObject() {}
 };
-}; // namespace superrogue::GameObject
+}; // namespace GameModel

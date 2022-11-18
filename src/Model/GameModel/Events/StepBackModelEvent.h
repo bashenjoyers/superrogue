@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Model/GameModel/Map/Map.h"
 #include "Model/GameModel/Events/ModelEvent.h"
-
+#include "Model/GameModel/Map/Map.h"
 
 namespace GameModel::Events {
 class StepBackModelEvent : public ModelEvent {
 public:
-    StepBackModelEvent(std::shared_ptr<Map::Map> map);
+  StepBackModelEvent(std::shared_ptr<Map::Map> map);
+
 private:
-    void _execute() override;
+  void _execute() override;
 };
-}
+} // namespace GameModel::Events

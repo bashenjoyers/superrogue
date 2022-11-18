@@ -13,4 +13,4 @@ IPerson::IPerson(string name, Characteristics characteristics,
                  IPersonClass person_class)
     : ICharacter(name, person_class.get_description(), characteristics),
       person_class(person_class){};
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

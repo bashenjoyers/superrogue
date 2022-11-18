@@ -28,4 +28,4 @@ bool IGameObject::damaged(int value) noexcept {
   characteristics.health = max(characteristics.health - value, 0);
   return characteristics.health == 0;
 }
-}; // namespace superrogue::GameObject
+}; // namespace GameModel

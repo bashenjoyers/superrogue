@@ -16,9 +16,8 @@ public:
   float get_attack_range() const noexcept;
   IEnemy(std::string name, Characteristics characteristics,
          IEnemyClass enemy_class);
-  IEnemyClass
-  get_enemy_class() const noexcept;
+  IEnemyClass get_enemy_class() const noexcept;
   bool damaged(int value) noexcept override;
   virtual ~IEnemy() {}
 };
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

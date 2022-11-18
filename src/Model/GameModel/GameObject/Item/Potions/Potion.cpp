@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 
-
 namespace GameModel {
 Potion::Potion(std::string name, std::string description,
                Characteristics characteristics,
@@ -21,4 +20,4 @@ void Potion::step() noexcept {
 }
 
 bool Potion::is_work() const noexcept { return work_time != 0; }
-}; // namespace superrogue::GameObject::Item
+}; // namespace GameModel

@@ -1,11 +1,11 @@
 #include "GameManager.h"
 #include "Model/Exceptions/exceptions.h"
-#include "generator.h"
-#include "values.h"
-#include "abstract.h"
-#include "Model/GameModel/Inventory/Inventory.h"
 #include "Model/GameModel/GameObject/Character/Enemy.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
+#include "Model/GameModel/Inventory/Inventory.h"
+#include "abstract.h"
+#include "generator.h"
+#include "values.h"
 #include <memory>
 
 using std::max;
@@ -17,8 +17,9 @@ namespace GameModel {
 
 using namespace Values;
 using namespace Abstract;
-    
-GameManager::GameManager(Map::MapOptions map_options) : map_options(map_options) {
+
+GameManager::GameManager(Map::MapOptions map_options)
+    : map_options(map_options) {
   person = generate_person();
 }
 
@@ -87,8 +88,9 @@ set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
         GameModel::Generation::melee_gen(Values::generator) ? 1 : DISTANT_RANGE;
     settings.intellect =
         GameModel::Generation::intellect_gen(Values::generator);
-    EnemyClass enemy_class_name = enemy_classes[GameModel::Generation::enemy_class_i_gen(
-        Values::generator)];
+    EnemyClass enemy_class_name =
+        enemy_classes[GameModel::Generation::enemy_class_i_gen(
+            Values::generator)];
     IEnemyClass enemy_class = get_enemy_class(enemy_class_name, settings);
     if (enemy_class_name == EnemyClass::ORDINARY) {
       switch (GameModel::Generation::characteristic_i_gen(Values::generator)) {
@@ -125,4 +127,4 @@ std::shared_ptr<Map::Map> GameManager::generate_map() noexcept {
   set<Enemy> enemies = generate_enemies(game_options);
   return std::make_shared<Map::Map>(enemies, person, map_options, level);
 }
-}; // namespace superrogue::game_manager
+}; // namespace GameModel

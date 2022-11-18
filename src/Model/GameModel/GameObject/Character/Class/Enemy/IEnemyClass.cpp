@@ -13,8 +13,7 @@ IEnemyClass::IEnemyClass(string description, EnemySettings settings)
 
 EnemySettings IEnemyClass::get_settings() const noexcept { return settings; }
 
-bool IEnemyClass::is_vacant(
-    Abstract::MapEntity map_entity) const noexcept {
+bool IEnemyClass::is_vacant(Abstract::MapEntity map_entity) const noexcept {
   return map_entity == MapEntity::FLOOR || map_entity == MapEntity::ITEM ||
          map_entity == MapEntity::POTION;
 }
@@ -181,4 +180,4 @@ CharacterAction IEnemyClass::strategy(std::vector<MapEntityWithPosition> &cells,
                                       Position &pos) noexcept {
   return CharacterAction::WAIT;
 };
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

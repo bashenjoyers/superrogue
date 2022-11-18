@@ -11,4 +11,4 @@ public:
   ICharacterClass(std::string description = "");
   virtual ~ICharacterClass() {}
 };
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

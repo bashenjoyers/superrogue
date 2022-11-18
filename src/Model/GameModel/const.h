@@ -20,4 +20,4 @@ const float CHARACTERISTIC_STANDARD_DEVIATION = 0.35;
 const int DISTANT_RANGE = 3;
 const float DEFAULT_DODGE_CHANCE = 0.01;
 const float LUCKY_LUCK = 0.9;
-}; // namespace superrogue
+}; // namespace GameModel

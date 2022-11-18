@@ -1,5 +1,4 @@
 #pragma once
-#include "const.h"
 #include "Model/GameModel/GameObject/Character/Class/Enemy/Agressive.h"
 #include "Model/GameModel/GameObject/Character/Class/Enemy/Flying.h"
 #include "Model/GameModel/GameObject/Character/Class/Enemy/IEnemyClass.h"
@@ -16,6 +15,7 @@
 #include "Model/GameModel/GameObject/Item/Potions/PotionType.h"
 #include "Model/GameModel/GameObject/Item/Stuff/Item.h"
 #include "Model/GameModel/GameObject/Item/Stuff/StuffType.h"
+#include "const.h"
 #include <unordered_map>
 #include <vector>
 
@@ -32,153 +32,124 @@ static const std::vector<StuffType> items_types = {
     StuffType::BOW,      StuffType::CROSSBOW,  StuffType::SLING,
     StuffType::DIRKS};
 
-static GameModel::Item get_item(StuffType stuff_type,
-                                                    int characteristics_k) {
+static GameModel::Item get_item(StuffType stuff_type, int characteristics_k) {
   switch (stuff_type) {
   case StuffType::HELM:
-    return GameModel::Item(
-        "helm", "good old hauberk",
-        Characteristics(0, 3, 0, -1, 0) * characteristics_k,
-        GameModel::ItemType::HELMET);
+    return GameModel::Item("helm", "good old hauberk",
+                           Characteristics(0, 3, 0, -1, 0) * characteristics_k,
+                           GameModel::ItemType::HELMET);
   case StuffType::CAP:
-    return GameModel::Item(
-        "cap", "good old cap",
-        Characteristics(0, 1, 0, 1, 0) * characteristics_k,
-        GameModel::ItemType::HELMET);
+    return GameModel::Item("cap", "good old cap",
+                           Characteristics(0, 1, 0, 1, 0) * characteristics_k,
+                           GameModel::ItemType::HELMET);
   case StuffType::PANAMA:
-    return GameModel::Item(
-        "panama", "good old panama",
-        Characteristics(0, 0, 0, 2, 0) * characteristics_k,
-        GameModel::ItemType::HELMET);
+    return GameModel::Item("panama", "good old panama",
+                           Characteristics(0, 0, 0, 2, 0) * characteristics_k,
+                           GameModel::ItemType::HELMET);
   case StuffType::HAT:
-    return GameModel::Item(
-        "hat", "good old hat",
-        Characteristics(0, 2, 0, 0, 0) * characteristics_k,
-        GameModel::ItemType::HELMET);
+    return GameModel::Item("hat", "good old hat",
+                           Characteristics(0, 2, 0, 0, 0) * characteristics_k,
+                           GameModel::ItemType::HELMET);
 
   case StuffType::HAUBERK:
-    return GameModel::Item(
-        "hauberk", "good old hauberk",
-        Characteristics(0, 3, 0, -1, 0) * characteristics_k,
-        GameModel::ItemType::ARMOR);
+    return GameModel::Item("hauberk", "good old hauberk",
+                           Characteristics(0, 3, 0, -1, 0) * characteristics_k,
+                           GameModel::ItemType::ARMOR);
   case StuffType::TUNIC:
-    return GameModel::Item(
-        "tunic", "good old tunic",
-        Characteristics(0, 2, 0, 0, 0) * characteristics_k,
-        GameModel::ItemType::ARMOR);
+    return GameModel::Item("tunic", "good old tunic",
+                           Characteristics(0, 2, 0, 0, 0) * characteristics_k,
+                           GameModel::ItemType::ARMOR);
   case StuffType::JACKET:
-    return GameModel::Item(
-        "jacket", "good old jacket",
-        Characteristics(0, 1, 0, 1, 0) * characteristics_k,
-        GameModel::ItemType::ARMOR);
+    return GameModel::Item("jacket", "good old jacket",
+                           Characteristics(0, 1, 0, 1, 0) * characteristics_k,
+                           GameModel::ItemType::ARMOR);
   case StuffType::T_SHIRT:
-    return GameModel::Item(
-        "t_shirt", "good old t_shirt",
-        Characteristics(0, 0, 0, 2, 0) * characteristics_k,
-        GameModel::ItemType::ARMOR);
+    return GameModel::Item("t_shirt", "good old t_shirt",
+                           Characteristics(0, 0, 0, 2, 0) * characteristics_k,
+                           GameModel::ItemType::ARMOR);
 
   case StuffType::SNEAKERS:
-    return GameModel::Item(
-        "sneakers", "good old sneakers",
-        Characteristics(0, 0, 0, 2, 0) * characteristics_k,
-        GameModel::ItemType::BOOTS);
+    return GameModel::Item("sneakers", "good old sneakers",
+                           Characteristics(0, 0, 0, 2, 0) * characteristics_k,
+                           GameModel::ItemType::BOOTS);
   case StuffType::SLIPPERS:
-    return GameModel::Item(
-        "slippers", "good old slippers",
-        Characteristics(1, 2, 0, -1, 0) * characteristics_k,
-        GameModel::ItemType::BOOTS);
+    return GameModel::Item("slippers", "good old slippers",
+                           Characteristics(1, 2, 0, -1, 0) * characteristics_k,
+                           GameModel::ItemType::BOOTS);
   case StuffType::BOOTS:
-    return GameModel::Item(
-        "boots", "good old boots",
-        Characteristics(0, 2, 0, 0, 0) * characteristics_k,
-        GameModel::ItemType::BOOTS);
+    return GameModel::Item("boots", "good old boots",
+                           Characteristics(0, 2, 0, 0, 0) * characteristics_k,
+                           GameModel::ItemType::BOOTS);
   case StuffType::SANDALS:
-    return GameModel::Item(
-        "sandals", "good old sandals",
-        Characteristics(0, 1, 0, 1, 0) * characteristics_k,
-        GameModel::ItemType::BOOTS);
+    return GameModel::Item("sandals", "good old sandals",
+                           Characteristics(0, 1, 0, 1, 0) * characteristics_k,
+                           GameModel::ItemType::BOOTS);
 
   case StuffType::SWORD:
-    return GameModel::Item(
-        "sword", "good old sword",
-        Characteristics(4, -1, 0, -1, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_MELEE);
+    return GameModel::Item("sword", "good old sword",
+                           Characteristics(4, -1, 0, -1, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_MELEE);
   case StuffType::KATANA:
-    return GameModel::Item(
-        "katana", "good old katana",
-        Characteristics(2, 0, 0, 0, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_MELEE);
+    return GameModel::Item("katana", "good old katana",
+                           Characteristics(2, 0, 0, 0, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_MELEE);
   case StuffType::KNIFE:
-    return GameModel::Item(
-        "knife", "good old knife",
-        Characteristics(2, -1, 0, 1, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_MELEE);
+    return GameModel::Item("knife", "good old knife",
+                           Characteristics(2, -1, 0, 1, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_MELEE);
   case StuffType::SABER:
-    return GameModel::Item(
-        "saber", "good old saber",
-        Characteristics(3, -1, 0, 0, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_MELEE);
+    return GameModel::Item("saber", "good old saber",
+                           Characteristics(3, -1, 0, 0, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_MELEE);
   case StuffType::BITA:
-    return GameModel::Item(
-        "bita", "good old bita",
-        Characteristics(1, 0, 0, 1, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_MELEE);
+    return GameModel::Item("bita", "good old bita",
+                           Characteristics(1, 0, 0, 1, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_MELEE);
   case StuffType::MACE:
-    return GameModel::Item(
-        "mace", "good old mace",
-        Characteristics(3, 0, 0, -1, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_MELEE);
+    return GameModel::Item("mace", "good old mace",
+                           Characteristics(3, 0, 0, -1, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_MELEE);
   case StuffType::SPEAR:
-    return GameModel::Item(
-        "spear", "good old spear",
-        Characteristics(3, 0, 0, -1, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_MELEE);
+    return GameModel::Item("spear", "good old spear",
+                           Characteristics(3, 0, 0, -1, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_MELEE);
   case StuffType::NUNCHUCKS:
-    return GameModel::Item(
-        "nunchucks", "good old nunchucks",
-        Characteristics(2, -2, 0, 2, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_MELEE);
+    return GameModel::Item("nunchucks", "good old nunchucks",
+                           Characteristics(2, -2, 0, 2, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_MELEE);
 
   case StuffType::PISTOL:
-    return GameModel::Item(
-        "pistol", "good old pistol",
-        Characteristics(2, 0, 0, 0, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_DISTANT);
+    return GameModel::Item("pistol", "good old pistol",
+                           Characteristics(2, 0, 0, 0, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::GUN:
-    return GameModel::Item(
-        "gun", "good old gun",
-        Characteristics(3, -1, 0, 0, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_DISTANT);
+    return GameModel::Item("gun", "good old gun",
+                           Characteristics(3, -1, 0, 0, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::RIFLE:
-    return GameModel::Item(
-        "rifle", "good old rifle",
-        Characteristics(3, 0, 0, -1, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_DISTANT);
+    return GameModel::Item("rifle", "good old rifle",
+                           Characteristics(3, 0, 0, -1, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::AUTOMATIC_RIFLE:
-    return GameModel::Item(
-        "automatic_rifle", "good old automatic_rifle",
-        Characteristics(4, -1, 0, -1, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_DISTANT);
+    return GameModel::Item("automatic_rifle", "good old automatic_rifle",
+                           Characteristics(4, -1, 0, -1, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::BOW:
-    return GameModel::Item(
-        "bow", "good old bow",
-        Characteristics(1, 0, 0, 1, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_DISTANT);
+    return GameModel::Item("bow", "good old bow",
+                           Characteristics(1, 0, 0, 1, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::CROSSBOW:
-    return GameModel::Item(
-        "crossbow", "good old crossbow",
-        Characteristics(2, -1, 0, 1, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_DISTANT);
+    return GameModel::Item("crossbow", "good old crossbow",
+                           Characteristics(2, -1, 0, 1, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::SLING:
-    return GameModel::Item(
-        "sling", "good old sling",
-        Characteristics(2, 1, 0, -1, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_DISTANT);
+    return GameModel::Item("sling", "good old sling",
+                           Characteristics(2, 1, 0, -1, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::DIRKS:
-    return GameModel::Item(
-        "dirks", "good old dirks",
-        Characteristics(1, -1, 0, 2, 0) * characteristics_k,
-        GameModel::ItemType::WEAPON_DISTANT);
+    return GameModel::Item("dirks", "good old dirks",
+                           Characteristics(1, -1, 0, 2, 0) * characteristics_k,
+                           GameModel::ItemType::WEAPON_DISTANT);
   default:
     throw GameObjectException("wrong StuffType");
   }
@@ -191,46 +162,41 @@ static const std::vector<PotionType> potions_types = {
     PotionType::DEXTERITY_POTION, PotionType::DEXTERITY_LONG_POTION};
 
 static GameModel::Potion get_potion(PotionType potion_type,
-                                                        int characteristics_k) {
+                                    int characteristics_k) {
   switch (potion_type) {
   case PotionType::DAMAGE_POTION:
-    return GameModel::Potion(
-        "damage_potion", "damage increase",
-        Characteristics(2, 0, 0, 0, 0) * characteristics_k,
-        DEFAULT_POTION_WORK_TIME);
+    return GameModel::Potion("damage_potion", "damage increase",
+                             Characteristics(2, 0, 0, 0, 0) * characteristics_k,
+                             DEFAULT_POTION_WORK_TIME);
   case PotionType::DAMAGE_LONG_POTION:
-    return GameModel::Potion(
-        "damage_long_potion", "damage increase (long)",
-        Characteristics(1, 0, 0, 0, 0) * characteristics_k,
-        DEFAULT_POTION_WORK_TIME * 2);
+    return GameModel::Potion("damage_long_potion", "damage increase (long)",
+                             Characteristics(1, 0, 0, 0, 0) * characteristics_k,
+                             DEFAULT_POTION_WORK_TIME * 2);
   case PotionType::ARMOR_POTION:
-    return GameModel::Potion(
-        "armor_potion", "armor increase",
-        Characteristics(0, 2, 0, 0, 0) * characteristics_k,
-        DEFAULT_POTION_WORK_TIME);
+    return GameModel::Potion("armor_potion", "armor increase",
+                             Characteristics(0, 2, 0, 0, 0) * characteristics_k,
+                             DEFAULT_POTION_WORK_TIME);
   case PotionType::ARMOR_LONG_POTION:
-    return GameModel::Potion(
-        "armor_long_potion", "armor increase (long)",
-        Characteristics(0, 1, 0, 0, 0) * characteristics_k,
-        DEFAULT_POTION_WORK_TIME * 2);
+    return GameModel::Potion("armor_long_potion", "armor increase (long)",
+                             Characteristics(0, 1, 0, 0, 0) * characteristics_k,
+                             DEFAULT_POTION_WORK_TIME * 2);
   case PotionType::HEALTH_POTION:
-    return GameModel::Potion(
-        "health_potion", "add 1 hp",
-        Characteristics(0, 0, 1, 0, 0) * characteristics_k, 1);
+    return GameModel::Potion("health_potion", "add 1 hp",
+                             Characteristics(0, 0, 1, 0, 0) * characteristics_k,
+                             1);
   case PotionType::HEALTH_BIG_POTION:
-    return GameModel::Potion(
-        "health_potion_big", "add 2 hp",
-        Characteristics(0, 0, 2, 0, 0) * characteristics_k, 1);
+    return GameModel::Potion("health_potion_big", "add 2 hp",
+                             Characteristics(0, 0, 2, 0, 0) * characteristics_k,
+                             1);
   case PotionType::DEXTERITY_POTION:
-    return GameModel::Potion(
-        "dexterity_potion", "dexterity increase",
-        Characteristics(0, 0, 0, 2, 0) * characteristics_k,
-        DEFAULT_POTION_WORK_TIME);
+    return GameModel::Potion("dexterity_potion", "dexterity increase",
+                             Characteristics(0, 0, 0, 2, 0) * characteristics_k,
+                             DEFAULT_POTION_WORK_TIME);
   case PotionType::DEXTERITY_LONG_POTION:
-    return GameModel::Potion(
-        "dexterity_long_potion", "dexterity increase (long)",
-        Characteristics(0, 0, 0, 1, 0) * characteristics_k,
-        DEFAULT_POTION_WORK_TIME * 2);
+    return GameModel::Potion("dexterity_long_potion",
+                             "dexterity increase (long)",
+                             Characteristics(0, 0, 0, 1, 0) * characteristics_k,
+                             DEFAULT_POTION_WORK_TIME * 2);
   default:
     throw GameObjectException("wrong PotionType");
   }
@@ -279,16 +245,15 @@ get_person_class(GameModel::Abstract::PersonClass person_class,
                  GameModel::PersonSettings settings) {
   switch (person_class) {
   case GameModel::Abstract::PersonClass::ALCHEMIST:
-    return GameModel::Alchemist(
-        "A novice alchemist (can have up to 7 Potions)", settings);
+    return GameModel::Alchemist("A novice alchemist (can have up to 7 Potions)",
+                                settings);
   case GameModel::Abstract::PersonClass::FARSIGHTED:
     return GameModel::Farsighted(
         "Can see far away (the field of View is 2 times larger than the "
         "standard one)",
         settings);
   case GameModel::Abstract::PersonClass::LUCKY:
-    return GameModel::Lucky(
-        "Just lucky Person (has luck >= 0.9)", settings);
+    return GameModel::Lucky("Just lucky Person (has luck >= 0.9)", settings);
   case GameModel::Abstract::PersonClass::SECRETIVE:
     return GameModel::Secretive(
         "Unrealistically secretive one (the field of View of opponents is 2 "
@@ -321,4 +286,4 @@ static std::vector<std::string> lastnames = {
     "persistent",  "business", "tortured",  "quick", "big"};
 
 static std::random_device generator;
-}; // namespace superrogue::values
+}; // namespace GameModel::Values

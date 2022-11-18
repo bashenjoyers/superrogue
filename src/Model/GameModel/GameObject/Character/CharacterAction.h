@@ -50,4 +50,4 @@ inline const std::string to_string(CharacterAction action) {
     throw GameObjectException("wrong CharacterAction");
   }
 }
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

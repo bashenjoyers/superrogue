@@ -44,4 +44,4 @@ struct MapEntityWithPosition {
   Position pos;
   MapEntity map_entity;
 };
-}; // namespace superrogue::abstract
+}; // namespace GameModel::Abstract

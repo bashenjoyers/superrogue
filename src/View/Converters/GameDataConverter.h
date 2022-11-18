@@ -4,4 +4,4 @@ namespace View {
 
 class GameDataConverter {};
 
-};
+}; // namespace View

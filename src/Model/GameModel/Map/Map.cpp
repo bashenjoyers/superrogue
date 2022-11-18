@@ -128,11 +128,9 @@ optional<IItem> Map::drop_item() const noexcept {
     int i = drop_gen_i(Values::generator);
     if (i > Values::items_types.size()) {
       i -= Values::items_types.size();
-      return Values::get_potion(
-          Values::potions_types[i], level);
+      return Values::get_potion(Values::potions_types[i], level);
     }
-    return Values::get_item(Values::items_types[i],
-                                        level);
+    return Values::get_item(Values::items_types[i], level);
   }
   return std::nullopt;
 };
@@ -464,4 +462,4 @@ void Map::action_enemy(
     throw StepException("Enemy: failed " + to_string(action));
   }
 }
-}; // namespace superrogue::Map
+}; // namespace GameModel::Map

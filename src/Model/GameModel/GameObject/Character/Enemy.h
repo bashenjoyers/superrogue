@@ -17,4 +17,4 @@ public:
         IEnemyClass enemy_class);
   Enemy(const Enemy &enemy) = default;
 };
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

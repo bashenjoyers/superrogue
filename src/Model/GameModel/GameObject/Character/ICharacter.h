@@ -14,4 +14,4 @@ public:
   ICharacter(){};
   virtual ~ICharacter() {}
 };
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

@@ -2,25 +2,24 @@
 
 #include <memory>
 
-#include "Model/GameModel/GameManager.h"
 #include "Controller/GameController.h"
+#include "Model/GameModel/GameManager.h"
 
-#include "View/Renderer.h"
 #include "View/Curses/CursesFactory.h"
+#include "View/Renderer.h"
 
 class Boot {
 public:
-    Boot();
+  Boot();
 
-    void play();
-
+  void play();
 
 private:
-    std::shared_ptr<GameModel::GameManager> gm;
-    std::shared_ptr<Controller::GameController> gc;
+  std::shared_ptr<GameModel::GameManager> gm;
+  std::shared_ptr<Controller::GameController> gc;
 
-    void firstFrameRender();
+  void firstFrameRender();
 
-    float inventoryCoef = 0.3;
-    View::CursesFactory renderFactory;
+  float inventoryCoef = 0.3;
+  View::CursesFactory renderFactory;
 };

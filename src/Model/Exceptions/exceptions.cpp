@@ -11,7 +11,7 @@ InventoryException::InventoryException(const std::string &message)
     : GameObjectException(message){};
 
 StepException::StepException(const std::string &message)
-    : GameObjectException(message){}
-    
-EventException::EventException(const std::string &message): GameObjectException(message) {};
+    : GameObjectException(message) {}
 
+EventException::EventException(const std::string &message)
+    : GameObjectException(message){};

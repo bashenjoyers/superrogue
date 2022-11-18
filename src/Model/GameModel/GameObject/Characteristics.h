@@ -10,4 +10,4 @@ struct Characteristics {
   Characteristics operator+=(Characteristics const &obj);
   Characteristics operator*(const int k);
 };
-}; // namespace superrogue
+}; // namespace GameModel

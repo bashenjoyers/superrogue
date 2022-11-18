@@ -9,4 +9,4 @@ public:
   IItem() : IGameObject(){};
   virtual ~IItem() {}
 };
-}; // namespace superrogue::GameObject::Item
+}; // namespace GameModel

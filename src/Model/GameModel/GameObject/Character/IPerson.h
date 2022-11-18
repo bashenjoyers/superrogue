@@ -18,4 +18,4 @@ public:
   IPerson(){};
   virtual ~IPerson() {}
 };
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

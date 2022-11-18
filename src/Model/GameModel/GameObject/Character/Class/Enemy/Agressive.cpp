@@ -63,4 +63,4 @@ CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
   int dy = anybody_pos->y - pos.y;
   return default_fight_behavior(dx, dy, possible_actions);
 }
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

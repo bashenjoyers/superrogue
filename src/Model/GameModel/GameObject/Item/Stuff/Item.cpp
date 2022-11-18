@@ -10,4 +10,4 @@ Item::Item(std::string name, std::string description,
     : IItem(name, description, characteristics), itemType(itemType) {}
 
 ItemType Item::get_item_type() const noexcept { return this->itemType; }
-}; // namespace superrogue::GameObject::Item
+}; // namespace GameModel

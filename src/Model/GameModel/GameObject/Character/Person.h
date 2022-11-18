@@ -1,9 +1,9 @@
 #pragma once
 #include "IPerson.h"
-#include "Model/GameModel/Inventory/Inventory.h"
+#include "Model/GameModel/GameObject/Character/Class/Person/IPersonClass.h"
 #include "Model/GameModel/GameObject/Characteristics.h"
 #include "Model/GameModel/GameObject/Item/Potions/Potion.h"
-#include "Model/GameModel/GameObject/Character/Class/Person/IPersonClass.h"
+#include "Model/GameModel/Inventory/Inventory.h"
 #include <iostream>
 #include <string>
 
@@ -31,4 +31,4 @@ public:
   Person(const Person &person) = default;
   Person(){};
 };
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

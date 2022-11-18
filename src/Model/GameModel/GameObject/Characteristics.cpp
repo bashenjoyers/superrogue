@@ -1,7 +1,6 @@
 #include "Characteristics.h"
 #include "Model/Exceptions/exceptions.h"
 
-
 namespace GameModel {
 Characteristics::Characteristics(int damage, int armor, int health,
                                  int dexterity, float luck)
@@ -32,4 +31,4 @@ Characteristics Characteristics::operator*(const int k) {
   return Characteristics(damage * k, armor * k, health * k, dexterity * k,
                          luck);
 };
-}; // namespace superrogue
+}; // namespace GameModel

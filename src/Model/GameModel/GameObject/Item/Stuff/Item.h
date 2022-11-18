@@ -1,7 +1,7 @@
 #pragma once
 #include "Model/Exceptions/exceptions.h"
-#include "Model/GameModel/const.h"
 #include "Model/GameModel/GameObject/Item/IItem.h"
+#include "Model/GameModel/const.h"
 
 namespace GameModel {
 enum class ItemType { HELMET, ARMOR, BOOTS, WEAPON_MELEE, WEAPON_DISTANT };
@@ -15,4 +15,4 @@ public:
   ItemType get_item_type() const noexcept;
   Item &operator=(const Item &other) = default;
 };
-}; // namespace superrogue::GameObject::Item
+}; // namespace GameModel

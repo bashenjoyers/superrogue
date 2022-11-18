@@ -1,6 +1,6 @@
 #include "Traveler.h"
-#include "Model/GameModel/values.h"
 #include "Model/GameModel/abstract.h"
+#include "Model/GameModel/values.h"
 
 using std::string;
 using std::vector;
@@ -55,4 +55,4 @@ CharacterAction Traveler::strategy(vector<MapEntityWithPosition> &cells,
   int dy = person_pos->y - pos.y;
   return default_fight_behavior(dx, dy, possible_actions);
 }
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

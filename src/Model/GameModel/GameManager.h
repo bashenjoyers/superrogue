@@ -2,15 +2,15 @@
 
 #include "Model/GameModel/GameObject/Character/Enemy.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
-#include "Model/GameModel/Map/Map.h"
 #include "Model/GameModel/GameObject/Characteristics.h"
+#include "Model/GameModel/Map/Map.h"
 
 #include "values.h"
 #include <iostream>
+#include <memory>
 #include <random>
 #include <set>
 #include <vector>
-#include <memory>
 
 namespace GameModel {
 struct GameOptions {
@@ -22,8 +22,7 @@ class GameManager {
   Person person;
   Map::MapOptions map_options;
   Person generate_person() noexcept;
-  std::set<Enemy>
-  generate_enemies(GameOptions game_options);
+  std::set<Enemy> generate_enemies(GameOptions game_options);
   Characteristics
   generate_characteristics(float characteristic_k) const noexcept;
   GameOptions generate_game_options() noexcept;
@@ -34,4 +33,4 @@ public:
   std::shared_ptr<Map::Map> generate_map() noexcept;
 };
 
-}; // namespace superrogue::game_manager
+}; // namespace GameModel

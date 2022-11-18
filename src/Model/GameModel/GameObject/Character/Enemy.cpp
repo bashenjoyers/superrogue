@@ -18,4 +18,4 @@ bool Enemy::operator==(const Enemy &other) const noexcept {
 bool Enemy::operator<(const Enemy &other) const noexcept {
   return this->id < other.id;
 }
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel

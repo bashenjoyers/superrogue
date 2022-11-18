@@ -29,4 +29,4 @@ bool IEnemy::damaged(int value) noexcept {
   disturb();
   return ICharacter::damaged(value);
 }
-}; // namespace superrogue::GameObject::Character
+}; // namespace GameModel
