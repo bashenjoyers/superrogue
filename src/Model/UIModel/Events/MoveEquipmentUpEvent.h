@@ -1,0 +1,13 @@
+#pragma once
+
+#include "UIEvent.h"
+
+namespace GameModel::Events {
+
+    class MoveEquipmentUpEvent : public UIEvent {
+    public:
+        MoveEquipmentUpEvent(std::shared_ptr<UIModel::CursorState> cursorState);
+    private:
+        virtual void _execute() override;
+    };
+}

@@ -2,11 +2,11 @@
 
 #include <memory>
 
-#include "model/GameManager.h"
-#include "controller/GameController.h"
+#include "Model/GameModel/GameManager.h"
+#include "Controller/GameController.h"
 
-#include "view/Renderer.h"
-#include "view/Curses/CursesFactory.h"
+#include "View/Renderer.h"
+#include "View/Curses/CursesFactory.h"
 
 class Boot {
 public:
@@ -16,11 +16,11 @@ public:
 
 
 private:
-    std::shared_ptr<superrogue::game_manager::GameManager> gm;
-    std::shared_ptr<superrogue::controller::GameController> gc;
+    std::shared_ptr<GameModel::GameManager> gm;
+    std::shared_ptr<Controller::GameController> gc;
 
     void firstFrameRender();
 
     float inventoryCoef = 0.3;
-    superrogue::view::CursesFactory renderFactory;
+    View::CursesFactory renderFactory;
 };

@@ -1,23 +1,10 @@
-#include "model/GameManager.h"
-#include "model/map/Map.h"
-#include "model/values.h"
+#include "Model/GameModel/GameManager.h"
+#include "Model/GameModel/Map/Map.h"
+#include "Model/GameModel/values.h"
 #include <iostream>
 #include <string>
 
-#include "view/Curses/CursesFactory.h"
-
-#include "model/inventory/Inventory.h"
-
-using std::cout;
-using std::string;
-using superrogue::PotionType;
-using superrogue::game_manager::GameManager;
-using superrogue::game_object::item::Potion;
-using superrogue::map::MapOptions;
-
-
-using namespace superrogue::view;
-using namespace superrogue::inventory;
+#include "View/Curses/CursesFactory.h"
 
 #include "Boot.h"
 
