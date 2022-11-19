@@ -5,7 +5,7 @@
 // TODO
 Boot::Boot()
     : gm(std::make_shared<GameModel::GameManager>(
-          GameModel::Map::MapOptions{.height = 20, .width = 100})),
+          GameModel::Map::MapOptions{.height = 30, .width = 60})),
       renderFactory(inventoryCoef) {}
 
 void Boot::play() {
@@ -22,17 +22,18 @@ void Boot::play() {
 
   gc->addUIObserver(renderFactory.getInventoryRenderer());
 
-  firstFrameRender();
+  auto mapInfo = std::make_shared<GameModel::Map::MapInfo>(map->get_map_info());
+  firstFrameRender(mapInfo);
 
   while (true) {
     gc->interact();
   }
 }
 
-void Boot::firstFrameRender() {
+void Boot::firstFrameRender(std::shared_ptr<GameModel::Map::MapInfo> mapInfo) {
   renderFactory.getInventoryRenderer()->handleEvent(nullptr);
   renderFactory.getInventoryRenderer()->handleEvent(
       0, GameModel::ItemType::HELMET);
 
-  // renderFactory.getMapRenderer()->handleEvent(nullptr);
+  renderFactory.getMapRenderer()->handleEvent(mapInfo);
 }

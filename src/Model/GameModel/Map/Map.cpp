@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "Model/GameModel/values.h"
+#include "Model/GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.h"
 
 #include <memory>
 
@@ -13,8 +14,8 @@ namespace GameModel::Map {
 using namespace Abstract;
 
 MapInfo::MapInfo(vector<MapEntityWithPosition> map_positions,
-                 PersonWithPosition person)
-    : map_positions(map_positions) {
+                 PersonWithPosition person, MapOptions mapOptions)
+    : map_positions(map_positions), mapOptions(mapOptions) {
   name = person.get_name();
   characteristics = person.get_full_characteristics();
   description = person.get_description();
@@ -36,12 +37,21 @@ Map::Map(set<Enemy> enemies, Person person, MapOptions map_options, int level)
 
 GameStatus Map::get_game_status() const noexcept { return game_status; }
 
-void Map::set_positions() const noexcept {
-  // TODO
+void Map::set_positions() noexcept {
+  for (size_t y = 0; y < map.front().size(); y++) {
+      for (size_t x = 0; x < map.size(); x++) {
+          if (map[x][y] == MapEntity::FLOOR) {
+              person_with_position.pos = Abstract::Position(x, y);
+              map[x][y] = MapEntity::PERSON;
+              return;
+          }
+      }
+  }
 }
 
-void Map::generate_map_and_door() const noexcept {
-  // TODO
+void Map::generate_map_and_door() noexcept {
+    BinaryTreeMazeGenerator gen(map_options);
+    convertMapFromBool(gen.generate());
 }
 
 vector<MapEntityWithPosition>
@@ -49,11 +59,24 @@ Map::visible_cells(const Position &pos, int radius, bool ignore_walls = false,
                    const vector<Position> &area = {}) const noexcept {
   // if area is empty - no limits for it
   // TODO (return cells visible from position)
-  if (area.size() == 0) {
+//  if (area.size() == 0) {
+//
+//  } else {
+//  }
+//  return {};
 
-  } else {
-  }
-  return {};
+    vector<MapEntityWithPosition> ans;
+    for (size_t y = 0; y < map.front().size(); y++) {
+        for (size_t x = 0; x < map.size(); x++) {
+            if (
+            map[x][y] == MapEntity::FLOOR
+            || map[x][y] == MapEntity::WALL) ans.push_back(MapEntityWithPosition{ .pos = Position(x, y), .map_entity = map[x][y] });
+
+            if (person_with_position.pos.x == x && person_with_position.pos.y == y) ans.push_back(MapEntityWithPosition{ .pos = Position(x, y), .map_entity = MapEntity::PERSON} );
+        }
+    }
+
+    return ans;
 }
 
 bool Map::in_map(int x, int y) const noexcept {
@@ -119,7 +142,7 @@ MapInfo Map::get_map_info() const noexcept {
       person_with_position.get_person_class().get_settings().visible_radius;
   vector<MapEntityWithPosition> map_positions =
       visible_cells(person_with_position.pos, radius);
-  return MapInfo(map_positions, person_with_position);
+  return MapInfo(map_positions, person_with_position, map_options);
 }
 
 optional<IItem> Map::drop_item() const noexcept {
@@ -206,7 +229,7 @@ bool Map::punch(ICharacter character,
   return character.damaged(damage);
 }
 
-bool Map::any_step_anybody(WithPosition anybody, Position pos) noexcept {
+bool Map::any_step_anybody(WithPosition &anybody, Position pos) noexcept {
   if (is_door_cell(anybody.pos.x, anybody.pos.y)) {
     if ((typeid(anybody) == typeid(PersonWithPosition))) {
       map[anybody.pos.x][anybody.pos.y] = get_cell_type(anybody.pos);
@@ -231,7 +254,7 @@ bool Map::any_step_anybody(WithPosition anybody, Position pos) noexcept {
   return false;
 }
 
-bool Map::step_anybody(CharacterAction action, WithPosition anybody) noexcept {
+bool Map::step_anybody(CharacterAction action, WithPosition &anybody) noexcept {
   bool step_was = false;
   switch (action) {
   case CharacterAction::STEP_FORWARD:
@@ -247,6 +270,7 @@ bool Map::step_anybody(CharacterAction action, WithPosition anybody) noexcept {
       Position new_pos = Position(anybody.pos.x, anybody.pos.y + 1);
       step_was = any_step_anybody(anybody, new_pos);
     }
+    break;
   case CharacterAction::STEP_BACK:
     if (anybody.pos.x - 1 >= 0 &&
         is_vacant_cell(anybody.pos.x - 1, anybody.pos.y)) {
@@ -462,4 +486,14 @@ void Map::action_enemy(
     throw StepException("Enemy: failed " + to_string(action));
   }
 }
+
+void Map::convertMapFromBool(const std::vector<std::vector<bool>> &genMap) {
+    map.assign(genMap.size(), std::vector<MapEntity>(genMap.front().size(), MapEntity::FLOOR));
+    for (size_t y = 0; y < genMap.front().size(); y++) {
+        for (size_t x = 0; x < genMap.size(); x++) {
+            map[x][y] = genMap[x][y] ? MapEntity::FLOOR : MapEntity::WALL;
+        }
+    }
+}
+
 }; // namespace GameModel::Map

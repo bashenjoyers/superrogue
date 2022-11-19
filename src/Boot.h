@@ -18,7 +18,7 @@ private:
   std::shared_ptr<GameModel::GameManager> gm;
   std::shared_ptr<Controller::GameController> gc;
 
-  void firstFrameRender();
+  void firstFrameRender(std::shared_ptr<GameModel::Map::MapInfo> mapInfo);
 
   float inventoryCoef = 0.3;
   View::CursesFactory renderFactory;

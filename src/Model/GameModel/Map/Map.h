@@ -41,6 +41,7 @@ struct MapOptions {
 };
 
 struct MapInfo {
+    MapOptions mapOptions;
   std::vector<Abstract::MapEntityWithPosition> map_positions;
   std::string name;
   Characteristics characteristics;
@@ -48,7 +49,7 @@ struct MapInfo {
   Inventory::Inventory inventory;
   bool weapon_melee;
   MapInfo(std::vector<Abstract::MapEntityWithPosition> map_positions,
-          PersonWithPosition person);
+          PersonWithPosition person, MapOptions mapOptions);
 };
 
 class Map {
@@ -71,15 +72,17 @@ class Map {
                 const std::vector<Abstract::Position> &area) const noexcept;
   std::optional<IItem> drop_item() const noexcept;
   void change_item();
-  bool any_step_anybody(WithPosition anybody, Abstract::Position pos) noexcept;
-  bool step_anybody(CharacterAction action, WithPosition anybody) noexcept;
+  bool any_step_anybody(WithPosition &anybody, Abstract::Position pos) noexcept;
+  bool step_anybody(CharacterAction action, WithPosition &anybody) noexcept;
   bool action_person(CharacterAction action);
   void action_enemy(CharacterAction action, EnemyWithPosition enemy);
   void punch_cells_in_order(std::vector<Abstract::Position> positions,
                             Characteristics characteristics) noexcept;
   bool punch(ICharacter character, Characteristics characteristics) noexcept;
-  void generate_map_and_door() const noexcept;
-  void set_positions() const noexcept;
+  void generate_map_and_door() noexcept;
+  void set_positions() noexcept;
+
+  void convertMapFromBool(const std::vector<std::vector<bool>> &genMap);
 
 public:
   Map(std::set<Enemy> enemies, Person person, MapOptions map_options,

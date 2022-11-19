@@ -49,6 +49,8 @@ set(GAMEMODEL_SOURCES
 
         # MAP
         GameModel/Map/Map.cpp
+        GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.cpp
+        GameModel/Map/Generator/RandomGenerating/MazeGenerator.cpp
 
         PARENT_SCOPE
 )
