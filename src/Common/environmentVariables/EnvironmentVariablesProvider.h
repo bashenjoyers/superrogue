@@ -6,7 +6,7 @@
 #include "Model/GameModel/Map/Generator/FileGenerating/MapEntityProvider.h"
 #include "Model/GameModel/Map/Generator/FileGenerating/FileReader.h"
 
-namespace GameModel::Map {
+namespace Common {
 
     class EnvironmentVariablesProvider {
     public:

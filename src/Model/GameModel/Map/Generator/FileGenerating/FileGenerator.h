@@ -19,7 +19,7 @@ namespace GameModel::Map {
 
         std::shared_ptr<MapEntityProvider> mapEntityProvider;
         std::shared_ptr<FileReader> fileReader;
-        std::shared_ptr<EnvironmentVariablesProvider> environmentVariablesProvider;
+        std::shared_ptr<Common::EnvironmentVariablesProvider> environmentVariablesProvider;
 
         const std::string mapEnvVariableKey = "superrogue_map_path";
     };

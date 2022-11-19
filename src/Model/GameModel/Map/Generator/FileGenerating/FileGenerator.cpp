@@ -3,7 +3,7 @@
 GameModel::Map::FileGenerator::FileGenerator() {
     fileReader = std::make_shared<FileReader>();
     mapEntityProvider = std::make_shared<MapEntityProvider>();
-    environmentVariablesProvider = std::make_shared<EnvironmentVariablesProvider>();
+    environmentVariablesProvider = std::make_shared<Common::EnvironmentVariablesProvider>();
 }
 
 std::vector<std::vector<GameModel::Abstract::MapEntity>> GameModel::Map::FileGenerator::generate() {
