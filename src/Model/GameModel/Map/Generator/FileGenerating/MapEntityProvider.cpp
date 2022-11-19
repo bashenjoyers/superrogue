@@ -13,8 +13,8 @@ GameModel::Map::MapEntityProvider::MapEntityProvider() {
             {'I', Abstract::MapEntity::ENEMY_ORDINARY},
             {'O', Abstract::MapEntity::ENEMY_ORDINARY},
             {'T', Abstract::MapEntity::ENEMY_TRAVELER},
-            {'E', Abstract::MapEntity::ENEMY},
-    }6
+            {'E', Abstract::MapEntity::ENEMY}
+    };
 }
 
 GameModel::Abstract::MapEntity GameModel::Map::MapEntityProvider::getMapEntityBySymbol(char symbol) {
