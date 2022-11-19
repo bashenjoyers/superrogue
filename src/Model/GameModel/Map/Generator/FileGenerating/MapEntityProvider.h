@@ -10,7 +10,7 @@ public:
     MapEntityProvider();
     GameModel::Abstract::MapEntity getMapEntityBySymbol(char symbol);
 private:
-    std::map<int, GameModel::Abstract::MapEntity> entityMapping;
+    std::map<char, GameModel::Abstract::MapEntity> entityMapping;
 };
 }
 

@@ -17,9 +17,9 @@ namespace GameModel::Map {
     private:
         std::vector<std::vector<Abstract::MapEntity>> convertFileContentToMap(const std::vector<std::string>& fileContent);
 
-        std::shared_ptr<MapEntityProvider> mapEntityProvider;
-        std::shared_ptr<FileReader> fileReader;
-        std::shared_ptr<Common::EnvironmentVariablesProvider> environmentVariablesProvider;
+        MapEntityProvider mapEntityProvider;
+        FileReader fileReader;
+        Common::EnvironmentVariablesProvider environmentVariablesProvider;
 
         const std::string mapEnvVariableKey = "superrogue_map_path";
     };
