@@ -59,7 +59,7 @@ class Map {
   PersonWithPosition person_with_position;
   std::vector<std::vector<Abstract::MapEntity>> map;
   Abstract::Position door; // cell near the edge of Map
-  std::map<Abstract::Position, IItem> items;
+  std::map<Abstract::Position, std::shared_ptr<IItem>> items;
   Abstract::GameStatus game_status = Abstract::GameStatus::NEXT_LVL;
 
   bool in_map(int x, int y) const noexcept;
@@ -70,7 +70,7 @@ class Map {
   std::vector<Abstract::MapEntityWithPosition>
   visible_cells(const Abstract::Position &pos, int radius, bool ignore_walls,
                 const std::vector<Abstract::Position> &area) const noexcept;
-  std::optional<IItem> drop_item() const noexcept;
+  std::optional<std::shared_ptr<IItem>> drop_item() const noexcept;
   void change_item();
   bool any_step_anybody(WithPosition &anybody, Abstract::Position pos) noexcept;
   bool step_anybody(CharacterAction action, WithPosition &anybody) noexcept;

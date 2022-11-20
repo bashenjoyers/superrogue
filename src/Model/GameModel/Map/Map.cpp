@@ -37,8 +37,8 @@ Map::Map(set<Enemy> enemies, Person person, MapOptions map_options, int level)
 GameStatus Map::get_game_status() const noexcept { return game_status; }
 
 void Map::set_positions() noexcept {
-  std::uniform_int_distribution<int> x_gen(0, map_options.width);
-  std::uniform_int_distribution<int> y_gen(0, map_options.height);
+  std::uniform_int_distribution<int> x_gen(0, map_options.width-1);
+  std::uniform_int_distribution<int> y_gen(0, map_options.height-1);
   while (true) {
       int x = x_gen(Values::generator);
       int y = y_gen(Values::generator);
@@ -49,26 +49,45 @@ void Map::set_positions() noexcept {
       }
     }
   
-  std::set<EnemyWithPosition> enemies_with_positions_new = {};
-  for (auto enemy : enemies_with_positions) {
-    while (true) {
-      int x = x_gen(Values::generator);
-      int y = y_gen(Values::generator);
-      if (map[x][y] == MapEntity::FLOOR) {
-        enemy.pos = Position(x, y);
-        enemies_with_positions_new.insert(enemy);
-        map[x][y] = enemy.get_enemy_class()->get_map_entity();
-        break;
-      }
-    }
-  }
-  swap(enemies_with_positions, enemies_with_positions_new);
+  // std::set<EnemyWithPosition> enemies_with_positions_new = {};
+  // for (auto enemy : enemies_with_positions) {
+  //   while (true) {
+  //     int x = x_gen(Values::generator);
+  //     int y = y_gen(Values::generator);
+  //     if (map[x][y] == MapEntity::FLOOR) {
+  //       enemy.pos = Position(x, y);
+  //       enemies_with_positions_new.insert(enemy);
+  //       map[x][y] = enemy.get_enemy_class()->get_map_entity();
+  //       break;
+  //     }
+  //   }
+  // }
+  // swap(enemies_with_positions, enemies_with_positions_new);
 }
 
 void Map::generate_map_and_door() noexcept {
   BinaryTreeMazeGenerator gen(map_options);
   convertMapFromBool(gen.generate());
   map[map_options.width-1][map_options.height-1] = MapEntity::DOOR;
+
+  // remove later
+  std::uniform_int_distribution<int> x_gen(0, map_options.width-1);
+  std::uniform_int_distribution<int> y_gen(0, map_options.height-1);
+  for (int i = 0; i < 30; i++) {
+    while (true) {
+      int x = x_gen(Values::generator);
+      int y = y_gen(Values::generator);
+      if (map[x][y] == MapEntity::FLOOR) {
+        auto item = drop_item();
+        if (item != std::nullopt) {
+          items.insert({Position(x,y), item.value()});
+          auto iitem = item.value();
+          map[x][y] = (dynamic_cast<Potion*>(&*iitem) != nullptr) ? MapEntity::POTION : MapEntity::ITEM;
+        }
+        break;
+      }
+    }
+  }
 }
 
 vector<MapEntityWithPosition>
@@ -122,8 +141,8 @@ MapEntity Map::get_cell_type(Position pos) const noexcept {
   if (it_item == items.end()) {
     return MapEntity::FLOOR;
   }
-  IItem iitem = it_item->second;
-  if (typeid(iitem) == typeid(Potion))
+  auto iitem = it_item->second;
+  if (dynamic_cast<Potion*>(&*iitem) != nullptr)
     return MapEntity::POTION;
   return MapEntity::ITEM;
 }
@@ -136,17 +155,17 @@ bool Map::step(CharacterAction action) {
   if (get_game_status() != GameStatus::IN_PROGRESS || !action_person(action)) {
     return false;
   }
-  for (EnemyWithPosition enemy_with_position : enemies_with_positions) {
-    auto enemy_class = enemy_with_position.get_enemy_class();
-    int radius = enemy_class->get_settings().visible_radius;
-    bool ignore_walls = enemy_class->get_settings().ignore_walls;
-    vector<MapEntityWithPosition> cells =
-        visible_cells(enemy_with_position.pos, radius, ignore_walls,
-                      enemy_with_position.area);
-    CharacterAction enemy_action =
-        enemy_class->strategy(cells, enemy_with_position.pos);
-    action_enemy(enemy_action, enemy_with_position);
-  }
+  // for (EnemyWithPosition enemy_with_position : enemies_with_positions) {
+  //   auto enemy_class = enemy_with_position.get_enemy_class();
+  //   int radius = enemy_class->get_settings().visible_radius;
+  //   bool ignore_walls = enemy_class->get_settings().ignore_walls;
+  //   vector<MapEntityWithPosition> cells =
+  //       visible_cells(enemy_with_position.pos, radius, ignore_walls,
+  //                     enemy_with_position.area);
+  //   CharacterAction enemy_action =
+  //       enemy_class->strategy(cells, enemy_with_position.pos);
+  //   action_enemy(enemy_action, enemy_with_position);
+  // }
   return true;
 }
 
@@ -158,8 +177,8 @@ MapInfo Map::get_map_info() const noexcept {
   return MapInfo(map_positions, person_with_position, map_options);
 }
 
-optional<IItem> Map::drop_item() const noexcept {
-  int luck = person_with_position.get_full_characteristics().luck;
+optional<std::shared_ptr<IItem>> Map::drop_item() const noexcept {
+  float luck = person_with_position.get_full_characteristics().luck;
   if (drop_gen(Values::generator) < luck) {
     int i = drop_gen_i(Values::generator);
     if (i > Values::items_types.size()) {
@@ -196,16 +215,16 @@ void Map::punch_cells_in_order(vector<Position> positions,
         }
         if (punched) {
           if (erased_enemy == nullptr) {
-            optional<IItem> item = drop_item();
+            optional<shared_ptr<IItem>> item = drop_item();
             if (item == std::nullopt) {
               map[erased_enemy->pos.x][erased_enemy->pos.y] =
                   get_cell_type(erased_enemy->pos);
             } else {
+              auto a = *item.value();
               items.insert({erased_enemy->pos, item.value()});
-              IItem iitem = item.value();
+              auto iitem = item.value();
               map[erased_enemy->pos.x][erased_enemy->pos.y] =
-                  (typeid(iitem) == typeid(Potion)) ? MapEntity::POTION
-                                                    : MapEntity::ITEM;
+                  (dynamic_cast<Potion*>(&*iitem) != nullptr) ? MapEntity::POTION : MapEntity::ITEM;
             }
             enemies_with_positions.erase(*erased_enemy);
           }
@@ -223,7 +242,7 @@ void Map::punch_cells_in_order(vector<Position> positions,
 bool Map::punch(ICharacter character,
                 Characteristics characteristics) noexcept {
   Characteristics character_characteristics;
-  if ((typeid(character) == typeid(PersonWithPosition))) {
+  if ((dynamic_cast<PersonWithPosition*>(&character) != nullptr)) {
     character_characteristics = dynamic_cast<PersonWithPosition *>(&character)
                                     ->get_full_characteristics();
   } else {
@@ -244,7 +263,7 @@ bool Map::punch(ICharacter character,
 
 bool Map::any_step_anybody(WithPosition &anybody, Position pos) noexcept {
   if (is_door_cell(anybody.pos.x, anybody.pos.y)) {
-    if ((typeid(anybody) == typeid(PersonWithPosition))) {
+    if ((dynamic_cast<PersonWithPosition*>(&anybody) != nullptr)) {
       map[anybody.pos.x][anybody.pos.y] = get_cell_type(anybody.pos);
       map[pos.x][pos.y] = MapEntity::PERSON;
       anybody.pos = pos;
@@ -252,9 +271,8 @@ bool Map::any_step_anybody(WithPosition &anybody, Position pos) noexcept {
       return true;
     }
   } else {
-    map[anybody.pos.x][anybody.pos.y] =
-        get_cell_type(anybody.pos); // FIXME(update later: mb WALL)
-    if (typeid(anybody) == typeid(PersonWithPosition)) {
+    map[anybody.pos.x][anybody.pos.y] = get_cell_type(anybody.pos); // FIXME(update later: mb WALL)
+    if (dynamic_cast<PersonWithPosition*>(&anybody) != nullptr) {
       map[pos.x][pos.y] = MapEntity::PERSON;
     } else {
       map[pos.x][pos.y] = dynamic_cast<EnemyWithPosition *>(&anybody)
@@ -307,57 +325,53 @@ void Map::change_item() {
   person_with_position.take_item();
   auto it_item = items.find(person_with_position.pos);
   if (it_item != items.end()) {
-    IItem iitem = it_item->second;
-    if (typeid(iitem) == typeid(Potion)) {
+    auto iitem = it_item->second;
+    items.erase(it_item);
+    if (dynamic_cast<Potion*>(&*iitem) != nullptr) {
       person_with_position.inventory.add_potion(
-          *dynamic_cast<Potion *>(&it_item->second));
+          *dynamic_cast<Potion *>(&*iitem));
     } else {
       optional<Item> item_before = std::nullopt;
-      Item item = *dynamic_cast<Item *>(&it_item->second);
+      Item item = *dynamic_cast<Item *>(&*iitem);
       switch (item.get_item_type()) {
       case ItemType::HELMET:
         item_before = person_with_position.inventory.get_helmet();
         person_with_position.inventory.set_helmet(item);
         if (item_before.has_value()) {
-          items[person_with_position.pos] = item_before.value();
-        } else {
-          items.erase(it_item);
+          auto item_before_value = item_before.value();
+          items[person_with_position.pos] = std::make_shared<Item>(item_before_value.get_name(), item_before_value.get_description(), item_before_value.get_characteristics(), item_before_value.get_item_type());
         }
         break;
       case ItemType::ARMOR:
         item_before = person_with_position.inventory.get_armor();
         person_with_position.inventory.set_armor(item);
         if (item_before.has_value()) {
-          items[person_with_position.pos] = item_before.value();
-        } else {
-          items.erase(it_item);
+          auto item_before_value = item_before.value();
+          items[person_with_position.pos] = std::make_shared<Item>(item_before_value.get_name(), item_before_value.get_description(), item_before_value.get_characteristics(), item_before_value.get_item_type());
         }
         break;
       case ItemType::BOOTS:
         item_before = person_with_position.inventory.get_boots();
         person_with_position.inventory.set_boots(item);
         if (item_before.has_value()) {
-          items[person_with_position.pos] = item_before.value();
-        } else {
-          items.erase(it_item);
+          auto item_before_value = item_before.value();
+          items[person_with_position.pos] = std::make_shared<Item>(item_before_value.get_name(), item_before_value.get_description(), item_before_value.get_characteristics(), item_before_value.get_item_type());
         }
         break;
       case ItemType::WEAPON_MELEE:
         item_before = person_with_position.inventory.get_weapon_melee();
         person_with_position.inventory.set_weapon_melee(item);
         if (item_before.has_value()) {
-          items[person_with_position.pos] = item_before.value();
-        } else {
-          items.erase(it_item);
+          auto item_before_value = item_before.value();
+          items[person_with_position.pos] = std::make_shared<Item>(item_before_value.get_name(), item_before_value.get_description(), item_before_value.get_characteristics(), item_before_value.get_item_type());
         }
         break;
       case ItemType::WEAPON_DISTANT:
         item_before = person_with_position.inventory.get_weapon_distant();
         person_with_position.inventory.set_weapon_distant(item);
         if (item_before.has_value()) {
-          items[person_with_position.pos] = item_before.value();
-        } else {
-          items.erase(it_item);
+          auto item_before_value = item_before.value();
+          items[person_with_position.pos] = std::make_shared<Item>(item_before_value.get_name(), item_before_value.get_description(), item_before_value.get_characteristics(), item_before_value.get_item_type());
         }
         break;
       default:

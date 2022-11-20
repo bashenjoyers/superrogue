@@ -11,7 +11,7 @@ string IEnemy::get_description() const noexcept {
 std::shared_ptr<IEnemyClass> IEnemy::get_enemy_class() const noexcept { return enemy_class; }
 
 void IEnemy::disturb() noexcept {
-  if (typeid(enemy_class) == typeid(Indifferent)) {
+  if (dynamic_cast<Indifferent*>(&*enemy_class) != nullptr) {
     dynamic_cast<Indifferent *>(&*enemy_class)->disturb();
   }
 }

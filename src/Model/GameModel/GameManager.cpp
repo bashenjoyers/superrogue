@@ -45,7 +45,7 @@ Characteristics GameManager::generate_characteristics(
   int dexterity =
       int(GameModel::Generation::characteristic_gen(Values::generator) /
           PARAMETER_COUNT * points);
-  int luck = GameModel::Generation::luck_gen(Values::generator);
+  float luck = GameModel::Generation::luck_gen(Values::generator);
   return Characteristics(damage, armor, health_default + health, dexterity,
                          luck);
 }

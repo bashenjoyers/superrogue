@@ -30,6 +30,6 @@ public:
   std::optional<Item> get_weapon_distant() const noexcept;
   void add_potion(Potion potion) noexcept;
   std::vector<Potion> get_potions() const noexcept;
-  Potion use_potion(int potion_i);
+  std::optional<Potion> use_potion(int potion_i);
 };
 }; // namespace GameModel::Inventory
