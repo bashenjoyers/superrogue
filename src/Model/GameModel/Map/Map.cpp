@@ -1,7 +1,6 @@
 #include "Map.h"
 #include "Model/GameModel/values.h"
 #include "Model/GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.h"
-
 #include <memory>
 
 using std::max;
@@ -38,20 +37,38 @@ Map::Map(set<Enemy> enemies, Person person, MapOptions map_options, int level)
 GameStatus Map::get_game_status() const noexcept { return game_status; }
 
 void Map::set_positions() noexcept {
-  for (size_t y = 0; y < map.front().size(); y++) {
-      for (size_t x = 0; x < map.size(); x++) {
-          if (map[x][y] == MapEntity::FLOOR) {
-              person_with_position.pos = Abstract::Position(x, y);
-              map[x][y] = MapEntity::PERSON;
-              return;
-          }
+  std::uniform_int_distribution<int> x_gen(0, map_options.width);
+  std::uniform_int_distribution<int> y_gen(0, map_options.height);
+  while (true) {
+      int x = x_gen(Values::generator);
+      int y = y_gen(Values::generator);
+      if (map[x][y] == MapEntity::FLOOR) {
+        person_with_position.pos = Position(x, y);
+        map[x][y] = MapEntity::PERSON;
+        break;
       }
+    }
+  
+  std::set<EnemyWithPosition> enemies_with_positions_new = {};
+  for (auto enemy : enemies_with_positions) {
+    while (true) {
+      int x = x_gen(Values::generator);
+      int y = y_gen(Values::generator);
+      if (map[x][y] == MapEntity::FLOOR) {
+        enemy.pos = Position(x, y);
+        enemies_with_positions_new.insert(enemy);
+        map[x][y] = enemy.get_enemy_class()->get_map_entity();
+        break;
+      }
+    }
   }
+  swap(enemies_with_positions, enemies_with_positions_new);
 }
 
 void Map::generate_map_and_door() noexcept {
-    BinaryTreeMazeGenerator gen(map_options);
-    convertMapFromBool(gen.generate());
+  BinaryTreeMazeGenerator gen(map_options);
+  convertMapFromBool(gen.generate());
+  map[map_options.width-1][map_options.height-1] = MapEntity::DOOR;
 }
 
 vector<MapEntityWithPosition>
@@ -68,11 +85,7 @@ Map::visible_cells(const Position &pos, int radius, bool ignore_walls = false,
     vector<MapEntityWithPosition> ans;
     for (size_t y = 0; y < map.front().size(); y++) {
         for (size_t x = 0; x < map.size(); x++) {
-            if (
-            map[x][y] == MapEntity::FLOOR
-            || map[x][y] == MapEntity::WALL) ans.push_back(MapEntityWithPosition{ .pos = Position(x, y), .map_entity = map[x][y] });
-
-            if (person_with_position.pos.x == x && person_with_position.pos.y == y) ans.push_back(MapEntityWithPosition{ .pos = Position(x, y), .map_entity = MapEntity::PERSON} );
+            ans.push_back(MapEntityWithPosition{ .pos = Position(x, y), .map_entity = map[x][y] });
         }
     }
 
@@ -124,14 +137,14 @@ bool Map::step(CharacterAction action) {
     return false;
   }
   for (EnemyWithPosition enemy_with_position : enemies_with_positions) {
-    IEnemyClass enemy_class = enemy_with_position.get_enemy_class();
-    int radius = enemy_class.get_settings().visible_radius;
-    bool ignore_walls = enemy_class.get_settings().ignore_walls;
+    auto enemy_class = enemy_with_position.get_enemy_class();
+    int radius = enemy_class->get_settings().visible_radius;
+    bool ignore_walls = enemy_class->get_settings().ignore_walls;
     vector<MapEntityWithPosition> cells =
         visible_cells(enemy_with_position.pos, radius, ignore_walls,
                       enemy_with_position.area);
     CharacterAction enemy_action =
-        enemy_class.strategy(cells, enemy_with_position.pos);
+        enemy_class->strategy(cells, enemy_with_position.pos);
     action_enemy(enemy_action, enemy_with_position);
   }
   return true;
@@ -139,7 +152,7 @@ bool Map::step(CharacterAction action) {
 
 MapInfo Map::get_map_info() const noexcept {
   int radius =
-      person_with_position.get_person_class().get_settings().visible_radius;
+      person_with_position.get_person_class()->get_settings().visible_radius;
   vector<MapEntityWithPosition> map_positions =
       visible_cells(person_with_position.pos, radius);
   return MapInfo(map_positions, person_with_position, map_options);
@@ -245,8 +258,7 @@ bool Map::any_step_anybody(WithPosition &anybody, Position pos) noexcept {
       map[pos.x][pos.y] = MapEntity::PERSON;
     } else {
       map[pos.x][pos.y] = dynamic_cast<EnemyWithPosition *>(&anybody)
-                              ->get_enemy_class()
-                              .get_map_entity();
+                              ->get_enemy_class()->get_map_entity();
     }
     anybody.pos = pos;
     return true;
@@ -257,29 +269,29 @@ bool Map::any_step_anybody(WithPosition &anybody, Position pos) noexcept {
 bool Map::step_anybody(CharacterAction action, WithPosition &anybody) noexcept {
   bool step_was = false;
   switch (action) {
-  case CharacterAction::STEP_FORWARD:
+  case CharacterAction::STEP_RIGHT:
     if (anybody.pos.x + 1 < map_options.width &&
         is_vacant_cell(anybody.pos.x + 1, anybody.pos.y)) {
       Position new_pos = Position(anybody.pos.x + 1, anybody.pos.y);
       step_was = any_step_anybody(anybody, new_pos);
     }
     break;
-  case CharacterAction::STEP_RIGHT:
+  case CharacterAction::STEP_BACK:
     if (anybody.pos.y + 1 < map_options.height &&
         is_vacant_cell(anybody.pos.x, anybody.pos.y + 1)) {
       Position new_pos = Position(anybody.pos.x, anybody.pos.y + 1);
       step_was = any_step_anybody(anybody, new_pos);
     }
-    break;
-  case CharacterAction::STEP_BACK:
-    if (anybody.pos.x - 1 >= 0 &&
+    break;  
+  case CharacterAction::STEP_LEFT:
+    if (anybody.pos.x >= 1 &&
         is_vacant_cell(anybody.pos.x - 1, anybody.pos.y)) {
       Position new_pos = Position(anybody.pos.x - 1, anybody.pos.y);
       step_was = any_step_anybody(anybody, new_pos);
     }
     break;
-  case CharacterAction::STEP_LEFT:
-    if (anybody.pos.y - 1 >= 0 &&
+  case CharacterAction::STEP_FORWARD:
+    if (anybody.pos.y >= 1 &&
         is_vacant_cell(anybody.pos.x, anybody.pos.y - 1)) {
       Position new_pos = Position(anybody.pos.x, anybody.pos.y - 1);
       step_was = any_step_anybody(anybody, new_pos);
@@ -361,7 +373,7 @@ bool Map::action_person(CharacterAction action) {
   Position pos = person_with_position.pos;
   vector<Position> positions = {};
   switch (action) {
-  case CharacterAction::PUNCH_FORWARD:
+  case CharacterAction::PUNCH_RIGHT:
     for (int i = 1; i <= range; i++) {
       positions.push_back(Position(pos.x + i, pos.y));
     }
@@ -370,7 +382,7 @@ bool Map::action_person(CharacterAction action) {
                          person_with_position.get_full_characteristics());
     correct = true;
     break;
-  case CharacterAction::PUNCH_RIGHT:
+  case CharacterAction::PUNCH_BACK:
     for (int i = 1; i <= range; i++) {
       positions.push_back(Position(pos.x, pos.y + i));
     }
@@ -379,7 +391,7 @@ bool Map::action_person(CharacterAction action) {
                          person_with_position.get_full_characteristics());
     correct = true;
     break;
-  case CharacterAction::PUNCH_BACK:
+  case CharacterAction::PUNCH_LEFT:
     for (int i = 1; i <= range; i++) {
       positions.push_back(Position(pos.x - i, pos.y));
     }
@@ -388,7 +400,7 @@ bool Map::action_person(CharacterAction action) {
                          person_with_position.get_full_characteristics());
     correct = true;
     break;
-  case CharacterAction::PUNCH_LEFT:
+  case CharacterAction::PUNCH_FORWARD:
     for (int i = 1; i <= range; i++) {
       positions.push_back(Position(pos.x, pos.y - i));
     }
@@ -426,13 +438,13 @@ bool Map::action_person(CharacterAction action) {
 
 void Map::action_enemy(
     CharacterAction action,
-    EnemyWithPosition enemy_with_position) { // FIXME(copypaste)
+    EnemyWithPosition& enemy_with_position) { // FIXME(copypaste)
   bool correct = false;
   int range = enemy_with_position.get_attack_range();
   Position pos = enemy_with_position.pos;
   vector<Position> positions = {};
   switch (action) {
-  case CharacterAction::PUNCH_FORWARD:
+  case CharacterAction::PUNCH_RIGHT:
     for (int i = 1; i <= range; i++) {
       positions.push_back(Position(pos.x + i, pos.y));
     }
@@ -440,7 +452,7 @@ void Map::action_enemy(
     punch_cells_in_order(positions, enemy_with_position.get_characteristics());
     correct = true;
     break;
-  case CharacterAction::PUNCH_RIGHT:
+  case CharacterAction::PUNCH_BACK:
     for (int i = 1; i <= range; i++) {
       positions.push_back(Position(pos.x, pos.y + i));
     }
@@ -448,7 +460,7 @@ void Map::action_enemy(
     punch_cells_in_order(positions, enemy_with_position.get_characteristics());
     correct = true;
     break;
-  case CharacterAction::PUNCH_BACK:
+  case CharacterAction::PUNCH_LEFT:
     for (int i = 1; i <= range; i++) {
       positions.push_back(Position(pos.x - i, pos.y));
     }
@@ -456,7 +468,7 @@ void Map::action_enemy(
     punch_cells_in_order(positions, enemy_with_position.get_characteristics());
     correct = true;
     break;
-  case CharacterAction::PUNCH_LEFT:
+  case CharacterAction::PUNCH_FORWARD:
     for (int i = 1; i <= range; i++) {
       positions.push_back(Position(pos.x, pos.y - i));
     }

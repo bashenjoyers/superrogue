@@ -25,6 +25,82 @@ CharacterAction IEnemyClass::default_fight_behavior(
     if (dx == 0) {
       if (dy > 0) {
         if (dy <= get_settings().attack_range && can_punch) {
+          return CharacterAction::PUNCH_BACK;
+        } else {
+          if (find(possible_actions.begin(), possible_actions.end(),
+                   CharacterAction::STEP_BACK) != possible_actions.end()) {
+            return CharacterAction::STEP_BACK;
+          } else if (find(possible_actions.begin(), possible_actions.end(),
+                          CharacterAction::STEP_RIGHT) !=
+                     possible_actions.end()) {
+            return CharacterAction::STEP_RIGHT;
+          } else if (find(possible_actions.begin(), possible_actions.end(),
+                          CharacterAction::STEP_LEFT) !=
+                     possible_actions.end()) {
+            return CharacterAction::STEP_LEFT;
+          } else {
+            return CharacterAction::WAIT;
+          }
+        }
+      } else {
+        if (-dy <= get_settings().attack_range && can_punch) {
+          return CharacterAction::PUNCH_FORWARD;
+        } else {
+          if (find(possible_actions.begin(), possible_actions.end(),
+                   CharacterAction::STEP_FORWARD) != possible_actions.end()) {
+            return CharacterAction::STEP_FORWARD;
+          } else if (find(possible_actions.begin(), possible_actions.end(),
+                          CharacterAction::STEP_LEFT) !=
+                     possible_actions.end()) {
+            return CharacterAction::STEP_LEFT;
+          } else if (find(possible_actions.begin(), possible_actions.end(),
+                          CharacterAction::STEP_RIGHT) !=
+                     possible_actions.end()) {
+            return CharacterAction::STEP_RIGHT;
+          } else {
+            return CharacterAction::WAIT;
+          }
+        }
+      }
+    } else {
+      if (dy > 0) {
+        if (find(possible_actions.begin(), possible_actions.end(),
+                 CharacterAction::STEP_BACK) != possible_actions.end()) {
+          return CharacterAction::STEP_BACK;
+        } else if (dx > 0 &&
+                   find(possible_actions.begin(), possible_actions.end(),
+                        CharacterAction::STEP_RIGHT) !=
+                       possible_actions.end()) {
+          return CharacterAction::STEP_RIGHT;
+        } else if (dx < 0 &&
+                   find(possible_actions.begin(), possible_actions.end(),
+                        CharacterAction::STEP_LEFT) != possible_actions.end()) {
+          return CharacterAction::STEP_LEFT;
+        } else {
+          return CharacterAction::WAIT;
+        }
+      } else {
+        if (find(possible_actions.begin(), possible_actions.end(),
+                 CharacterAction::STEP_FORWARD) != possible_actions.end()) {
+          return CharacterAction::STEP_FORWARD;
+        } else if (dx > 0 &&
+                   find(possible_actions.begin(), possible_actions.end(),
+                        CharacterAction::STEP_RIGHT) !=
+                       possible_actions.end()) {
+          return CharacterAction::STEP_RIGHT;
+        } else if (dx < 0 &&
+                   find(possible_actions.begin(), possible_actions.end(),
+                        CharacterAction::STEP_LEFT) != possible_actions.end()) {
+          return CharacterAction::STEP_LEFT;
+        } else {
+          return CharacterAction::WAIT;
+        }
+      }
+    }
+  } else {
+    if (dy == 0) {
+      if (dx > 0) {
+        if (dx <= get_settings().attack_range && can_punch) {
           return CharacterAction::PUNCH_RIGHT;
         } else {
           if (find(possible_actions.begin(), possible_actions.end(),
@@ -43,7 +119,7 @@ CharacterAction IEnemyClass::default_fight_behavior(
           }
         }
       } else {
-        if (-dy <= get_settings().attack_range && can_punch) {
+        if (-dx <= get_settings().attack_range && can_punch) {
           return CharacterAction::PUNCH_LEFT;
         } else {
           if (find(possible_actions.begin(), possible_actions.end(),
@@ -63,19 +139,19 @@ CharacterAction IEnemyClass::default_fight_behavior(
         }
       }
     } else {
-      if (dy > 0) {
+      if (dx > 0) {
         if (find(possible_actions.begin(), possible_actions.end(),
                  CharacterAction::STEP_RIGHT) != possible_actions.end()) {
           return CharacterAction::STEP_RIGHT;
-        } else if (dx > 0 &&
+        } else if (dy > 0 &&
                    find(possible_actions.begin(), possible_actions.end(),
-                        CharacterAction::STEP_FORWARD) !=
+                        CharacterAction::STEP_BACK) !=
                        possible_actions.end()) {
-          return CharacterAction::STEP_FORWARD;
-        } else if (dx < 0 &&
-                   find(possible_actions.begin(), possible_actions.end(),
-                        CharacterAction::STEP_BACK) != possible_actions.end()) {
           return CharacterAction::STEP_BACK;
+        } else if (dy < 0 &&
+                   find(possible_actions.begin(), possible_actions.end(),
+                        CharacterAction::STEP_FORWARD) != possible_actions.end()) {
+          return CharacterAction::STEP_FORWARD;
         } else {
           return CharacterAction::WAIT;
         }
@@ -83,91 +159,15 @@ CharacterAction IEnemyClass::default_fight_behavior(
         if (find(possible_actions.begin(), possible_actions.end(),
                  CharacterAction::STEP_LEFT) != possible_actions.end()) {
           return CharacterAction::STEP_LEFT;
-        } else if (dx > 0 &&
-                   find(possible_actions.begin(), possible_actions.end(),
-                        CharacterAction::STEP_FORWARD) !=
-                       possible_actions.end()) {
-          return CharacterAction::STEP_FORWARD;
-        } else if (dx < 0 &&
-                   find(possible_actions.begin(), possible_actions.end(),
-                        CharacterAction::STEP_BACK) != possible_actions.end()) {
-          return CharacterAction::STEP_BACK;
-        } else {
-          return CharacterAction::WAIT;
-        }
-      }
-    }
-  } else {
-    if (dy == 0) {
-      if (dx > 0) {
-        if (dx <= get_settings().attack_range && can_punch) {
-          return CharacterAction::PUNCH_FORWARD;
-        } else {
-          if (find(possible_actions.begin(), possible_actions.end(),
-                   CharacterAction::STEP_FORWARD) != possible_actions.end()) {
-            return CharacterAction::STEP_FORWARD;
-          } else if (find(possible_actions.begin(), possible_actions.end(),
-                          CharacterAction::STEP_LEFT) !=
-                     possible_actions.end()) {
-            return CharacterAction::STEP_LEFT;
-          } else if (find(possible_actions.begin(), possible_actions.end(),
-                          CharacterAction::STEP_RIGHT) !=
-                     possible_actions.end()) {
-            return CharacterAction::STEP_RIGHT;
-          } else {
-            return CharacterAction::WAIT;
-          }
-        }
-      } else {
-        if (-dx <= get_settings().attack_range && can_punch) {
-          return CharacterAction::PUNCH_BACK;
-        } else {
-          if (find(possible_actions.begin(), possible_actions.end(),
-                   CharacterAction::STEP_BACK) != possible_actions.end()) {
-            return CharacterAction::STEP_BACK;
-          } else if (find(possible_actions.begin(), possible_actions.end(),
-                          CharacterAction::STEP_RIGHT) !=
-                     possible_actions.end()) {
-            return CharacterAction::STEP_RIGHT;
-          } else if (find(possible_actions.begin(), possible_actions.end(),
-                          CharacterAction::STEP_LEFT) !=
-                     possible_actions.end()) {
-            return CharacterAction::STEP_LEFT;
-          } else {
-            return CharacterAction::WAIT;
-          }
-        }
-      }
-    } else {
-      if (dx > 0) {
-        if (find(possible_actions.begin(), possible_actions.end(),
-                 CharacterAction::STEP_FORWARD) != possible_actions.end()) {
-          return CharacterAction::STEP_FORWARD;
         } else if (dy > 0 &&
                    find(possible_actions.begin(), possible_actions.end(),
-                        CharacterAction::STEP_RIGHT) !=
+                        CharacterAction::STEP_BACK) !=
                        possible_actions.end()) {
-          return CharacterAction::STEP_RIGHT;
-        } else if (dy < 0 &&
-                   find(possible_actions.begin(), possible_actions.end(),
-                        CharacterAction::STEP_LEFT) != possible_actions.end()) {
-          return CharacterAction::STEP_LEFT;
-        } else {
-          return CharacterAction::WAIT;
-        }
-      } else {
-        if (find(possible_actions.begin(), possible_actions.end(),
-                 CharacterAction::STEP_BACK) != possible_actions.end()) {
           return CharacterAction::STEP_BACK;
-        } else if (dy > 0 &&
-                   find(possible_actions.begin(), possible_actions.end(),
-                        CharacterAction::STEP_RIGHT) !=
-                       possible_actions.end()) {
-          return CharacterAction::STEP_RIGHT;
         } else if (dy < 0 &&
                    find(possible_actions.begin(), possible_actions.end(),
-                        CharacterAction::STEP_LEFT) != possible_actions.end()) {
-          return CharacterAction::STEP_LEFT;
+                        CharacterAction::STEP_FORWARD) != possible_actions.end()) {
+          return CharacterAction::STEP_FORWARD;
         } else {
           return CharacterAction::WAIT;
         }

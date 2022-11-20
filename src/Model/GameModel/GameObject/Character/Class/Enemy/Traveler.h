@@ -9,6 +9,6 @@ public:
   Abstract::MapEntity get_map_entity() const noexcept override;
   Traveler(std::string description, EnemySettings settings = EnemySettings());
   CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
-                           Abstract::Position &pos) noexcept;
+                           Abstract::Position &pos) noexcept override;
 };
 }; // namespace GameModel

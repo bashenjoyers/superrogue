@@ -18,6 +18,7 @@
 #include "const.h"
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 namespace GameModel::Values {
 static const std::vector<StuffType> items_types = {
@@ -202,30 +203,30 @@ static GameModel::Potion get_potion(PotionType potion_type,
   }
 };
 
-static GameModel::IEnemyClass
+static std::shared_ptr<GameModel::IEnemyClass>
 get_enemy_class(GameModel::Abstract::EnemyClass enemy_class,
                 GameModel::EnemySettings settings) {
   switch (enemy_class) {
   case GameModel::Abstract::EnemyClass::AGRESSIVE:
-    return GameModel::Agressive(
+    return std::make_shared<GameModel::Agressive>(
         "Hates everyone (if he sees at least someone (not necessarily a "
         "Character), he strives to reach him and kill)",
         settings);
   case GameModel::Abstract::EnemyClass::FLYING:
-    return GameModel::Flying(
+    return std::make_shared<GameModel::Flying>(
         "Looks down on everyone (can ignore all obstacles (walls))", settings);
   case GameModel::Abstract::EnemyClass::INDIFFERENT:
-    return GameModel::Indifferent(
+    return std::make_shared<GameModel::Indifferent>(
         "He doesn't care about anyone (ignores everyone if he doesn't start "
         "hitting first)",
         settings);
   case GameModel::Abstract::EnemyClass::ORDINARY:
-    return GameModel::Ordinary(
+    return std::make_shared<GameModel::Ordinary>(
         "Ordinary Enemy (without any special features. It has an increased one "
         "of the characteristics)",
         settings);
   case GameModel::Abstract::EnemyClass::TRAVELER:
-    return GameModel::Traveler(
+    return std::make_shared<GameModel::Traveler>(
         "Can be anywhere he wants (it can be located anywhere on the Map)",
         settings);
   default:
@@ -240,27 +241,27 @@ static std::vector<GameModel::Abstract::EnemyClass> enemy_classes = {
     GameModel::Abstract::EnemyClass::ORDINARY,
     GameModel::Abstract::EnemyClass::TRAVELER};
 
-static GameModel::IPersonClass
+static std::shared_ptr<GameModel::IPersonClass>
 get_person_class(GameModel::Abstract::PersonClass person_class,
                  GameModel::PersonSettings settings) {
   switch (person_class) {
   case GameModel::Abstract::PersonClass::ALCHEMIST:
-    return GameModel::Alchemist("A novice alchemist (can have up to 7 Potions)",
+    return std::make_shared<GameModel::Alchemist>("A novice alchemist (can have up to 7 Potions)",
                                 settings);
   case GameModel::Abstract::PersonClass::FARSIGHTED:
-    return GameModel::Farsighted(
+    return std::make_shared<GameModel::Farsighted>(
         "Can see far away (the field of View is 2 times larger than the "
         "standard one)",
         settings);
   case GameModel::Abstract::PersonClass::LUCKY:
-    return GameModel::Lucky("Just lucky Person (has luck >= 0.9)", settings);
+    return std::make_shared<GameModel::Lucky>("Just lucky Person (has luck >= 0.9)", settings);
   case GameModel::Abstract::PersonClass::SECRETIVE:
-    return GameModel::Secretive(
+    return std::make_shared<GameModel::Secretive>(
         "Unrealistically secretive one (the field of View of opponents is 2 "
         "times smaller for the Character)",
         settings);
   case GameModel::Abstract::PersonClass::WISE:
-    return GameModel::Wise(
+    return std::make_shared<GameModel::Wise>(
         "The wisest elder (can see the areas where opponents may be located)",
         settings);
   default:

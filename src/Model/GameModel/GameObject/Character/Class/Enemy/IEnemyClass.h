@@ -26,7 +26,7 @@ public:
   default_fight_behavior(int dx, int dy,
                          std::vector<CharacterAction> &possible_actions,
                          bool can_punch = true) const noexcept;
-  CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
+  virtual CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
                            Abstract::Position &pos) noexcept;
   IEnemyClass(std::string description, EnemySettings settings);
   virtual ~IEnemyClass() {}

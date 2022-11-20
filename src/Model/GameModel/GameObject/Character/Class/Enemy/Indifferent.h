@@ -12,6 +12,6 @@ public:
   Indifferent(std::string description,
               EnemySettings settings = EnemySettings());
   CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
-                           Abstract::Position &pos) noexcept;
+                           Abstract::Position &pos) noexcept override;
 };
 }; // namespace GameModel

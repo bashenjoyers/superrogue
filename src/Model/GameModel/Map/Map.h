@@ -75,7 +75,7 @@ class Map {
   bool any_step_anybody(WithPosition &anybody, Abstract::Position pos) noexcept;
   bool step_anybody(CharacterAction action, WithPosition &anybody) noexcept;
   bool action_person(CharacterAction action);
-  void action_enemy(CharacterAction action, EnemyWithPosition enemy);
+  void action_enemy(CharacterAction action, EnemyWithPosition& enemy);
   void punch_cells_in_order(std::vector<Abstract::Position> positions,
                             Characteristics characteristics) noexcept;
   bool punch(ICharacter character, Characteristics characteristics) noexcept;

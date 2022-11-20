@@ -87,6 +87,6 @@ void Person::level_up(Characteristics characteristics) {
 }
 
 Person::Person(string name, Characteristics characteristics,
-               IPersonClass person_class, Inventory::Inventory inventory)
+               std::shared_ptr<IPersonClass> person_class, Inventory::Inventory inventory)
     : IPerson(name, characteristics, person_class), inventory(inventory){};
 }; // namespace GameModel

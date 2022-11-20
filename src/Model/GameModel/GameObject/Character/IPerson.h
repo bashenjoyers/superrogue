@@ -7,14 +7,14 @@
 
 namespace GameModel {
 class IPerson : public ICharacter {
-  IPersonClass person_class;
+  std::shared_ptr<IPersonClass> person_class;
 
 public:
   std::string get_description() const noexcept override;
   virtual void potion(int potion_i) = 0;
-  IPersonClass get_person_class() const noexcept;
+  std::shared_ptr<IPersonClass> get_person_class() const noexcept;
   IPerson(std::string name, Characteristics characteristics,
-          IPersonClass person_class);
+          std::shared_ptr<IPersonClass> person_class);
   IPerson(){};
   virtual ~IPerson() {}
 };

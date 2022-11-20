@@ -70,7 +70,7 @@ Person GameManager::generate_person() noexcept {
                         ? POTIONS_MAX_ALCHEMIST
                         : DEFAULT_POTIONS_MAX;
   Inventory::Inventory inventory = Inventory::Inventory(potions_max);
-  IPersonClass person_class = get_person_class(person_classes_name, settings);
+  std::shared_ptr<IPersonClass> person_class = get_person_class(person_classes_name, settings);
   return Person(lastname + " " + firstname, characteristics, person_class,
                 inventory);
 }
@@ -88,10 +88,8 @@ set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
         GameModel::Generation::melee_gen(Values::generator) ? 1 : DISTANT_RANGE;
     settings.intellect =
         GameModel::Generation::intellect_gen(Values::generator);
-    EnemyClass enemy_class_name =
-        enemy_classes[GameModel::Generation::enemy_class_i_gen(
-            Values::generator)];
-    IEnemyClass enemy_class = get_enemy_class(enemy_class_name, settings);
+    EnemyClass enemy_class_name = enemy_classes[GameModel::Generation::enemy_class_i_gen(Values::generator)];
+    std::shared_ptr<IEnemyClass> enemy_class = get_enemy_class(enemy_class_name, settings);
     if (enemy_class_name == EnemyClass::ORDINARY) {
       switch (GameModel::Generation::characteristic_i_gen(Values::generator)) {
       case 0:

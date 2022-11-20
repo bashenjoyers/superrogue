@@ -35,11 +35,31 @@ CharConverter::convertMap(std::shared_ptr<GameModel::Map::MapInfo> mapInfo) {
           } break;
 
           case GameModel::Abstract::MapEntity::ITEM : {
-              renderElem = 'I';
+              renderElem = 'S';
           } break;
 
           case GameModel::Abstract::MapEntity::ENEMY : {
               renderElem = 'E';
+          } break;
+
+          case GameModel::Abstract::MapEntity::ENEMY_AGRESSIVE : {
+              renderElem = 'A';
+          } break;
+
+          case GameModel::Abstract::MapEntity::ENEMY_FLYING : {
+              renderElem = 'F';
+          } break;
+
+          case GameModel::Abstract::MapEntity::ENEMY_INDIFFERENT : {
+              renderElem = 'I';
+          } break;
+
+          case GameModel::Abstract::MapEntity::ENEMY_ORDINARY : {
+              renderElem = 'O';
+          } break;
+
+          case GameModel::Abstract::MapEntity::ENEMY_TRAVELER : {
+              renderElem = 'T';
           } break;
 
           default:

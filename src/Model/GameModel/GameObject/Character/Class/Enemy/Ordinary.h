@@ -10,6 +10,6 @@ public:
   Ordinary(std::string description, EnemySettings settings = EnemySettings());
   CharacterAction
   strategy(std::vector<GameModel::Abstract::MapEntityWithPosition> &cells,
-           GameModel::Abstract::Position &pos) noexcept;
+           GameModel::Abstract::Position &pos) noexcept override;
 };
 }; // namespace GameModel

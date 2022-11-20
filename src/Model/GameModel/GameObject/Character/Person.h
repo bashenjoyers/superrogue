@@ -25,7 +25,7 @@ public:
   Characteristics get_full_characteristics() const noexcept;
   void level_up(Characteristics characteristics);
   Person(std::string name, Characteristics characteristics,
-         IPersonClass person_class,
+         std::shared_ptr<IPersonClass> person_class,
          Inventory::Inventory inventory =
              Inventory::Inventory(DEFAULT_POTIONS_MAX));
   Person(const Person &person) = default;
