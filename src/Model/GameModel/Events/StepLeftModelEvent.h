@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Model/GameModel/Events/ModelEvent.h"
+#include "Model/IEvent.h"
 #include "Model/GameModel/Map/Map.h"
 
 namespace GameModel::Events {
-class StepLeftModelEvent : public ModelEvent {
+class StepLeftModelEvent : public IEvent {
 public:
-  StepLeftModelEvent(std::shared_ptr<Map::Map> map);
+  StepLeftModelEvent(std::shared_ptr<Map::Map> map, std::shared_ptr<UIModel::CursorState> cursorState);
 
 private:
   void _execute() override;

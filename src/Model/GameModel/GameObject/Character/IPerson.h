@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+#include <memory>
+
 namespace GameModel {
 class IPerson : public ICharacter {
   std::shared_ptr<IPersonClass> person_class;

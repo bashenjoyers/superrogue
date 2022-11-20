@@ -6,6 +6,8 @@
 #include <random>
 #include <string>
 
+#include <memory>
+
 namespace GameModel {
 class IEnemy : public ICharacter {
   std::shared_ptr<IEnemyClass> enemy_class;

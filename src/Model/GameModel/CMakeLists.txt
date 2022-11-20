@@ -3,7 +3,6 @@ set(GAMEMODEL_SOURCES
 
         # EVENTS
         GameModel/Events/ChangeItemModelEvent.cpp
-        GameModel/Events/ModelEvent.cpp
         GameModel/Events/PotionModelEvent.cpp
         GameModel/Events/PunchBackModelEvent.cpp
         GameModel/Events/PunchForwardModelEvent.cpp
