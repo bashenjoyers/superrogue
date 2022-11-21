@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @brief helper structures and enums for GameModel and game in general
+ * 
+ */
+
 namespace GameModel::Abstract {
 enum class MapEntity {
   PERSON,

@@ -4,6 +4,10 @@
 
 namespace GameModel::Map {
 
+/**
+ * @brief just BinaryTreeMazeGenerator. 
+ * 
+ */
 class BinaryTreeMazeGenerator : public MazeGenerator {
 public:
     BinaryTreeMazeGenerator(MapOptions mapOptions);

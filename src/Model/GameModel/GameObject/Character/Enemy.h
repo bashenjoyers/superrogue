@@ -6,14 +6,22 @@
 #include <memory>
 
 namespace GameModel {
+// Enemy class contains all parameters about him and actions
 class Enemy : public IEnemy {
+  // enemy ID on the level
   int id;
 
 public:
+  // called when the character steps
   void step() override;
+  // called when the character punch smb
   void punch() override;
+  // internal storage statements
   bool operator==(const Enemy &other) const noexcept;
   bool operator<(const Enemy &other) const noexcept;
+  /**
+   * @brief Construct a new Enemy according to the standard characteristics of the object
+   */
   Enemy(int id, std::string name, Characteristics characteristics,
         std::shared_ptr<IEnemyClass> enemy_class);
   Enemy(const Enemy &enemy) = default;

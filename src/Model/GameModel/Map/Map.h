@@ -15,43 +15,82 @@
 #include <map>
 #include <set>
 
+/**
+ * @brief The essence of the map. The game takes place on it, it can process user requests and manage other entities
+ * 
+ */
 namespace GameModel::Map {
+/**
+ * @brief selection of generators for map
+ * 
+ */
 static std::uniform_real_distribution<float> dodge_gen(0, 1);
 static std::uniform_real_distribution<float> drop_gen(0, 1);
 static std::uniform_int_distribution<int>
     drop_gen_i(0, Values::items_types.size() + Values::potions_types.size() - 1);
 
+/**
+ * @brief interface for anything that has a position
+ * 
+ */
 struct WithPosition {
   Abstract::Position pos;
   virtual ~WithPosition(){};
 };
 
+/**
+ * @brief Class containing person and position
+ * 
+ */
 struct PersonWithPosition : Person, WithPosition {
   PersonWithPosition(Person person) : Person(person){};
 };
 
+/**
+ * @brief Class containing enemy and position
+ * 
+ */
 struct EnemyWithPosition : Enemy, WithPosition {
   std::vector<Abstract::Position> area; // where Enemy can be
   EnemyWithPosition(Enemy enemy) : Enemy(enemy){};
 };
 
+/**
+ * @brief options for map generation
+ * 
+ */
 struct MapOptions {
   int height;
   int width;
 };
 
+/**
+ * @brief entity that encapsulates all the necessary information for view
+ * 
+ */
 struct MapInfo {
-    MapOptions mapOptions;
+  // options for map generation
+  MapOptions mapOptions;
+  // visible entities with their positions
   std::vector<Abstract::MapEntityWithPosition> map_positions;
+  // person name
   std::string name;
+  // person characteristics
   Characteristics characteristics;
+  // person description
   std::string description;
+  // person inventory
   Inventory::Inventory inventory;
+  // character's chosen weapon - melee
   bool weapon_melee;
   MapInfo(std::vector<Abstract::MapEntityWithPosition> map_positions,
           PersonWithPosition person, MapOptions mapOptions);
 };
 
+/**
+ * @brief map class on which everything happens
+ * 
+ */
 class Map {
   MapOptions map_options;
   int level;
@@ -85,10 +124,39 @@ class Map {
   void convertMapFromBool(const std::vector<std::vector<bool>> &genMap);
 
 public:
+  /**
+   * @brief Construct a new Map object
+   * 
+   * @param enemies - set of enemies that are on the map
+   * @param person - just person
+   * @param map_options - map options
+   * @param level - map level
+   */
   Map(std::set<Enemy> enemies, Person person, MapOptions map_options,
       int level);
+  /**
+   * @brief Get the game status. 
+   * 
+   * @return Abstract::GameStatus 
+   *  IN_PROGRESS - normal state, the card accepts user actions and processes them
+   *  NEXT_LVL - the state when the map with this level is completed and you need to go to the next one. Actions stop processing
+   *  END - game over (person died), actions are not processed
+   */
   Abstract::GameStatus get_game_status() const noexcept;
+
+  /**
+   * @brief performs a character action (if it is not possible, it is ignored and nothing else happens). After the character's turn, the actions of other creatures are processed and effects from things occur (for more details, see potions)
+   * 
+   * @param action - the player's action that he wants to do (it's clear from the name)
+   * @return whether the action was performed (true if it is valid and the game is in the status IN_PROGRESS)
+   */
   bool step(CharacterAction action);
+
+  /**
+   * @brief returns everything needed for the view module
+   * 
+   * @return MapInfo
+   */
   MapInfo get_map_info() const noexcept;
 };
 }; // namespace GameModel::Map

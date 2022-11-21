@@ -4,8 +4,14 @@
 
 #include <string>
 namespace GameModel {
+/**
+ * @brief Person settings
+ * 
+ */
 struct PersonSettings {
+  // character visibility range
   int visible_radius;
+  // creates settings by radius
   PersonSettings(int visible_radius = DEFAULT_VISIBLE_RADIUS)
       : visible_radius(visible_radius) {}
 };

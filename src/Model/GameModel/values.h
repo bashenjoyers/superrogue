@@ -20,6 +20,11 @@
 #include <vector>
 #include <memory>
 
+/**
+ * @brief a file containing all sorts of entities, types of things, etc.
+ * 
+ */
+
 namespace GameModel::Values {
 static const std::vector<StuffType> items_types = {
     StuffType::HELM,     StuffType::CAP,       StuffType::PANAMA,
@@ -222,12 +227,12 @@ get_enemy_class(GameModel::Abstract::EnemyClass enemy_class,
         settings);
   case GameModel::Abstract::EnemyClass::ORDINARY:
     return std::make_shared<GameModel::Ordinary>(
-        "Ordinary Enemy (without any special features. It has an increased one "
+        "Ordinary Enemy (without any special features. He has an increased one "
         "of the characteristics)",
         settings);
   case GameModel::Abstract::EnemyClass::TRAVELER:
     return std::make_shared<GameModel::Traveler>(
-        "Can be anywhere he wants (it can be located anywhere on the Map)",
+        "Can be anywhere he wants (he can be located anywhere on the Map)",
         settings);
   default:
     throw GameObjectException("wrong PersonClass");
