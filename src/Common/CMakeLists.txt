@@ -1,5 +1,6 @@
 set(COMMON_SOURCES
         Ncurses/CursesAPI.cpp
+        environmentVariables/EnvironmentVariablesProvider.cpp
 )
 
 find_package(Curses REQUIRED)
