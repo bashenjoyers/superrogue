@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @brief file containing constants for the game
+ * 
+ */
+
 namespace GameModel {
 const int PARAMETER_COUNT = 4;
 const int DEFAULT_VISIBLE_RADIUS = 4;

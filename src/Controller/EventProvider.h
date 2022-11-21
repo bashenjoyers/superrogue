@@ -17,13 +17,11 @@ public:
                 std::shared_ptr<GameModel::Map::Map> map);
   std::shared_ptr<GameModel::Events::IEvent> getEventByKey(int key);
 
-  void addUIObserver(std::shared_ptr<UIModelObserver> obs);
-  void addModelObserver(std::shared_ptr<GameModelObserver> obs);
+  void addObserver(std::shared_ptr<ModelObserver> obs);
 
 private:
   std::map<int, std::shared_ptr<GameModel::Events::IEvent>> keyMapping;
-  std::shared_ptr<GameModel::Events::EmptyEvent> emptyEvent =
-      std::make_shared<GameModel::Events::EmptyEvent>();
+  std::shared_ptr<GameModel::Events::EmptyEvent> emptyEvent;
 };
 
 } // namespace Controller

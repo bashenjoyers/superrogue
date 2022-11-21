@@ -1,7 +1,6 @@
 set(VIEW_SOURCES
-        Renderer.cpp
-        Curses/CursesFactory.cpp
         Curses/CursesRenderer.cpp
+        Curses/CursesSubRenderer.cpp
         Converters/CharDataConverter.cpp
 )
 

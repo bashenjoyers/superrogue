@@ -4,6 +4,6 @@ namespace GameModel::Events {
 
 void EmptyEvent::_execute() {}
 
-void EmptyEvent::notify() {}
+    EmptyEvent::EmptyEvent(std::shared_ptr<Map::Map> map, std::shared_ptr<UIModel::CursorState> cursorState) : IEvent(map, cursorState) {}
 
 } // namespace GameModel::Events

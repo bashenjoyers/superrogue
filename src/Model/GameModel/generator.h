@@ -1,6 +1,10 @@
 #pragma once
 #include <random>
 
+/**
+ * @brief entity with a set of generators for GameModel
+ * 
+ */
 namespace GameModel::Generation {
 static std::uniform_int_distribution<int> enemies_count_gen(ENEMIES_COUNT_MIN,
                                                             ENEMIES_COUNT_MAX);

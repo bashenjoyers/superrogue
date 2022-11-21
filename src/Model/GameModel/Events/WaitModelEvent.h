@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Model/GameModel/Events/ModelEvent.h"
+#include "Model/IEvent.h"
 #include "Model/GameModel/Map/Map.h"
+#include "Model/UIModel/CursorState.h"
 
 namespace GameModel::Events {
-class WaitModelEvent : public ModelEvent {
+class WaitModelEvent : public IEvent {
 public:
-  WaitModelEvent(std::shared_ptr<Map::Map> map);
+  WaitModelEvent(std::shared_ptr<Map::Map> map, std::shared_ptr<UIModel::CursorState> cursorState);
 
 private:
   void _execute() override;
