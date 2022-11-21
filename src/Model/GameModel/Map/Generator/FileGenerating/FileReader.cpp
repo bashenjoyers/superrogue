@@ -1,5 +1,6 @@
 #include "FileReader.h"
 #include <fstream>
+#include "Model/Exceptions/exceptions.h"
 
 std::vector<std::string> GameModel::Map::FileReader::readFile(const std::string& path) {
     std::vector<std::string> result = std::vector<std::string>();
@@ -11,6 +12,8 @@ std::vector<std::string> GameModel::Map::FileReader::readFile(const std::string&
             result.push_back(line);
         }
         file.close();
+    } else {
+        throw ConfigReadException("Unable to open config file");
     }
     return result;
 }

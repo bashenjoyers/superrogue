@@ -10,6 +10,16 @@ public:
   const char *what() const noexcept override;
 };
 
+class ConfigReadException : public std::exception {
+    std::string message;
+
+public:
+    explicit ConfigReadException(const std::string &message);
+
+    const char *what() const noexcept override;
+};
+
+
 class InventoryException : public GameObjectException {
 public:
   explicit InventoryException(const std::string &message);
