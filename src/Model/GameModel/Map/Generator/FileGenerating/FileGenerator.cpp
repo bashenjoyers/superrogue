@@ -3,12 +3,11 @@
 GameModel::Map::FileGenerator::FileGenerator() {
     fileReader = FileReader();
     mapEntityProvider = MapEntityProvider();
-    environmentVariablesProvider = Common::EnvironmentVariablesProvider();
 }
 
 std::vector<std::vector<GameModel::Abstract::MapEntity>> GameModel::Map::FileGenerator::generate() {
-    std::string pathToMap = environmentVariablesProvider.getEnvironmentVariable(mapEnvVariableKey);
-    std::vector<std::string> fileContent = fileReader.readFile(pathToMap);
+    std::string pathToMap = Common::EnvironmentVariablesProvider::getEnvironmentVariable(mapEnvVariableKey);
+    std::vector<std::string> fileContent = fileReader.readFile(pathToMap + level1Map);
     return convertFileContentToMap(fileContent);
 }
 

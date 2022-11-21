@@ -19,8 +19,8 @@ namespace GameModel::Map {
 
         MapEntityProvider mapEntityProvider;
         FileReader fileReader;
-        Common::EnvironmentVariablesProvider environmentVariablesProvider;
 
         const std::string mapEnvVariableKey = "superrogue_map_path";
+        const std::string level1Map = "level1.txt"
     };
 }

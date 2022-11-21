@@ -10,6 +10,6 @@ namespace Common {
 
     class EnvironmentVariablesProvider {
     public:
-        static std::string& getEnvironmentVariable(const std::string & variable);
+        static std::string getEnvironmentVariable(const std::string & variable);
     };
 }
