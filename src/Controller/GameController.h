@@ -24,20 +24,6 @@ public:
   */
   void interact();
 
-  /**
-  * @brief adds observer for UI events
-  *
-  * @param obs - observer to add
-  */
-  void addUIObserver(std::shared_ptr<UIModelObserver> obs);
-
-  /**
-  * @brief adds observer for Model events
-  *
-  * @param obs - observer to add
-  */
-  void addModelObserver(std::shared_ptr<GameModelObserver> obs);
-
 private:
   std::shared_ptr<Ncurses::NcursesAPI> ncursesApi;
   std::unique_ptr<EventProvider> eventProvider;

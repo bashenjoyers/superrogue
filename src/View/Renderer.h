@@ -9,8 +9,7 @@ namespace View {
 
 struct RenderInfo {
   std::shared_ptr<GameModel::Map::MapInfo> mapInfo;
-  size_t potionsCursor = 0;
-  GameModel::ItemType equipmentCursor = GameModel::ItemType::ARMOR;
+  std::shared_ptr<UIModel::CursorState> cursorState;
 };
 
 struct WindowConfig {
@@ -21,19 +20,13 @@ struct WindowConfig {
 };
 
 // TODO add I?
-class Renderer : public GameModelObserver, public UIModelObserver {
+class Renderer {
 public:
+    ~Renderer() = default;
   virtual void render(RenderInfo info) = 0;
 
-  virtual void resetWindow(WindowConfig) = 0;
-
-  void handleEvent(std::shared_ptr<GameModel::Map::MapInfo> map) override;
-
-  void handleEvent(size_t potionsCur,
-                   GameModel::ItemType equipmentCur) override;
-
 protected:
-  WindowConfig conf;
+  WindowConfig config;
 };
 
 } // namespace View

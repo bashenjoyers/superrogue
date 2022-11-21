@@ -5,7 +5,7 @@
 #include "Controller/GameController.h"
 #include "Model/GameModel/GameManager.h"
 
-#include "View/Curses/CursesFactory.h"
+#include "View/Curses/CursesRenderer.h"
 #include "View/Renderer.h"
 
 class Boot {
@@ -18,8 +18,11 @@ private:
   std::shared_ptr<GameModel::GameManager> gm;
   std::shared_ptr<Controller::GameController> gc;
 
-  void firstFrameRender(std::shared_ptr<GameModel::Map::MapInfo> mapInfo);
+    std::shared_ptr<View::CursesRenderer> renderer;
 
-  float inventoryCoef = 0.3;
-  View::CursesFactory renderFactory;
+    GameModel::Map::MapOptions mapOptions = {
+            .height = 30,
+            .width = 60,
+    };
+
 };

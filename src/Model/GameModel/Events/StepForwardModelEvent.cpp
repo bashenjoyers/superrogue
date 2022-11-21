@@ -4,8 +4,8 @@ using std::make_shared;
 using std::shared_ptr;
 
 namespace GameModel::Events {
-StepForwardModelEvent::StepForwardModelEvent(std::shared_ptr<Map::Map> map)
-    : ModelEvent(map){};
+StepForwardModelEvent::StepForwardModelEvent(std::shared_ptr<Map::Map> map, std::shared_ptr<UIModel::CursorState> cursorState)
+    : IEvent(map, cursorState){};
 
 void StepForwardModelEvent::_execute() {
   map->step(CharacterAction::STEP_FORWARD);

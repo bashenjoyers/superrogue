@@ -33,22 +33,15 @@ public:
   std::shared_ptr<GameModel::Events::IEvent> getEventByKey(int key);
 
   /**
-  * @brief adds observer for UI events
+  * @brief adds observer for events
   *
-  * @param obs - represents observer for UI events
+  * @param obs - represents observer
   */
-  void addUIObserver(std::shared_ptr<UIModelObserver> obs);
-  /**
-  * @brief adds observer for Model events
-  *
-  * @param obs - represents observer for Model events
-  */
-  void addModelObserver(std::shared_ptr<GameModelObserver> obs);
+  void addObserver(std::shared_ptr<ModelObserver> obs);
 
 private:
   std::map<int, std::shared_ptr<GameModel::Events::IEvent>> keyMapping;
-  std::shared_ptr<GameModel::Events::EmptyEvent> emptyEvent =
-      std::make_shared<GameModel::Events::EmptyEvent>();
+  std::shared_ptr<GameModel::Events::EmptyEvent> emptyEvent;
 };
 
 } // namespace Controller

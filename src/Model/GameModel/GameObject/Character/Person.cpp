@@ -33,12 +33,15 @@ void Person::before_any_action() { // FIXME(do it adequately)
 
 void Person::potion(int potion_i) {
   before_any_action();
-  Potion potion = inventory.use_potion(potion_i);
-  int health = potion.get_characteristics().health;
-  if (health != 0) { // health potion
-    this->add_health(health);
-  } else {
-    used_potions.push_back(potion);
+  optional<Potion> potion_opt = inventory.use_potion(potion_i);
+  if (potion_opt != std::nullopt) {
+    Potion potion = potion_opt.value();
+    int health = potion.get_characteristics().health;
+    if (health != 0) { // health potion
+      this->add_health(health);
+    } else {
+      used_potions.push_back(potion);
+    }
   }
 }
 
@@ -87,6 +90,6 @@ void Person::level_up(Characteristics characteristics) {
 }
 
 Person::Person(string name, Characteristics characteristics,
-               IPersonClass person_class, Inventory::Inventory inventory)
+               std::shared_ptr<IPersonClass> person_class, Inventory::Inventory inventory)
     : IPerson(name, characteristics, person_class), inventory(inventory){};
 }; // namespace GameModel

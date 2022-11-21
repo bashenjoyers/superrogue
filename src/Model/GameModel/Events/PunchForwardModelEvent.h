@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Model/GameModel/Events/ModelEvent.h"
+#include "Model/IEvent.h"
 #include "Model/GameModel/Map/Map.h"
 
 namespace GameModel::Events {
-class PunchForwardModelEvent : public ModelEvent {
+class PunchForwardModelEvent : public IEvent {
 public:
-  PunchForwardModelEvent(std::shared_ptr<Map::Map> map);
+  PunchForwardModelEvent(std::shared_ptr<Map::Map> map, std::shared_ptr<UIModel::CursorState> cursorState);
 
 private:
   void _execute() override;

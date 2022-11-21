@@ -2,6 +2,7 @@
 #include "Model/Exceptions/exceptions.h"
 
 namespace GameModel {
+// character's possible actions. all but CHANGE_ITEM count as an action in the game
 enum class CharacterAction {
   STEP_FORWARD,
   STEP_RIGHT,
@@ -14,10 +15,11 @@ enum class CharacterAction {
   POTION_1,
   POTION_2,
   POTION_3,
-  CHANGE_ITEM,
+  CHANGE_ITEM,  // do not count as an action in the game (enemies do not move, the duration of the zakat does not decrease)
   WAIT,
 };
 
+// string representation of actions for internal errors
 inline const std::string to_string(CharacterAction action) {
   switch (action) {
   case CharacterAction::STEP_FORWARD:

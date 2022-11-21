@@ -5,16 +5,30 @@
 #include <iostream>
 #include <string>
 
+#include <memory>
+
 namespace GameModel {
+/**
+ * @brief Person interface
+ * 
+ */
 class IPerson : public ICharacter {
-  IPersonClass person_class;
+  // Person class. Gives certain features when playin
+  std::shared_ptr<IPersonClass> person_class;
 
 public:
+  // redefines description to class description
   std::string get_description() const noexcept override;
+  // use potion
   virtual void potion(int potion_i) = 0;
-  IPersonClass get_person_class() const noexcept;
+  // returns the class of the character
+  std::shared_ptr<IPersonClass> get_person_class() const noexcept;
+  /**
+   * @brief Construct a new IPerson by standard properties (without a description, it is taken separately) and by person class
+   * 
+   */
   IPerson(std::string name, Characteristics characteristics,
-          IPersonClass person_class);
+          std::shared_ptr<IPersonClass> person_class);
   IPerson(){};
   virtual ~IPerson() {}
 };

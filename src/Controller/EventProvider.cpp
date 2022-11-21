@@ -11,23 +11,25 @@ using namespace UIModel;
 EventProvider::EventProvider(std::shared_ptr<CursorState> cursorState,
                              std::shared_ptr<GameModel::Map::Map> map) {
   keyMapping = {
-      {'[', std::make_shared<MovePotionDownEvent>(cursorState)},
-      {']', std::make_shared<MovePotionUpEvent>(cursorState)},
-      {'-', std::make_shared<MoveEquipmentDownEvent>(cursorState)},
-      {'=', std::make_shared<MoveEquipmentUpEvent>(cursorState)},
+      {'[', std::make_shared<MovePotionDownEvent>(map, cursorState)},
+      {']', std::make_shared<MovePotionUpEvent>(map, cursorState)},
+      {'-', std::make_shared<MoveEquipmentDownEvent>(map, cursorState)},
+      {'=', std::make_shared<MoveEquipmentUpEvent>(map, cursorState)},
 
-      {'e', std::make_shared<ChangeItemModelEvent>(map)},
+      {'e', std::make_shared<ChangeItemModelEvent>(map, cursorState)},
       {'p', std::make_shared<PotionModelEvent>(map, cursorState)},
-      //{'s', std::make_shared<PunchBackModelEvent>(map)},
-      //{'w', std::make_shared<PunchForwardModelEvent>(map)},
-      //{'a', std::make_shared<PunchLeftModelEvent>(map)},
-      //{'d', std::make_shared<PunchRightModelEvent>(map)},
-      {'s', std::make_shared<StepBackModelEvent>(map)},
-      {'w', std::make_shared<StepForwardModelEvent>(map)},
-      {'a', std::make_shared<StepLeftModelEvent>(map)},
-      {'d', std::make_shared<StepRightModelEvent>(map)},
-      {'.', std::make_shared<WaitModelEvent>(map)},
+      {'s', std::make_shared<PunchBackModelEvent>(map, cursorState)},
+      {'w', std::make_shared<PunchForwardModelEvent>(map, cursorState)},
+      {'a', std::make_shared<PunchLeftModelEvent>(map, cursorState)},
+      {'d', std::make_shared<PunchRightModelEvent>(map, cursorState)},
+      {'k', std::make_shared<StepBackModelEvent>(map, cursorState)},
+      {'i', std::make_shared<StepForwardModelEvent>(map, cursorState)},
+      {'j', std::make_shared<StepLeftModelEvent>(map, cursorState)},
+      {'l', std::make_shared<StepRightModelEvent>(map, cursorState)},
+      {'.', std::make_shared<WaitModelEvent>(map, cursorState)},
   };
+
+  emptyEvent = std::make_shared<GameModel::Events::EmptyEvent>(map, cursorState);
 }
 
 std::shared_ptr<IEvent> EventProvider::getEventByKey(int key) {
@@ -36,21 +38,13 @@ std::shared_ptr<IEvent> EventProvider::getEventByKey(int key) {
   return keyMapping[key];
 }
 
-void EventProvider::addUIObserver(std::shared_ptr<UIModelObserver> obs) {
-  for (auto [key, event] : keyMapping) {
-    auto e = std::dynamic_pointer_cast<UIEvent>(event);
-    if (e) {
-      e->addObserver(obs);
+void EventProvider::addObserver(std::shared_ptr<ModelObserver> obs) {
+    for (auto &[key, event]: keyMapping) {
+        event->addObserver(obs);
     }
-  }
+    emptyEvent->addObserver(obs);
+
+    emptyEvent->execute();    // to connect
 }
 
-void EventProvider::addModelObserver(std::shared_ptr<GameModelObserver> obs) {
-  for (auto [key, event] : keyMapping) {
-    auto e = std::dynamic_pointer_cast<ModelEvent>(event);
-    if (e) {
-      e->addObserver(obs);
-    }
-  }
-}
 } // namespace Controller

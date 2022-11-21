@@ -6,7 +6,6 @@ set(UIMODEL_SOURCES
         UIModel/Events/MoveEquipmentUpEvent.cpp
         UIModel/Events/MovePotionDownEvent.cpp
         UIModel/Events/MovePotionUpEvent.cpp
-        UIModel/Events/UIEvent.cpp
 
         PARENT_SCOPE
 )

@@ -1,144 +1,65 @@
 #include "CursesRenderer.h"
-using namespace Ncurses;
 
 namespace View {
-
-CursesRenderer::CursesRenderer(WindowConfig conf) : Renderer() {
-  NcursesAPI::NcursesAPIPtr ncurses = NcursesAPI::getInstance();
-  win = ncurses->getWindow(conf.height, conf.width, conf.xPos, conf.yPos);
-  win->setName("Viewport");
+    CursesRenderer::CursesRenderer() : Renderer() {
+  resync();
+  mainMenuRenderer = std::make_shared<CursesMainMenuRenderer>(getMainMenuWindowConfig());
+        inventoryRenderer = std::make_shared<CursesInventoryRenderer>(getInventoryWindowConfig());
+        mapRenderer = std::make_shared<CursesMapRenderer>(getMapWindowConfig());
+        heroInfoRenderer = std::make_shared<CursesHeroInfoRenderer>(getHeroInfoWindowConfig());
 }
 
-CursesMapRenderer::CursesMapRenderer(WindowConfig conf)
-    : CursesRenderer(conf) {}
+void CursesRenderer::resync() {
+  Ncurses::NcursesAPI::NcursesAPIPtr ncurses =
+      Ncurses::NcursesAPI::getInstance();
+    config = WindowConfig{.width = ncurses->getXsize(), .height = ncurses->getYsize(), .xPos = 0, .yPos = 0};
 
-void CursesMapRenderer::render(RenderInfo info) {
-  win->clearViewport();
-  std::vector<std::vector<char>> renderMap = conv.convertMap(info.mapInfo);
+  if (mainMenuRenderer)
+    mainMenuRenderer->resetWindow(getMainMenuWindowConfig());
+  if (mapRenderer)
+    mapRenderer->resetWindow(getMapWindowConfig());
+  if (inventoryRenderer)
+    inventoryRenderer->resetWindow(getInventoryWindowConfig());
+}
 
-  for (size_t y = 0; y < renderMap[0].size(); y++) {
-    for (size_t x = 0; x < renderMap.size(); x++) {
-      win->drawElement(renderMap[x][y], x, y);
+WindowConfig CursesRenderer::getMapWindowConfig() {
+  return WindowConfig{.width =
+                          (size_t)((float)config.width * mapCoef),
+                      .height = config.height,
+                      .xPos = config.xPos + (size_t)((float)config.width * (1 - mapCoef)),
+                      .yPos = config.yPos};
+}
+
+WindowConfig CursesRenderer::getInventoryWindowConfig() {
+  return WindowConfig{.width = (size_t)((float)config.width * (1 - mapCoef)),
+                      .height = (size_t)((float)config.height * (1 - heroInfoCoef)),
+                      .xPos = config.xPos,
+                      .yPos = config.yPos + (size_t)((float)config.height * heroInfoCoef)};
+}
+
+WindowConfig CursesRenderer::getMainMenuWindowConfig() {
+  return config;
+}
+
+void CursesRenderer::handleEvent(std::shared_ptr<GameModel::Map::MapInfo> map,
+                                std::shared_ptr<UIModel::CursorState> cursors) {
+    RenderInfo info = {
+            .mapInfo = map,
+            .cursorState = cursors
+    };
+    render(info);
+}
+
+    void CursesRenderer::render(RenderInfo info) {
+        mapRenderer->render(info);
+        inventoryRenderer->render(info);
+        heroInfoRenderer->render(info);
     }
-  }
-}
 
-CursesInventoryRenderer::CursesInventoryRenderer(WindowConfig conf)
-    : CursesRenderer(conf) {
-  size_t eqTypeCnt = 5; // TODO
-  NcursesAPI::NcursesAPIPtr ncurses = NcursesAPI::getInstance();
-  equipmentWin = ncurses->getWindow(eqTypeCnt + 2, conf.width - 2,
-                                    conf.xPos + 1, conf.yPos + 1);
-  potionsWin =
-      ncurses->getWindow(conf.height - eqTypeCnt - 2 - 2, conf.width - 2,
-                         conf.xPos + 1, conf.yPos + 1 + eqTypeCnt + 2);
-}
-
-void CursesInventoryRenderer::render(RenderInfo info) {
-  auto inventory = GameModel::Inventory::Inventory::getEmptyInventory();
-  if (info.mapInfo != nullptr)
-    inventory = info.mapInfo->inventory;
-
-  auto potions = inventory.get_potions();
-  size_t curRow = 0;
-
-  for (auto potion : potions) {
-    renderPotion(potion, curRow, curRow == info.potionsCursor);
-    curRow++;
-  }
-
-  {
-    using GameModel::ItemType;
-    renderItem(inventory.get_armor(), ItemType::ARMOR,
-               info.equipmentCursor == ItemType::ARMOR);
-    renderItem(inventory.get_boots(), ItemType::BOOTS,
-               info.equipmentCursor == ItemType::BOOTS);
-    renderItem(inventory.get_helmet(), ItemType::HELMET,
-               info.equipmentCursor == ItemType::HELMET);
-    renderItem(inventory.get_weapon_distant(), ItemType::WEAPON_DISTANT,
-               info.equipmentCursor == ItemType::WEAPON_DISTANT);
-    renderItem(inventory.get_weapon_melee(), ItemType::WEAPON_MELEE,
-               info.equipmentCursor == ItemType::WEAPON_MELEE);
-  }
-}
-
-void CursesInventoryRenderer::resetWindow(WindowConfig newConf) {
-  size_t eqTypeCnt = 5; // TODO
-  CursesRenderer::resetWindow(newConf);
-
-  equipmentWin->resize(eqTypeCnt + 2, conf.width - 2);
-  equipmentWin->moveTo(conf.xPos + 1, conf.yPos + 1);
-  potionsWin->resize(conf.height - eqTypeCnt - 2 - 2, conf.width - 2);
-  potionsWin->moveTo(conf.xPos + 1, conf.yPos + 1 + eqTypeCnt + 2);
-}
-
-void CursesInventoryRenderer::renderPotion(GameModel::Potion p, size_t row,
-                                           bool selected) {
-  size_t padding = 1; // todo
-  size_t symNamePadding = 3;
-
-  char symbol = conv.convertPotion();
-  potionsWin->drawElement(symbol, padding, row, selected);
-  potionsWin->drawString(p.get_name(), padding + 1 + symNamePadding, row);
-}
-
-void CursesInventoryRenderer::renderItem(std::optional<GameModel::Item> item,
-                                         GameModel::ItemType type,
-                                         bool selected) {
-  using GameModel::Item;
-
-  char symbol = conv.convertItem(type);
-  size_t padding = 1;
-  size_t symNamePadding = 3;
-  size_t row = getItemRowOffset(type);
-  equipmentWin->drawElement(symbol, padding, row, selected);
-
-  if (!item.has_value())
-    return;
-
-  Item i = item.value();
-  equipmentWin->drawString(i.get_name(), padding + 1 + symNamePadding, row);
-}
-
-size_t CursesInventoryRenderer::getItemRowOffset(GameModel::ItemType type) {
-  using GameModel::ItemType;
-
-  switch (type) {
-  case ItemType::ARMOR: {
-    return 1;
-  } break;
-
-  case ItemType::BOOTS: {
-    return 2;
-  } break;
-
-  case ItemType::HELMET: {
-    return 0;
-  } break;
-
-  case ItemType::WEAPON_DISTANT: {
-    return 4;
-  } break;
-
-  case ItemType::WEAPON_MELEE: {
-    return 3;
-  } break;
-
-  default: {
-    throw std::runtime_error("Unknown Item type"); // TODO
-  } break;
-  }
-}
-
-CursesMainMenuRenderer::CursesMainMenuRenderer(WindowConfig conf)
-    : CursesRenderer(conf) {}
-
-void CursesMainMenuRenderer::render(RenderInfo info) {}
-
-void CursesRenderer::resetWindow(WindowConfig newConf) {
-  conf = newConf;
-  win->resize(conf.width, conf.height);
-  win->moveTo(conf.xPos, conf.yPos);
-}
-
+    WindowConfig CursesRenderer::getHeroInfoWindowConfig() {
+        return WindowConfig{.width = (size_t)((float)config.width * (1 - mapCoef)),
+                .height = (size_t)((float)config.height * heroInfoCoef),
+                .xPos = config.xPos,
+                .yPos = config.yPos};
+    }
 } // namespace View

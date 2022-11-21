@@ -18,6 +18,12 @@
 #include "const.h"
 #include <unordered_map>
 #include <vector>
+#include <memory>
+
+/**
+ * @brief a file containing all sorts of entities, types of things, etc.
+ * 
+ */
 
 namespace GameModel::Values {
 static const std::vector<StuffType> items_types = {
@@ -32,122 +38,122 @@ static const std::vector<StuffType> items_types = {
     StuffType::BOW,      StuffType::CROSSBOW,  StuffType::SLING,
     StuffType::DIRKS};
 
-static GameModel::Item get_item(StuffType stuff_type, int characteristics_k) {
+static std::shared_ptr<GameModel::Item> get_item(StuffType stuff_type, int characteristics_k) {
   switch (stuff_type) {
   case StuffType::HELM:
-    return GameModel::Item("helm", "good old hauberk",
+    return std::make_shared<GameModel::Item>("helm", "good old hauberk",
                            Characteristics(0, 3, 0, -1, 0) * characteristics_k,
                            GameModel::ItemType::HELMET);
   case StuffType::CAP:
-    return GameModel::Item("cap", "good old cap",
+    return std::make_shared<GameModel::Item>("cap", "good old cap",
                            Characteristics(0, 1, 0, 1, 0) * characteristics_k,
                            GameModel::ItemType::HELMET);
   case StuffType::PANAMA:
-    return GameModel::Item("panama", "good old panama",
+    return std::make_shared<GameModel::Item>("panama", "good old panama",
                            Characteristics(0, 0, 0, 2, 0) * characteristics_k,
                            GameModel::ItemType::HELMET);
   case StuffType::HAT:
-    return GameModel::Item("hat", "good old hat",
+    return std::make_shared<GameModel::Item>("hat", "good old hat",
                            Characteristics(0, 2, 0, 0, 0) * characteristics_k,
                            GameModel::ItemType::HELMET);
 
   case StuffType::HAUBERK:
-    return GameModel::Item("hauberk", "good old hauberk",
+    return std::make_shared<GameModel::Item>("hauberk", "good old hauberk",
                            Characteristics(0, 3, 0, -1, 0) * characteristics_k,
                            GameModel::ItemType::ARMOR);
   case StuffType::TUNIC:
-    return GameModel::Item("tunic", "good old tunic",
+    return std::make_shared<GameModel::Item>("tunic", "good old tunic",
                            Characteristics(0, 2, 0, 0, 0) * characteristics_k,
                            GameModel::ItemType::ARMOR);
   case StuffType::JACKET:
-    return GameModel::Item("jacket", "good old jacket",
+    return std::make_shared<GameModel::Item>("jacket", "good old jacket",
                            Characteristics(0, 1, 0, 1, 0) * characteristics_k,
                            GameModel::ItemType::ARMOR);
   case StuffType::T_SHIRT:
-    return GameModel::Item("t_shirt", "good old t_shirt",
+    return std::make_shared<GameModel::Item>("t_shirt", "good old t_shirt",
                            Characteristics(0, 0, 0, 2, 0) * characteristics_k,
                            GameModel::ItemType::ARMOR);
 
   case StuffType::SNEAKERS:
-    return GameModel::Item("sneakers", "good old sneakers",
+    return std::make_shared<GameModel::Item>("sneakers", "good old sneakers",
                            Characteristics(0, 0, 0, 2, 0) * characteristics_k,
                            GameModel::ItemType::BOOTS);
   case StuffType::SLIPPERS:
-    return GameModel::Item("slippers", "good old slippers",
+    return std::make_shared<GameModel::Item>("slippers", "good old slippers",
                            Characteristics(1, 2, 0, -1, 0) * characteristics_k,
                            GameModel::ItemType::BOOTS);
   case StuffType::BOOTS:
-    return GameModel::Item("boots", "good old boots",
+    return std::make_shared<GameModel::Item>("boots", "good old boots",
                            Characteristics(0, 2, 0, 0, 0) * characteristics_k,
                            GameModel::ItemType::BOOTS);
   case StuffType::SANDALS:
-    return GameModel::Item("sandals", "good old sandals",
+    return std::make_shared<GameModel::Item>("sandals", "good old sandals",
                            Characteristics(0, 1, 0, 1, 0) * characteristics_k,
                            GameModel::ItemType::BOOTS);
 
   case StuffType::SWORD:
-    return GameModel::Item("sword", "good old sword",
+    return std::make_shared<GameModel::Item>("sword", "good old sword",
                            Characteristics(4, -1, 0, -1, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_MELEE);
   case StuffType::KATANA:
-    return GameModel::Item("katana", "good old katana",
+    return std::make_shared<GameModel::Item>("katana", "good old katana",
                            Characteristics(2, 0, 0, 0, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_MELEE);
   case StuffType::KNIFE:
-    return GameModel::Item("knife", "good old knife",
+    return std::make_shared<GameModel::Item>("knife", "good old knife",
                            Characteristics(2, -1, 0, 1, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_MELEE);
   case StuffType::SABER:
-    return GameModel::Item("saber", "good old saber",
+    return std::make_shared<GameModel::Item>("saber", "good old saber",
                            Characteristics(3, -1, 0, 0, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_MELEE);
   case StuffType::BITA:
-    return GameModel::Item("bita", "good old bita",
+    return std::make_shared<GameModel::Item>("bita", "good old bita",
                            Characteristics(1, 0, 0, 1, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_MELEE);
   case StuffType::MACE:
-    return GameModel::Item("mace", "good old mace",
+    return std::make_shared<GameModel::Item>("mace", "good old mace",
                            Characteristics(3, 0, 0, -1, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_MELEE);
   case StuffType::SPEAR:
-    return GameModel::Item("spear", "good old spear",
+    return std::make_shared<GameModel::Item>("spear", "good old spear",
                            Characteristics(3, 0, 0, -1, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_MELEE);
   case StuffType::NUNCHUCKS:
-    return GameModel::Item("nunchucks", "good old nunchucks",
+    return std::make_shared<GameModel::Item>("nunchucks", "good old nunchucks",
                            Characteristics(2, -2, 0, 2, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_MELEE);
 
   case StuffType::PISTOL:
-    return GameModel::Item("pistol", "good old pistol",
+    return std::make_shared<GameModel::Item>("pistol", "good old pistol",
                            Characteristics(2, 0, 0, 0, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::GUN:
-    return GameModel::Item("gun", "good old gun",
+    return std::make_shared<GameModel::Item>("gun", "good old gun",
                            Characteristics(3, -1, 0, 0, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::RIFLE:
-    return GameModel::Item("rifle", "good old rifle",
+    return std::make_shared<GameModel::Item>("rifle", "good old rifle",
                            Characteristics(3, 0, 0, -1, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::AUTOMATIC_RIFLE:
-    return GameModel::Item("automatic_rifle", "good old automatic_rifle",
+    return std::make_shared<GameModel::Item>("automatic_rifle", "good old automatic_rifle",
                            Characteristics(4, -1, 0, -1, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::BOW:
-    return GameModel::Item("bow", "good old bow",
+    return std::make_shared<GameModel::Item>("bow", "good old bow",
                            Characteristics(1, 0, 0, 1, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::CROSSBOW:
-    return GameModel::Item("crossbow", "good old crossbow",
+    return std::make_shared<GameModel::Item>("crossbow", "good old crossbow",
                            Characteristics(2, -1, 0, 1, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::SLING:
-    return GameModel::Item("sling", "good old sling",
+    return std::make_shared<GameModel::Item>("sling", "good old sling",
                            Characteristics(2, 1, 0, -1, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_DISTANT);
   case StuffType::DIRKS:
-    return GameModel::Item("dirks", "good old dirks",
+    return std::make_shared<GameModel::Item>("dirks", "good old dirks",
                            Characteristics(1, -1, 0, 2, 0) * characteristics_k,
                            GameModel::ItemType::WEAPON_DISTANT);
   default:
@@ -161,39 +167,39 @@ static const std::vector<PotionType> potions_types = {
     PotionType::HEALTH_POTION,    PotionType::HEALTH_BIG_POTION,
     PotionType::DEXTERITY_POTION, PotionType::DEXTERITY_LONG_POTION};
 
-static GameModel::Potion get_potion(PotionType potion_type,
+static std::shared_ptr<GameModel::Potion> get_potion(PotionType potion_type,
                                     int characteristics_k) {
   switch (potion_type) {
   case PotionType::DAMAGE_POTION:
-    return GameModel::Potion("damage_potion", "damage increase",
+    return std::make_shared<GameModel::Potion>("damage_potion", "damage increase",
                              Characteristics(2, 0, 0, 0, 0) * characteristics_k,
                              DEFAULT_POTION_WORK_TIME);
   case PotionType::DAMAGE_LONG_POTION:
-    return GameModel::Potion("damage_long_potion", "damage increase (long)",
+    return std::make_shared<GameModel::Potion>("damage_long_potion", "damage increase (long)",
                              Characteristics(1, 0, 0, 0, 0) * characteristics_k,
                              DEFAULT_POTION_WORK_TIME * 2);
   case PotionType::ARMOR_POTION:
-    return GameModel::Potion("armor_potion", "armor increase",
+    return std::make_shared<GameModel::Potion>("armor_potion", "armor increase",
                              Characteristics(0, 2, 0, 0, 0) * characteristics_k,
                              DEFAULT_POTION_WORK_TIME);
   case PotionType::ARMOR_LONG_POTION:
-    return GameModel::Potion("armor_long_potion", "armor increase (long)",
+    return std::make_shared<GameModel::Potion>("armor_long_potion", "armor increase (long)",
                              Characteristics(0, 1, 0, 0, 0) * characteristics_k,
                              DEFAULT_POTION_WORK_TIME * 2);
   case PotionType::HEALTH_POTION:
-    return GameModel::Potion("health_potion", "add 1 hp",
+    return std::make_shared<GameModel::Potion>("health_potion", "add 1 hp",
                              Characteristics(0, 0, 1, 0, 0) * characteristics_k,
                              1);
   case PotionType::HEALTH_BIG_POTION:
-    return GameModel::Potion("health_potion_big", "add 2 hp",
+    return std::make_shared<GameModel::Potion>("health_potion_big", "add 2 hp",
                              Characteristics(0, 0, 2, 0, 0) * characteristics_k,
                              1);
   case PotionType::DEXTERITY_POTION:
-    return GameModel::Potion("dexterity_potion", "dexterity increase",
+    return std::make_shared<GameModel::Potion>("dexterity_potion", "dexterity increase",
                              Characteristics(0, 0, 0, 2, 0) * characteristics_k,
                              DEFAULT_POTION_WORK_TIME);
   case PotionType::DEXTERITY_LONG_POTION:
-    return GameModel::Potion("dexterity_long_potion",
+    return std::make_shared<GameModel::Potion>("dexterity_long_potion",
                              "dexterity increase (long)",
                              Characteristics(0, 0, 0, 1, 0) * characteristics_k,
                              DEFAULT_POTION_WORK_TIME * 2);
@@ -202,31 +208,31 @@ static GameModel::Potion get_potion(PotionType potion_type,
   }
 };
 
-static GameModel::IEnemyClass
+static std::shared_ptr<GameModel::IEnemyClass>
 get_enemy_class(GameModel::Abstract::EnemyClass enemy_class,
                 GameModel::EnemySettings settings) {
   switch (enemy_class) {
   case GameModel::Abstract::EnemyClass::AGRESSIVE:
-    return GameModel::Agressive(
+    return std::make_shared<GameModel::Agressive>(
         "Hates everyone (if he sees at least someone (not necessarily a "
         "Character), he strives to reach him and kill)",
         settings);
   case GameModel::Abstract::EnemyClass::FLYING:
-    return GameModel::Flying(
+    return std::make_shared<GameModel::Flying>(
         "Looks down on everyone (can ignore all obstacles (walls))", settings);
   case GameModel::Abstract::EnemyClass::INDIFFERENT:
-    return GameModel::Indifferent(
+    return std::make_shared<GameModel::Indifferent>(
         "He doesn't care about anyone (ignores everyone if he doesn't start "
         "hitting first)",
         settings);
   case GameModel::Abstract::EnemyClass::ORDINARY:
-    return GameModel::Ordinary(
-        "Ordinary Enemy (without any special features. It has an increased one "
+    return std::make_shared<GameModel::Ordinary>(
+        "Ordinary Enemy (without any special features. He has an increased one "
         "of the characteristics)",
         settings);
   case GameModel::Abstract::EnemyClass::TRAVELER:
-    return GameModel::Traveler(
-        "Can be anywhere he wants (it can be located anywhere on the Map)",
+    return std::make_shared<GameModel::Traveler>(
+        "Can be anywhere he wants (he can be located anywhere on the Map)",
         settings);
   default:
     throw GameObjectException("wrong PersonClass");
@@ -240,27 +246,27 @@ static std::vector<GameModel::Abstract::EnemyClass> enemy_classes = {
     GameModel::Abstract::EnemyClass::ORDINARY,
     GameModel::Abstract::EnemyClass::TRAVELER};
 
-static GameModel::IPersonClass
+static std::shared_ptr<GameModel::IPersonClass>
 get_person_class(GameModel::Abstract::PersonClass person_class,
                  GameModel::PersonSettings settings) {
   switch (person_class) {
   case GameModel::Abstract::PersonClass::ALCHEMIST:
-    return GameModel::Alchemist("A novice alchemist (can have up to 7 Potions)",
+    return std::make_shared<GameModel::Alchemist>("A novice alchemist (can have up to 7 Potions)",
                                 settings);
   case GameModel::Abstract::PersonClass::FARSIGHTED:
-    return GameModel::Farsighted(
+    return std::make_shared<GameModel::Farsighted>(
         "Can see far away (the field of View is 2 times larger than the "
         "standard one)",
         settings);
   case GameModel::Abstract::PersonClass::LUCKY:
-    return GameModel::Lucky("Just lucky Person (has luck >= 0.9)", settings);
+    return std::make_shared<GameModel::Lucky>("Just lucky Person (has luck >= 0.9)", settings);
   case GameModel::Abstract::PersonClass::SECRETIVE:
-    return GameModel::Secretive(
+    return std::make_shared<GameModel::Secretive>(
         "Unrealistically secretive one (the field of View of opponents is 2 "
         "times smaller for the Character)",
         settings);
   case GameModel::Abstract::PersonClass::WISE:
-    return GameModel::Wise(
+    return std::make_shared<GameModel::Wise>(
         "The wisest elder (can see the areas where opponents may be located)",
         settings);
   default:
