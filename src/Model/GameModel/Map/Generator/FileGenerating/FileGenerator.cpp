@@ -6,8 +6,8 @@ GameModel::Map::FileGenerator::FileGenerator() {
 }
 
 std::vector<std::vector<GameModel::Abstract::MapEntity>> GameModel::Map::FileGenerator::generate() {
-    std::string pathToMap = Common::EnvironmentVariablesProvider::getEnvironmentVariable(mapEnvVariableKey);
-    std::vector<std::string> fileContent = fileReader.readFile(pathToMap + level1Map);
+    std::string pathToMap = Common::EnvironmentVariablesProvider::getEnvironmentVariable(SUPERROGUE_CONTENT);
+    std::vector<std::string> fileContent = fileReader.readFile(pathToMap + "/" + level1Map);
     return convertFileContentToMap(fileContent);
 }
 
