@@ -5,7 +5,6 @@
 
 #include <memory>
 
-
 // TODO add I?
 // TODO in Common???
 class GameModelObserver {
