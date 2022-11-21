@@ -54,7 +54,6 @@ set(GAMEMODEL_SOURCES
         GameModel/Map/Generator/FileGenerating/MapEntityProvider.cpp
         GameModel/Map/Generator/FileGenerating/FileReader.cpp
         GameModel/Map/Generator/FileGenerating/FileGenerator.cpp
-        GameModel/Map/Generator/FileGenerating/EnvironmentVariablesProvider.cpp
 
         PARENT_SCOPE
 )
