@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 /**
  * @brief helper structures and enums for GameModel and game in general
  * 
