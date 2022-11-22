@@ -8,10 +8,22 @@
 #include "View/Curses/CursesRenderer.h"
 #include "View/Renderer.h"
 
+/**
+ * @brief Class that boots the game
+ * 
+ */
 class Boot {
 public:
+  /**
+   * @brief Construct a new Boot object
+   * 
+   */
   Boot();
 
+  /**
+   * @brief Start play process
+   * 
+   */
   void play();
 
 private:
