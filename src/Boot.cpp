@@ -1,6 +1,7 @@
 #include "Boot.h"
 
 #include <memory>
+using GameModel::Abstract::GameStatus;
 
 // TODO
 Boot::Boot() {}
@@ -18,6 +19,9 @@ void Boot::play() {
     gc = std::make_shared<Controller::GameController>(std::move(provider));
 
     while (true) {
+        if (map->get_game_status() == GameStatus::NEXT_LVL) {
+            gm->generate_map();
+        }
         gc->interact();
     }
 }

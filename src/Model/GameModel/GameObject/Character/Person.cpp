@@ -7,28 +7,15 @@ using std::string;
 using std::vector;
 
 namespace GameModel {
-void Person::before_any_action() { // FIXME(do it adequately)
-  vector<int> delete_potions_i = {};
-  int i = 0;
+void Person::before_any_action() {
+  vector<Potion> new_used_potions = {};
   for (Potion potion : used_potions) {
     potion.step();
-    if (!potion.is_work()) {
-      delete_potions_i.push_back(i);
+    if (potion.is_work()) {
+      new_used_potions.push_back(potion);
     }
-    i++;
   }
-  if (delete_potions_i.size() != 0) {
-    std::reverse(delete_potions_i.begin(), delete_potions_i.end());
-    vector<Potion> new_used_potions = {};
-    for (int i = 0; i < used_potions.size(); i++) {
-      if (delete_potions_i.size() != 0 && i == delete_potions_i.back()) {
-        delete_potions_i.pop_back();
-        continue;
-      }
-      new_used_potions.push_back(used_potions[i]);
-    }
-    used_potions = new_used_potions;
-  }
+  this->used_potions = new_used_potions;
 }
 
 void Person::potion(int potion_i) {
@@ -75,6 +62,9 @@ Person::get_full_characteristics() const noexcept { // FIXME(do it adequately)
   for (Potion potion : used_potions) {
     full_characteristics += potion.get_characteristics();
   }
+  full_characteristics.armor = std::max(full_characteristics.armor, 0);
+  full_characteristics.damage = std::max(full_characteristics.damage, 0);
+  full_characteristics.dexterity = std::max(full_characteristics.dexterity, 0);
   return full_characteristics;
 }
 
@@ -91,5 +81,5 @@ void Person::level_up(Characteristics characteristics) {
 
 Person::Person(string name, Characteristics characteristics,
                std::shared_ptr<IPersonClass> person_class, Inventory::Inventory inventory)
-    : IPerson(name, characteristics, person_class), inventory(inventory){};
+    : IPerson(name, characteristics, person_class), inventory(inventory){} 
 }; // namespace GameModel

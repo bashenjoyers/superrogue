@@ -181,11 +181,11 @@ optional<std::shared_ptr<IItem>> Map::drop_item() const noexcept {
   float luck = person_with_position.get_full_characteristics().luck;
   if (drop_gen(Values::generator) < luck) {
     int i = drop_gen_i(Values::generator);
-    if (i > Values::items_types.size()) {
+    if (i >= Values::items_types.size()) {
       i -= Values::items_types.size();
-      return Values::get_potion(Values::potions_types[i], level);
+      return Values::get_potion(Values::potions_types.at(i), level);
     }
-    return Values::get_item(Values::items_types[i], level);
+    return Values::get_item(Values::items_types.at(i), level);
   }
   return std::nullopt;
 };
@@ -262,7 +262,7 @@ bool Map::punch(ICharacter character,
 }
 
 bool Map::any_step_anybody(WithPosition &anybody, Position pos) noexcept {
-  if (is_door_cell(anybody.pos.x, anybody.pos.y)) {
+  if (is_door_cell(pos.x, pos.y)) {
     if ((dynamic_cast<PersonWithPosition*>(&anybody) != nullptr)) {
       map[anybody.pos.x][anybody.pos.y] = get_cell_type(anybody.pos);
       map[pos.x][pos.y] = MapEntity::PERSON;
