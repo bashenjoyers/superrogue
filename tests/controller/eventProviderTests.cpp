@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "controller/EventProvider.h"
+#include "Controller/EventProvider.h"
 #include "Model/GameModel/Events/PunchBackModelEvent.h"
 #include "Model/GameModel/Events/PunchForwardModelEvent.h"
 #include "Model/GameModel/Events/PunchLeftModelEvent.h"
