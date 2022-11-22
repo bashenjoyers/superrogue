@@ -6,9 +6,22 @@
 
 namespace Controller {
 
+/**
+ * @brief a class that interacts with user input data
+ */
 class GameController {
 public:
+
+  /**
+  * @brief constructs a new Game Controller object
+  *
+  * @param provider - provides event to execute after user's key pressed
+  */
   GameController(std::unique_ptr<EventProvider> provider);
+
+  /**
+  * @brief method to handle a single user's key
+  */
   void interact();
 
 private:

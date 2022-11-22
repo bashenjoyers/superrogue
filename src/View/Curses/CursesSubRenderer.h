@@ -10,9 +10,24 @@
 namespace View {
 // TODO howto handle resize
 
+/**
+ * @brief Curses sub renderer -- some parts of screen (e.g. inventory and map)
+ * 
+ */
 class CursesSubRenderer : public Renderer {
 public:
-    CursesSubRenderer(WindowConfig conf);
+  /**
+   * @brief Construct a new Curses Sub Renderer object
+   * 
+   * @param conf -- window configuration
+   */
+  CursesSubRenderer(WindowConfig conf);
+
+  /**
+   * @brief reset window settings (for resize)
+   * 
+   * @param newConf 
+   */
   virtual void resetWindow(WindowConfig newConf);
 
 protected:
@@ -20,18 +35,52 @@ protected:
   Ncurses::NcursesWindow::NcursesWIndowPtr win;
 };
 
+/**
+ * @brief Map subrenderer
+ * 
+ */
 class CursesMapRenderer : public CursesSubRenderer {
 public:
+  /**
+   * @brief Construct a new Curses Map Renderer object
+   * 
+   * @param conf -- window configuration
+   */
   CursesMapRenderer(WindowConfig conf);
 
+  /**
+   * @brief render map
+   * 
+   * @param info -- current game state
+   */
   virtual void render(RenderInfo info) override;
 };
 
+/**
+ * @brief Inventory subrenderer
+ * 
+ */
 class CursesInventoryRenderer : public CursesSubRenderer {
 public:
+  /**
+   * @brief Construct a new Curses Inventory Renderer object
+   * 
+   * @param conf -- window configuration
+   */
   CursesInventoryRenderer(WindowConfig conf);
 
+  /**
+   * @brief render inventory
+   * 
+   * @param info -- current game state
+   */
   virtual void render(RenderInfo info) override;
+
+  /**
+   * @brief reset window settings (need to affect subwindows)
+   * 
+   * @param newConf -- new window settings
+   */
   virtual void resetWindow(WindowConfig newConf) override;
 
 private:
@@ -52,6 +101,10 @@ private:
   const size_t maxEquipment = 5;
 };
 
+/**
+ * @brief Main menu subrenderer (not implemented yet)
+ * 
+ */
 class CursesMainMenuRenderer : public CursesSubRenderer {
 public:
   CursesMainMenuRenderer(WindowConfig conf);
@@ -59,11 +112,32 @@ public:
   virtual void render(RenderInfo info) override;
 };
 
+/**
+ * @brief Hero information subrenderer
+ * 
+ */
 class CursesHeroInfoRenderer: public CursesSubRenderer {
 public:
+    /**
+     * @brief Construct a new Curses Hero Info Renderer object
+     * 
+     * @param conf -- window configuration
+     */
     CursesHeroInfoRenderer(WindowConfig conf);
 
+    /**
+     * @brief render hero information
+     * 
+     * @param info -- current game state
+     */
     virtual void render(RenderInfo info) override;
+
+      /**
+     * @brief reset window settings (need to affect subwindows)
+     * 
+     * @param newConf -- new window settings
+     */
+    virtual void resetWindow(WindowConfig newConf) override;
 private:
     void renderCharacteristics(GameModel::Characteristics characteristics);
 
