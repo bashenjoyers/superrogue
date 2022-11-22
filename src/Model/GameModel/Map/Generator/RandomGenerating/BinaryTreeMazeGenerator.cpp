@@ -10,7 +10,7 @@ std::vector<std::vector<bool>> GameModel::Map::BinaryTreeMazeGenerator::generate
     std::vector<std::vector<bool>> maze(mapOptions.width, std::vector<bool>(mapOptions.height));
     
     std::random_device r;
-    std::mt19937 e(47);
+    std::mt19937 e(r());
     std::uniform_int_distribution<int> coin(0, 1);
 
     for (size_t y = 0; y < maze.front().size(); y++) {
