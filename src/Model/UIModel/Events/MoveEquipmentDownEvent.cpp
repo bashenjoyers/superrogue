@@ -1,7 +1,5 @@
 #include "MoveEquipmentDownEvent.h"
 
-#include <utility>
-
 GameModel::Events::MoveEquipmentDownEvent::MoveEquipmentDownEvent(std::shared_ptr<Map::Map> map, std::shared_ptr<UIModel::CursorState> cursorState)
         : IEvent(map, cursorState) {}
 
