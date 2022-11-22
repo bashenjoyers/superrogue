@@ -11,7 +11,7 @@ Model/GameModel/Map/Generator/MazeGenerator.cpp
 Model/GameModel/Inventory/Inventory.cpp
 
 # Controller tests
-controller/eventProviderTests.cpp
+Controller/eventProviderTests.cpp
 Common/EnvironmentVariablesProviderTests.cpp
 # UI model tests
 Model/UIModel/CursorStateTests.cpp
@@ -21,6 +21,5 @@ Model/UIModel/Events/MovePotionDownEventTests.cpp
 Model/UIModel/Events/MovePotionUpEventTests.cpp
 
 # Exception tests
-Model/Exceptions/exceptions.cpp
-)
-target_link_libraries(tests ${GTEST_LIBRARIES} pthread Model)
+Model/Exceptions/exceptions.cpp)
+target_link_libraries(tests ${GTEST_LIBRARIES} pthread Model Controller)
