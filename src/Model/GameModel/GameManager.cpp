@@ -36,9 +36,9 @@ Characteristics GameManager::generate_characteristics(
   int health_default = int(level * HEALTH_LVL_K * characteristic_k);
   int damage =
       int(GameModel::Generation::characteristic_gen(Values::generator) /
-          PARAMETER_COUNT * points);
+          PARAMETER_COUNT * points) + 1;
   int armor = int(GameModel::Generation::characteristic_gen(Values::generator) /
-                  PARAMETER_COUNT * points);
+                  PARAMETER_COUNT * points) + 1;
   int health =
       int(GameModel::Generation::characteristic_gen(Values::generator) /
           PARAMETER_COUNT * points);
@@ -63,6 +63,7 @@ Person GameManager::generate_person() noexcept {
     settings.visible_radius = settings.visible_radius * 2;
   }
   Characteristics characteristics = generate_characteristics();
+  level--; // internal need;
   if (person_classes_name == PersonClass::LUCKY) {
     characteristics.luck = max(characteristics.luck, LUCKY_LUCK);
   }
@@ -121,8 +122,16 @@ void GameManager::person_level_up(Characteristics characteristics) {
 
 std::shared_ptr<Map::Map> GameManager::generate_map() noexcept {
   level++;
+  if (level != 1) {
+    person_level_up(Characteristics(2, 2, 0, 1)); // user can choose it later
+  }
   GameOptions game_options = generate_game_options();
   set<Enemy> enemies = generate_enemies(game_options);
-  return std::make_shared<Map::Map>(enemies, person, map_options, level);
+  if (map_ref == nullptr) {
+    map_ref = std::make_shared<Map::Map>(enemies, person, map_options, level);
+  } else {
+    *map_ref = Map::Map(enemies, person, map_options, level);
+  }
+  return map_ref;
 }
 }; // namespace GameModel

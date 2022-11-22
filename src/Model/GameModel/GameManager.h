@@ -22,9 +22,10 @@ struct GameOptions {
  * 
  */
 class GameManager {
-  int level = 0;
+  int level = 1;
   Person person;
   Map::MapOptions map_options;
+  std::shared_ptr<Map::Map> map_ref;
   Person generate_person() noexcept;
   std::set<Enemy> generate_enemies(GameOptions game_options);
   Characteristics

@@ -2,10 +2,13 @@
 
 #include <random>
 
-GameModel::Map::BinaryTreeMazeGenerator::BinaryTreeMazeGenerator(GameModel::Map::MapOptions mapOptions) :
-        MazeGenerator(mapOptions) {}
+GameModel::Map::BinaryTreeMazeGenerator::BinaryTreeMazeGenerator() :
+        MazeGenerator() {}
 
-std::vector<std::vector<bool>> GameModel::Map::BinaryTreeMazeGenerator::generate() {
+std::vector<std::vector<bool>> GameModel::Map::BinaryTreeMazeGenerator::generate(MapOptions mapOptions) {
+    if (mapOptions.width == 0 || mapOptions.height == 0) return {};
+    std::vector<std::vector<bool>> maze(mapOptions.width, std::vector<bool>(mapOptions.height));
+    
     std::random_device r;
     std::mt19937 e(47);
     std::uniform_int_distribution<int> coin(0, 1);
