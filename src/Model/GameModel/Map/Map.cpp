@@ -66,8 +66,8 @@ void Map::set_positions() noexcept {
 }
 
 void Map::generate_map_and_door() noexcept {
-  BinaryTreeMazeGenerator gen(map_options);
-  convertMapFromBool(gen.generate());
+  BinaryTreeMazeGenerator gen;
+  convertMapFromBool(gen.generate(map_options));
   map[map_options.width-1][map_options.height-1] = MapEntity::DOOR;
 
   // remove later

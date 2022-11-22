@@ -10,9 +10,9 @@ namespace GameModel::Map {
  */
 class BinaryTreeMazeGenerator : public MazeGenerator {
 public:
-    BinaryTreeMazeGenerator(MapOptions mapOptions);
+    BinaryTreeMazeGenerator();
 
-    virtual std::vector<std::vector<bool>> generate() override;
+    virtual std::vector<std::vector<bool>> generate(MapOptions mapOptions) override;
 };
 
 }

@@ -6,9 +6,12 @@ using GameModel::Map::MapOptions;
 
 
 TEST(MODEL_GAME_MODEL, MAZE_GENERATOR__BINARY_TREE) {
-    auto options = MapOptions();
-    BinaryTreeMazeGenerator gen(options);
-    auto simple_map = gen.generate();
+    MapOptions options = {
+        .height = 2,
+        .width = 3
+    };
+    BinaryTreeMazeGenerator gen;
+    auto simple_map = gen.generate(options);
     ASSERT_EQ(simple_map.size(), options.width);
     ASSERT_EQ(simple_map.front().size(), options.height);
 

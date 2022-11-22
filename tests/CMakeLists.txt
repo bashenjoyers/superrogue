@@ -7,7 +7,7 @@ Model/GameModel/values.cpp
 Model/GameModel/generator.cpp
 Model/GameModel/GameManager.cpp
 Model/GameModel/Map/Map.cpp
-# Model/GameModel/Map/Generator/MazeGenerator.cpp   // ?
+Model/GameModel/Map/Generator/MazeGenerator.cpp  
 Model/GameModel/Inventory/Inventory.cpp
 )
 target_link_libraries(tests ${GTEST_LIBRARIES} pthread Model)
