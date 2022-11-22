@@ -1,6 +1,20 @@
 #include <gtest/gtest.h>
-#include "controller/EventProvider.cpp"
+#include "controller/EventProvider.h"
 #include "Model/GameModel/Events/PunchBackModelEvent.h"
+#include "Model/GameModel/Events/PunchForwardModelEvent.h"
+#include "Model/GameModel/Events/PunchLeftModelEvent.h"
+#include "Model/GameModel/Events/PunchRightModelEvent.h"
+#include "Model/GameModel/Events/StepBackModelEvent.h"
+#include "Model/UIModel/Events/MovePotionDownEvent.h"
+#include "Model/UIModel/Events/MovePotionUpEvent.h"
+#include "Model/GameModel/Events/StepForwardModelEvent.h"
+#include "Model/GameModel/Events/StepLeftModelEvent.h"
+#include "Model/GameModel/Events/StepRightModelEvent.h"
+#include "Model/GameModel/Events/ChangeItemModelEvent.h"
+#include "Model/GameModel/Events/PotionModelEvent.h"
+#include "Model/GameModel/Events/WaitModelEvent.h"
+#include "Model/UIModel/Events/MoveEquipmentDownEvent.h"
+#include "Model/UIModel/Events/MoveEquipmentUpEvent.h"
 
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_W) {
