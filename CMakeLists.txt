@@ -10,7 +10,7 @@ set(TARGET_NAME "${PROJECT_NAME}")
 
 add_subdirectory(src/Common)
 add_subdirectory(src/Model)
-add_subdirectory(src/controller)
+add_subdirectory(src/Controller)
 add_subdirectory(src/View)
 
 add_subdirectory(tests)
