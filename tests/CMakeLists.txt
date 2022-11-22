@@ -19,6 +19,8 @@ Model/UIModel/Events/MoveEquipmentDownEventTests.cpp
 Model/UIModel/Events/MoveEquipmentUpEventTests.cpp
 Model/UIModel/Events/MovePotionDownEventTests.cpp
 Model/UIModel/Events/MovePotionUpEventTests.cpp
+Model/GameModel/GameObject/Item/Stuff/ItemTests.cpp
+Model/GameModel/GameObject/Item/Potions/PotionTests.cpp
 
 # Exception tests
 Model/Exceptions/exceptions.cpp)

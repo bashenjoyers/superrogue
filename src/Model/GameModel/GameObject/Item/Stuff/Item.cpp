@@ -1,7 +1,4 @@
 #include "Item.h"
-#include "Model/Exceptions/exceptions.h"
-#include "Model/GameModel/const.h"
-#include <iostream>
 #include <string>
 
 namespace GameModel {
