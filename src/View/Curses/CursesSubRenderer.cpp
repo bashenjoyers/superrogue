@@ -62,7 +62,7 @@ void CursesInventoryRenderer::render(RenderInfo info) {
 }
 
 void CursesInventoryRenderer::resetWindow(WindowConfig newConf) {
-    CursesSubRenderer::resetWindow(newConf);
+  CursesSubRenderer::resetWindow(newConf);
 
   spawnEquipmentWindow();
   spawnPotionsWindow();
@@ -201,4 +201,11 @@ void CursesSubRenderer::resetWindow(WindowConfig newConf) {
                                           config.xPos + subWindowOffset, config.yPos + subWindowOffset);
         characteristicsWin->setName("Characteristics");
     }
+
+
+  void CursesHeroInfoRenderer::resetWindow(WindowConfig newConf) {
+    CursesSubRenderer::resetWindow(newConf);
+
+    spawnCharacteristicsWindow();
+  }
 } // namespace View
