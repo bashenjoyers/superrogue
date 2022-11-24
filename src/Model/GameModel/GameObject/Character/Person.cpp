@@ -37,6 +37,7 @@ void Person::step() { before_any_action(); }
 void Person::punch() { before_any_action(); }
 
 bool Person::change_weapon() noexcept {
+  before_any_action();
   if (weapon_melee && !inventory.get_weapon_distant().has_value())
     return false;
   weapon_melee = !weapon_melee;

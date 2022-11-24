@@ -112,12 +112,14 @@ class Map {
   std::optional<std::shared_ptr<IItem>> drop_item() const noexcept;
   void change_item();
   bool any_step_anybody(WithPosition &anybody, Abstract::Position pos) noexcept;
+  bool any_punch_step_anybody(WithPosition &anybody, Abstract::Position pos) noexcept;
   bool step_anybody(CharacterAction action, WithPosition &anybody) noexcept;
   bool action_person(CharacterAction action);
   void action_enemy(CharacterAction action, EnemyWithPosition& enemy);
   void punch_cells_in_order(const std::vector<Abstract::Position>& positions,
                             const Characteristics& characteristics) noexcept;
   bool punch(ICharacter& character, const Characteristics& characteristics) noexcept;
+  bool punch_step(ICharacter& character1, ICharacter& character2) noexcept;
   void generate_map_and_door() noexcept;
   void set_positions() noexcept;
 

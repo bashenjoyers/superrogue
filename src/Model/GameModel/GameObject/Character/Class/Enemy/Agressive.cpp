@@ -22,7 +22,7 @@ CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
   std::optional<Position> anybody_pos = std::nullopt;
   vector<CharacterAction> possible_actions = {CharacterAction::WAIT};
   for (MapEntityWithPosition cell : cells) {
-    if (!person_was && cell.map_entity == MapEntity::PERSON ||
+    if (cell.map_entity == MapEntity::PERSON ||
         cell.map_entity == MapEntity::ENEMY ||
         cell.map_entity == MapEntity::ENEMY_AGRESSIVE ||
         cell.map_entity == MapEntity::ENEMY_COWARD ||
@@ -30,10 +30,12 @@ CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
         cell.map_entity == MapEntity::ENEMY_INDIFFERENT ||
         cell.map_entity == MapEntity::ENEMY_ORDINARY ||
         cell.map_entity == MapEntity::ENEMY_TRAVELER) {
-      if (cell.map_entity == MapEntity::PERSON)
-        person_was = true;
-      anybody_pos = cell.pos;
-      continue;
+      if (!person_was) {
+        if (cell.map_entity == MapEntity::PERSON)
+          person_was = true;
+        anybody_pos = cell.pos;
+        continue;
+      }
     }
     if (cell.pos.x == pos.x) {
       if (cell.pos.y == pos.y + 1 && is_vacant(cell.map_entity)) {

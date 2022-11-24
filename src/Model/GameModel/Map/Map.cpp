@@ -202,7 +202,8 @@ void Map::punch_cells_in_order(const vector<Position>& positions,
       break;
     if (is_anybody_cell(pos.x, pos.y)) {
       if (person_with_position.pos == pos) {
-        if (punch(person_with_position, characteristics)) { // Person dead;
+        if (punch(person_with_position, characteristics)) { // Person died
+          map[person_with_position.pos.x][person_with_position.pos.y] = get_cell_type(person_with_position.pos);
           game_status = GameStatus::END;
           *person_ref = (Person)person_with_position;
           return;
@@ -223,7 +224,6 @@ void Map::punch_cells_in_order(const vector<Position>& positions,
             map[erased_enemy->pos.x][erased_enemy->pos.y] =
                 get_cell_type(erased_enemy->pos);
           } else {
-            auto a = *item.value();
             items.insert({erased_enemy->pos, item.value()});
             auto iitem = item.value();
             map[erased_enemy->pos.x][erased_enemy->pos.y] =
@@ -252,15 +252,67 @@ bool Map::punch(ICharacter& character,
   }
   float dodge_chance = DEFAULT_DODGE_CHANCE;
   if (character_characteristics.dexterity > characteristics.dexterity) {
-    dodge_chance = max(1 - (float)character_characteristics.dexterity /
-                               characteristics.dexterity,
-                       dodge_chance);
+    dodge_chance = max(1 - (float)characteristics.dexterity / character_characteristics.dexterity, dodge_chance);
   }
   if (dodge_gen(Values::generator) <= dodge_chance) {
     return false;
   }
   int damage = std::max(characteristics.damage - character_characteristics.armor, DEFENCE_DEFAULT_DAMAGE * level);
   return character.damaged(damage);
+}
+
+bool Map::punch_step(ICharacter& character1, ICharacter& character2) noexcept {
+  auto person1 = dynamic_cast<PersonWithPosition*>(&character1);  //
+  auto person2 = dynamic_cast<PersonWithPosition*>(&character2);  // only for get characteristics and check is it person
+  Characteristics character1_characteristics, character2_characteristics;
+  if (person1 != nullptr) {
+    character1_characteristics = person1->get_full_characteristics();
+  } else {
+    character1_characteristics = character1.get_characteristics();
+  }
+  if (person2 != nullptr) {
+    character2_characteristics = person2->get_full_characteristics();
+  } else {
+    character2_characteristics = character2.get_characteristics();
+  }
+  character1.punch();
+  float dodge_chance = 0;
+  if (character2_characteristics.dexterity > character1_characteristics.dexterity) {
+    dodge_chance = max(1 - (float)character1_characteristics.dexterity / character2_characteristics.dexterity, dodge_chance);
+  }
+  if (dodge_gen(Values::generator) > dodge_chance) {
+    if (character2.damaged(character1_characteristics.damage)) { // smb died
+      if (person2 != nullptr) { // Person died
+        map[person2->pos.x][person2->pos.y] = get_cell_type(person2->pos);
+        game_status = GameStatus::END;
+        *person_ref = (Person)person_with_position;
+      } else {  // not drop anything
+        EnemyWithPosition* enemy = dynamic_cast<EnemyWithPosition*>(&character2);
+        map[enemy->pos.x][enemy->pos.y] = get_cell_type(enemy->pos);
+        enemies_with_positions.erase(std::remove(enemies_with_positions.begin(), enemies_with_positions.end(), *enemy), enemies_with_positions.end());
+      }
+      return true;
+    }
+  }
+  character2.punch();
+  dodge_chance = 0;
+  if (character1_characteristics.dexterity > character2_characteristics.dexterity) {
+    dodge_chance = max(1 - (float)character2_characteristics.dexterity / character1_characteristics.dexterity, dodge_chance);
+  }
+  if (dodge_gen(Values::generator) > dodge_chance) {
+    if (character1.damaged(character2_characteristics.damage)) { // smb died
+      if (person1 != nullptr) { // Person died
+        map[person1->pos.x][person1->pos.y] = get_cell_type(person1->pos);
+        game_status = GameStatus::END;
+        *person_ref = (Person)person_with_position;
+      } else {  // not drop anything
+        EnemyWithPosition* enemy = dynamic_cast<EnemyWithPosition*>(&character1);
+        map[enemy->pos.x][enemy->pos.y] = get_cell_type(enemy->pos);
+        enemies_with_positions.erase(std::remove(enemies_with_positions.begin(), enemies_with_positions.end(), *enemy), enemies_with_positions.end());
+      }
+    }
+  }
+  return false;
 }
 
 bool Map::any_step_anybody(WithPosition &anybody, Position pos) noexcept {
@@ -287,35 +339,74 @@ bool Map::any_step_anybody(WithPosition &anybody, Position pos) noexcept {
   return false;
 }
 
+bool Map::any_punch_step_anybody(WithPosition &anybody, Position pos) noexcept {
+  int character1_i = -1, character2_i = -1;
+  for (int i = 0; i < enemies_with_positions.size() && !(character1_i != -1 && character2_i != -1); i++) {
+    if (enemies_with_positions[i].pos == anybody.pos) {
+      character1_i = i;
+    }
+    if (enemies_with_positions[i].pos == pos) {
+      character2_i = i;
+    }
+  }
+  if (character1_i == -1) {
+    return punch_step(person_with_position, enemies_with_positions[character2_i]);
+  } else if (character2_i == -1) {
+    return punch_step(enemies_with_positions[character1_i], person_with_position);
+  } else {
+    return punch_step(enemies_with_positions[character1_i], enemies_with_positions[character2_i]);
+  }
+}
+
 bool Map::step_anybody(CharacterAction action, WithPosition &anybody) noexcept {
   bool step_was = false;
   switch (action) {
   case CharacterAction::STEP_RIGHT:
-    if (anybody.pos.x + 1 < map_options.width &&
-        is_vacant_cell(anybody.pos.x + 1, anybody.pos.y)) {
-      Position new_pos = Position(anybody.pos.x + 1, anybody.pos.y);
-      step_was = any_step_anybody(anybody, new_pos);
+    if (anybody.pos.x + 1 < map_options.width) {
+      if (is_vacant_cell(anybody.pos.x + 1, anybody.pos.y)) {
+        step_was = any_step_anybody(anybody, Position(anybody.pos.x + 1, anybody.pos.y));
+      } else if (is_anybody_cell(anybody.pos.x + 1, anybody.pos.y)) {
+        if (any_punch_step_anybody(anybody, Position(anybody.pos.x + 1, anybody.pos.y))) {
+          any_step_anybody(anybody, Position(anybody.pos.x + 1, anybody.pos.y));
+        }
+        step_was = true;
+      }
     }
     break;
   case CharacterAction::STEP_BACK:
-    if (anybody.pos.y + 1 < map_options.height &&
-        is_vacant_cell(anybody.pos.x, anybody.pos.y + 1)) {
-      Position new_pos = Position(anybody.pos.x, anybody.pos.y + 1);
-      step_was = any_step_anybody(anybody, new_pos);
+    if (anybody.pos.y + 1 < map_options.height) {
+      if (is_vacant_cell(anybody.pos.x, anybody.pos.y + 1)) {
+        step_was = any_step_anybody(anybody, Position(anybody.pos.x, anybody.pos.y + 1));
+      } else if (is_anybody_cell(anybody.pos.x, anybody.pos.y + 1)) {
+        if (any_punch_step_anybody(anybody, Position(anybody.pos.x, anybody.pos.y + 1))) {
+          any_step_anybody(anybody, Position(anybody.pos.x, anybody.pos.y + 1));
+        }
+        step_was = true;
+      }
     }
     break;  
   case CharacterAction::STEP_LEFT:
-    if (anybody.pos.x >= 1 &&
-        is_vacant_cell(anybody.pos.x - 1, anybody.pos.y)) {
-      Position new_pos = Position(anybody.pos.x - 1, anybody.pos.y);
-      step_was = any_step_anybody(anybody, new_pos);
+    if (anybody.pos.x >= 1) {
+      if (is_vacant_cell(anybody.pos.x - 1, anybody.pos.y)) {
+        step_was = any_step_anybody(anybody, Position(anybody.pos.x - 1, anybody.pos.y));
+      } else if (is_anybody_cell(anybody.pos.x - 1, anybody.pos.y)) {
+        if (any_punch_step_anybody(anybody, Position(anybody.pos.x - 1, anybody.pos.y))) {
+          any_step_anybody(anybody, Position(anybody.pos.x - 1, anybody.pos.y));
+        } 
+        step_was = true;
+      }
     }
     break;
   case CharacterAction::STEP_FORWARD:
-    if (anybody.pos.y >= 1 &&
-        is_vacant_cell(anybody.pos.x, anybody.pos.y - 1)) {
-      Position new_pos = Position(anybody.pos.x, anybody.pos.y - 1);
-      step_was = any_step_anybody(anybody, new_pos);
+    if (anybody.pos.y >= 1) {
+      if (is_vacant_cell(anybody.pos.x, anybody.pos.y - 1)) {
+        step_was = any_step_anybody(anybody, Position(anybody.pos.x, anybody.pos.y - 1));
+      } else if (is_anybody_cell(anybody.pos.x, anybody.pos.y - 1)) {
+        if (any_punch_step_anybody(anybody, Position(anybody.pos.x, anybody.pos.y - 1))) {
+          any_step_anybody(anybody, Position(anybody.pos.x, anybody.pos.y - 1));
+        }
+        step_was = true;
+      }
     }
     break;
   default:
