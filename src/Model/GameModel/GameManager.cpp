@@ -13,6 +13,7 @@ using std::set;
 using std::string;
 using std::vector;
 
+
 namespace GameModel {
 
 using namespace Values;
@@ -50,7 +51,7 @@ Characteristics GameManager::generate_characteristics(
                          luck);
 }
 
-Person GameManager::generate_person() noexcept {
+std::shared_ptr<Person> GameManager::generate_person() noexcept {
   string firstname =
       firstnames[GameModel::Generation::firstname_i_gen(Values::generator)];
   string lastname =
@@ -72,7 +73,7 @@ Person GameManager::generate_person() noexcept {
                         : DEFAULT_POTIONS_MAX;
   Inventory::Inventory inventory = Inventory::Inventory(potions_max);
   std::shared_ptr<IPersonClass> person_class = get_person_class(person_classes_name, settings);
-  return Person(lastname + " " + firstname, characteristics, person_class,
+  return std::make_shared<Person>(lastname + " " + firstname, characteristics, person_class,
                 inventory);
 }
 
@@ -117,7 +118,7 @@ set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
 }
 
 void GameManager::person_level_up(Characteristics characteristics) {
-  person.level_up(characteristics);
+  person->level_up(characteristics);
 }
 
 std::shared_ptr<Map::Map> GameManager::generate_map() noexcept {

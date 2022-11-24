@@ -22,12 +22,13 @@ MapInfo::MapInfo(vector<MapEntityWithPosition> map_positions,
   weapon_melee = person.is_weapon_melee();
 }
 
-Map::Map(set<Enemy> enemies, Person person, MapOptions map_options, int level)
-    : person_with_position(PersonWithPosition(person)),
+Map::Map(set<Enemy> enemies, std::shared_ptr<Person> person, MapOptions map_options, int level)
+    : person_with_position(PersonWithPosition(*person)),
       map_options(map_options), level(level) {
+  person_ref = person;
   enemies_with_positions = {};
   for (Enemy enemy : enemies) {
-    enemies_with_positions.insert(EnemyWithPosition(enemy));
+    enemies_with_positions.push_back(EnemyWithPosition(enemy));
   }
   generate_map_and_door(); // create Map and door
   set_positions();         // set Person and enemies positions, enemies areas
@@ -49,20 +50,20 @@ void Map::set_positions() noexcept {
       }
     }
   
-  // std::set<EnemyWithPosition> enemies_with_positions_new = {};
-  // for (auto enemy : enemies_with_positions) {
-  //   while (true) {
-  //     int x = x_gen(Values::generator);
-  //     int y = y_gen(Values::generator);
-  //     if (map[x][y] == MapEntity::FLOOR) {
-  //       enemy.pos = Position(x, y);
-  //       enemies_with_positions_new.insert(enemy);
-  //       map[x][y] = enemy.get_enemy_class()->get_map_entity();
-  //       break;
-  //     }
-  //   }
-  // }
-  // swap(enemies_with_positions, enemies_with_positions_new);
+  std::vector<EnemyWithPosition> enemies_with_positions_new = {};
+  for (auto enemy : enemies_with_positions) {
+    while (true) {
+      int x = x_gen(Values::generator);
+      int y = y_gen(Values::generator);
+      if (map[x][y] == MapEntity::FLOOR) {
+        enemy.pos = Position(x, y);
+        enemies_with_positions_new.push_back(enemy);
+        map[x][y] = enemy.get_enemy_class()->get_map_entity();
+        break;
+      }
+    }
+  }
+  swap(enemies_with_positions, enemies_with_positions_new);
 }
 
 void Map::generate_map_and_door() noexcept {
@@ -73,7 +74,7 @@ void Map::generate_map_and_door() noexcept {
   // remove later
   std::uniform_int_distribution<int> x_gen(0, map_options.width-1);
   std::uniform_int_distribution<int> y_gen(0, map_options.height-1);
-  for (int i = 0; i < 30; i++) {
+  for (int i = 0; i < 5; i++) {
     while (true) {
       int x = x_gen(Values::generator);
       int y = y_gen(Values::generator);
@@ -101,14 +102,14 @@ Map::visible_cells(const Position &pos, int radius, bool ignore_walls = false,
 //  }
 //  return {};
 
-    vector<MapEntityWithPosition> ans;
-    for (size_t y = 0; y < map.front().size(); y++) {
-        for (size_t x = 0; x < map.size(); x++) {
-            ans.push_back(MapEntityWithPosition{ .pos = Position(x, y), .map_entity = map[x][y] });
-        }
-    }
+  vector<MapEntityWithPosition> ans;
+  for (size_t y = 0; y < map.front().size(); y++) {
+      for (size_t x = 0; x < map.size(); x++) {
+          ans.push_back(MapEntityWithPosition{ .pos = Position(x, y), .map_entity = map[x][y] });
+      }
+  }
 
-    return ans;
+  return ans;
 }
 
 bool Map::in_map(int x, int y) const noexcept {
@@ -136,7 +137,7 @@ bool Map::is_anybody_cell(int x, int y) const noexcept {
          map_entity == MapEntity::ENEMY_TRAVELER;
 }
 
-MapEntity Map::get_cell_type(Position pos) const noexcept {
+MapEntity Map::get_cell_type(const Position& pos) const noexcept {
   auto it_item = items.find(pos);
   if (it_item == items.end()) {
     return MapEntity::FLOOR;
@@ -148,24 +149,27 @@ MapEntity Map::get_cell_type(Position pos) const noexcept {
 }
 
 bool Map::step(CharacterAction action) {
+  if (get_game_status() != GameStatus::IN_PROGRESS) {
+    return false;
+  }
   if (action == CharacterAction::CHANGE_ITEM) {
     change_item();
     return true;
   }
-  if (get_game_status() != GameStatus::IN_PROGRESS || !action_person(action)) {
+  if (!action_person(action)) {
     return false;
   }
-  // for (EnemyWithPosition enemy_with_position : enemies_with_positions) {
-  //   auto enemy_class = enemy_with_position.get_enemy_class();
-  //   int radius = enemy_class->get_settings().visible_radius;
-  //   bool ignore_walls = enemy_class->get_settings().ignore_walls;
-  //   vector<MapEntityWithPosition> cells =
-  //       visible_cells(enemy_with_position.pos, radius, ignore_walls,
-  //                     enemy_with_position.area);
-  //   CharacterAction enemy_action =
-  //       enemy_class->strategy(cells, enemy_with_position.pos);
-  //   action_enemy(enemy_action, enemy_with_position);
-  // }
+  for (int i = 0; i < enemies_with_positions.size(); i++) {
+    auto enemy_class = enemies_with_positions[i].get_enemy_class();
+    int radius = enemy_class->get_settings().visible_radius;
+    bool ignore_walls = enemy_class->get_settings().ignore_walls;
+    vector<MapEntityWithPosition> cells =
+        visible_cells(enemies_with_positions[i].pos, radius, ignore_walls,
+                      enemies_with_positions[i].area);
+    CharacterAction enemy_action =
+        enemy_class->strategy(cells, enemies_with_positions[i].pos);
+    action_enemy(enemy_action, enemies_with_positions[i]);
+  }
   return true;
 }
 
@@ -190,8 +194,8 @@ optional<std::shared_ptr<IItem>> Map::drop_item() const noexcept {
   return std::nullopt;
 };
 
-void Map::punch_cells_in_order(vector<Position> positions,
-                               Characteristics characteristics) noexcept {
+void Map::punch_cells_in_order(const vector<Position>& positions,
+                               const Characteristics& characteristics) noexcept {
   for (Position pos : positions) {
     if (!in_map(pos.x, pos.y))
       break;
@@ -199,37 +203,34 @@ void Map::punch_cells_in_order(vector<Position> positions,
       if (person_with_position.pos == pos) {
         if (punch(person_with_position, characteristics)) { // Person dead;
           game_status = GameStatus::END;
+          *person_ref = (Person)person_with_position;
           return;
         }
       } else {
-        bool punched = false;
         EnemyWithPosition *erased_enemy = nullptr;
-        for (EnemyWithPosition enemy_with_position2 : enemies_with_positions) {
-          if (enemy_with_position2.pos == pos) {
-            if (punch(enemy_with_position2, characteristics)) {
-              punched = true;
-              erased_enemy = &enemy_with_position2;
+        for (int i = 0; i < enemies_with_positions.size(); i++) {
+          if (enemies_with_positions[i].pos == pos) {
+            if (punch(enemies_with_positions[i], characteristics)) {
+              erased_enemy = &enemies_with_positions[i];
               break;
             }
           }
         }
-        if (punched) {
-          if (erased_enemy == nullptr) {
-            optional<shared_ptr<IItem>> item = drop_item();
-            if (item == std::nullopt) {
-              map[erased_enemy->pos.x][erased_enemy->pos.y] =
-                  get_cell_type(erased_enemy->pos);
-            } else {
-              auto a = *item.value();
-              items.insert({erased_enemy->pos, item.value()});
-              auto iitem = item.value();
-              map[erased_enemy->pos.x][erased_enemy->pos.y] =
-                  (dynamic_cast<Potion*>(&*iitem) != nullptr) ? MapEntity::POTION : MapEntity::ITEM;
-            }
-            enemies_with_positions.erase(*erased_enemy);
+        if (erased_enemy != nullptr) {
+          optional<shared_ptr<IItem>> item = drop_item();
+          if (item == std::nullopt) {
+            map[erased_enemy->pos.x][erased_enemy->pos.y] =
+                get_cell_type(erased_enemy->pos);
+          } else {
+            auto a = *item.value();
+            items.insert({erased_enemy->pos, item.value()});
+            auto iitem = item.value();
+            map[erased_enemy->pos.x][erased_enemy->pos.y] =
+                (dynamic_cast<Potion*>(&*iitem) != nullptr) ? MapEntity::POTION : MapEntity::ITEM;
           }
-          return;
+          enemies_with_positions.erase(std::remove(enemies_with_positions.begin(), enemies_with_positions.end(), *erased_enemy), enemies_with_positions.end());
         }
+        return;
       }
     } else if (is_vacant_cell(pos.x, pos.y)) {
       continue;
@@ -239,8 +240,8 @@ void Map::punch_cells_in_order(vector<Position> positions,
   }
 }
 
-bool Map::punch(ICharacter character,
-                Characteristics characteristics) noexcept {
+bool Map::punch(ICharacter& character,
+                 const Characteristics& characteristics) noexcept {
   Characteristics character_characteristics;
   if ((dynamic_cast<PersonWithPosition*>(&character) != nullptr)) {
     character_characteristics = dynamic_cast<PersonWithPosition *>(&character)
@@ -257,7 +258,7 @@ bool Map::punch(ICharacter character,
   if (dodge_gen(Values::generator) <= dodge_chance) {
     return false;
   }
-  int damage = characteristics.damage - character_characteristics.armor;
+  int damage = std::max(characteristics.damage - character_characteristics.armor, DEFENCE_DEFAULT_DAMAGE * level);
   return character.damaged(damage);
 }
 
@@ -268,6 +269,7 @@ bool Map::any_step_anybody(WithPosition &anybody, Position pos) noexcept {
       map[pos.x][pos.y] = MapEntity::PERSON;
       anybody.pos = pos;
       game_status = GameStatus::NEXT_LVL;
+      *person_ref = (Person)person_with_position;
       return true;
     }
   } else {
@@ -435,6 +437,17 @@ bool Map::action_person(CharacterAction action) {
     person_with_position.potion(2);
     correct = true;
     break;
+  case CharacterAction::POTION_4:
+    person_with_position.potion(3);
+    correct = true;
+    break;
+  case CharacterAction::POTION_5:
+    person_with_position.potion(4);
+    correct = true;
+    break;
+  case CharacterAction::CHANGE_WEAPON:
+    correct = person_with_position.change_weapon();
+    break;
   case CharacterAction::CHANGE_ITEM:
     break;
   case CharacterAction::WAIT:
@@ -495,6 +508,12 @@ void Map::action_enemy(
   case CharacterAction::POTION_2:
     break;
   case CharacterAction::POTION_3:
+    break;
+  case CharacterAction::POTION_4:
+    break;
+  case CharacterAction::POTION_5:
+    break;
+  case CharacterAction::CHANGE_WEAPON:
     break;
   case CharacterAction::CHANGE_ITEM:
     break;

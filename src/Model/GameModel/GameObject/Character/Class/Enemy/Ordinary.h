@@ -19,6 +19,6 @@ public:
   CharacterAction
   // returns the strategy for the current class
   strategy(std::vector<GameModel::Abstract::MapEntityWithPosition> &cells,
-           GameModel::Abstract::Position &pos) noexcept override;
+           const GameModel::Abstract::Position &pos) noexcept override;
 };
 }; // namespace GameModel

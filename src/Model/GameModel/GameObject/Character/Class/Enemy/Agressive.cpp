@@ -17,9 +17,9 @@ MapEntity Agressive::get_map_entity() const noexcept {
 }
 
 CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
-                                    Position &pos) noexcept {
+                                    const Position &pos) noexcept {
   bool person_was = false;
-  Position *anybody_pos = nullptr;
+  std::optional<Position> anybody_pos = std::nullopt;
   vector<CharacterAction> possible_actions = {CharacterAction::WAIT};
   for (MapEntityWithPosition cell : cells) {
     if (!person_was && cell.map_entity == MapEntity::PERSON ||
@@ -31,7 +31,7 @@ CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
         cell.map_entity == MapEntity::ENEMY_TRAVELER) {
       if (cell.map_entity == MapEntity::PERSON)
         person_was = true;
-      anybody_pos = &cell.pos;
+      anybody_pos = cell.pos;
       continue;
     }
     if (cell.pos.x == pos.x) {
@@ -48,7 +48,7 @@ CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
       }
     }
   }
-  if (anybody_pos == nullptr) {
+  if (!anybody_pos.has_value()) {
     if (get_settings().intellect > 0.5) {
       int dx = (int)last_character_position.x - pos.x;
       int dy = (int)last_character_position.y - pos.y;
@@ -58,9 +58,9 @@ CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
                                                            1);
     return possible_actions[position_gen(Values::generator)];
   }
-  last_character_position = *anybody_pos;
-  int dx = (int)anybody_pos->x - pos.x;
-  int dy = (int)anybody_pos->y - pos.y;
+  last_character_position = anybody_pos.value();
+  int dx = (int)anybody_pos.value().x - pos.x;
+  int dy = (int)anybody_pos.value().y - pos.y;
   return default_fight_behavior(dx, dy, possible_actions);
 }
 }; // namespace GameModel

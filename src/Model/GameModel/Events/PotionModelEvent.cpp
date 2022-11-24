@@ -24,6 +24,12 @@ void PotionModelEvent::_execute() {
   case 2:
     map->step(CharacterAction::POTION_3);
     break;
+  case 3:
+    map->step(CharacterAction::POTION_4);
+    break;
+  case 4:
+    map->step(CharacterAction::POTION_5);
+    break;
   default:
     throw EventException("wrong potion pointer");
   }

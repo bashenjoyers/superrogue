@@ -23,10 +23,10 @@ struct GameOptions {
  */
 class GameManager {
   int level = 1;
-  Person person;
+  std::shared_ptr<Person> person;
   Map::MapOptions map_options;
   std::shared_ptr<Map::Map> map_ref;
-  Person generate_person() noexcept;
+  std::shared_ptr<Person> generate_person() noexcept;
   std::set<Enemy> generate_enemies(GameOptions game_options);
   Characteristics
   generate_characteristics(float characteristic_k) const noexcept;

@@ -44,7 +44,7 @@ public:
                          bool can_punch = true) const noexcept;
   // returns the strategy for the current class
   virtual CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
-                           Abstract::Position &pos) noexcept;
+                           const Abstract::Position &pos) noexcept;
   // Create Enemy class according to the description and settings
   IEnemyClass(std::string description, EnemySettings settings);
   virtual ~IEnemyClass() {}

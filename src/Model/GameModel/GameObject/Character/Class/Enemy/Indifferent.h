@@ -23,6 +23,6 @@ public:
               EnemySettings settings = EnemySettings());
   // returns the strategy for the current class
   CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
-                           Abstract::Position &pos) noexcept override;
+                           const Abstract::Position &pos) noexcept override;
 };
 }; // namespace GameModel

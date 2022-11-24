@@ -19,12 +19,12 @@ MapEntity Indifferent::get_map_entity() const noexcept {
 }
 
 CharacterAction Indifferent::strategy(vector<MapEntityWithPosition> &cells,
-                                      Position &pos) noexcept {
-  Position *person_pos = nullptr;
+                                      const Position &pos) noexcept {
+  std::optional<Position> person_pos = std::nullopt;
   vector<CharacterAction> possible_actions = {CharacterAction::WAIT};
   for (MapEntityWithPosition cell : cells) {
     if (cell.map_entity == MapEntity::PERSON) {
-      person_pos = &cell.pos;
+      person_pos = cell.pos;
       continue;
     }
     if (cell.pos.x == pos.x) {
@@ -46,7 +46,7 @@ CharacterAction Indifferent::strategy(vector<MapEntityWithPosition> &cells,
                                                            1);
     return possible_actions[position_gen(Values::generator)];
   }
-  if (person_pos == nullptr) {
+  if (!person_pos.has_value()) {
     if (get_settings().intellect > 0.5) {
       int dx = (int)last_character_position.x - pos.x;
       int dy = (int)last_character_position.y - pos.y;
@@ -56,9 +56,9 @@ CharacterAction Indifferent::strategy(vector<MapEntityWithPosition> &cells,
                                                            1);
     return possible_actions[position_gen(Values::generator)];
   }
-  last_character_position = *person_pos;
-  int dx = (int)person_pos->x - pos.x;
-  int dy = (int)person_pos->y - pos.y;
+  last_character_position = person_pos.value();
+  int dx = (int)person_pos.value().x - pos.x;
+  int dy = (int)person_pos.value().y - pos.y;
   return default_fight_behavior(dx, dy, possible_actions);
 }
 }; // namespace GameModel

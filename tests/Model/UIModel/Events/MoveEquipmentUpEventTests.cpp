@@ -4,7 +4,7 @@
 
 TEST(MOVE_EQUIPMENT_UP_EVENT_TESTS, TEST_EXECUTE) {
     std::set<GameModel::Enemy> enemies = std::set<GameModel::Enemy>();
-    GameModel::Person person = GameModel::Person();
+    std::shared_ptr<GameModel::Person> person = std::make_shared<GameModel::Person>();
     GameModel::Map::MapOptions mapOptions = GameModel::Map::MapOptions();
     mapOptions.height = 24;
     mapOptions.width = 24;

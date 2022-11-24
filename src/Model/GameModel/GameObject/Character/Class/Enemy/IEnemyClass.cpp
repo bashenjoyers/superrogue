@@ -21,7 +21,7 @@ bool IEnemyClass::is_vacant(Abstract::MapEntity map_entity) const noexcept {
 CharacterAction IEnemyClass::default_fight_behavior(
     int dx, int dy, vector<CharacterAction> &possible_actions,
     bool can_punch) const noexcept { // FIXME(do it adequately)
-  if (dx <= dy) {
+  if (abs(dx) <= abs(dy)) {
     if (dx == 0) {
       if (dy > 0) {
         if (dy <= get_settings().attack_range && can_punch) {
@@ -177,7 +177,7 @@ CharacterAction IEnemyClass::default_fight_behavior(
 }
 
 CharacterAction IEnemyClass::strategy(std::vector<MapEntityWithPosition> &cells,
-                                      Position &pos) noexcept {
+                                      const Position &pos) noexcept {
   return CharacterAction::WAIT;
 };
 }; // namespace GameModel

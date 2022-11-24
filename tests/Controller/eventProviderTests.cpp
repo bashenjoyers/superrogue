@@ -10,6 +10,7 @@
 #include "Model/GameModel/Events/StepForwardModelEvent.h"
 #include "Model/GameModel/Events/StepLeftModelEvent.h"
 #include "Model/GameModel/Events/StepRightModelEvent.h"
+#include "Model/GameModel/Events/ChangeWeaponModelEvent.h"
 #include "Model/GameModel/Events/ChangeItemModelEvent.h"
 #include "Model/GameModel/Events/PotionModelEvent.h"
 #include "Model/GameModel/Events/WaitModelEvent.h"
@@ -53,31 +54,13 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_D) {
     ASSERT_TRUE(dynamic_cast<GameModel::Events::PunchRightModelEvent*>(&(*result)) != nullptr);
 }
 
-TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_K) {
+TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_Q) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
     std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
-    auto result = eventProvider.getEventByKey('k');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::StepBackModelEvent*>(&(*result)) != nullptr);
-}
-
-TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_I) {
-    std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
-    Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
-
-    auto result = eventProvider.getEventByKey('i');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::StepForwardModelEvent*>(&(*result)) != nullptr);
-}
-
-TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_J) {
-    std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
-    Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
-
-    auto result = eventProvider.getEventByKey('j');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::StepLeftModelEvent*>(&(*result)) != nullptr);
+    auto result = eventProvider.getEventByKey('q');
+    ASSERT_TRUE(dynamic_cast<GameModel::Events::ChangeWeaponModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_L) {
@@ -86,6 +69,33 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_L) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('l');
+    ASSERT_TRUE(dynamic_cast<GameModel::Events::StepBackModelEvent*>(&(*result)) != nullptr);
+}
+
+TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_O) {
+    std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
+    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
+
+    auto result = eventProvider.getEventByKey('o');
+    ASSERT_TRUE(dynamic_cast<GameModel::Events::StepForwardModelEvent*>(&(*result)) != nullptr);
+}
+
+TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_K) {
+    std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
+    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
+
+    auto result = eventProvider.getEventByKey('k');
+    ASSERT_TRUE(dynamic_cast<GameModel::Events::StepLeftModelEvent*>(&(*result)) != nullptr);
+}
+
+TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_SEMICOLON) {
+    std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
+    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
+
+    auto result = eventProvider.getEventByKey(';');
     ASSERT_TRUE(dynamic_cast<GameModel::Events::StepRightModelEvent*>(&(*result)) != nullptr);
 }
 

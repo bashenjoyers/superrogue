@@ -29,6 +29,9 @@ TEST(MODEL_GAME_MODEL, MAP__STEPS) {
         CharacterAction::POTION_1,
         CharacterAction::POTION_2,
         CharacterAction::POTION_3,
+        CharacterAction::POTION_4,
+        CharacterAction::POTION_5,
+        CharacterAction::CHANGE_WEAPON,
         CharacterAction::CHANGE_ITEM,
         CharacterAction::WAIT
     };

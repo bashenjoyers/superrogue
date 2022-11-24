@@ -43,7 +43,7 @@ struct WithPosition {
  * 
  */
 struct PersonWithPosition : Person, WithPosition {
-  PersonWithPosition(Person person) : Person(person){};
+  PersonWithPosition(Person& person) : Person(person){};
 };
 
 /**
@@ -52,7 +52,7 @@ struct PersonWithPosition : Person, WithPosition {
  */
 struct EnemyWithPosition : Enemy, WithPosition {
   std::vector<Abstract::Position> area; // where Enemy can be
-  EnemyWithPosition(Enemy enemy) : Enemy(enemy){};
+  EnemyWithPosition(Enemy& enemy) : Enemy(enemy){};
 };
 
 /**
@@ -94,8 +94,9 @@ struct MapInfo {
 class Map {
   MapOptions map_options;
   int level;
-  std::set<EnemyWithPosition> enemies_with_positions;
+  std::vector<EnemyWithPosition> enemies_with_positions;
   PersonWithPosition person_with_position;
+  std::shared_ptr<Person> person_ref; // using only after end of level (not IN_PROGRESS)
   std::vector<std::vector<Abstract::MapEntity>> map;
   Abstract::Position door; // cell near the edge of Map
   std::map<Abstract::Position, std::shared_ptr<IItem>> items;
@@ -105,7 +106,7 @@ class Map {
   bool is_vacant_cell(int x, int y) const noexcept;
   bool is_door_cell(int x, int y) const noexcept;
   bool is_anybody_cell(int x, int y) const noexcept;
-  Abstract::MapEntity get_cell_type(Abstract::Position pos) const noexcept;
+  Abstract::MapEntity get_cell_type(const Abstract::Position& pos) const noexcept;
   std::vector<Abstract::MapEntityWithPosition>
   visible_cells(const Abstract::Position &pos, int radius, bool ignore_walls,
                 const std::vector<Abstract::Position> &area) const noexcept;
@@ -115,9 +116,9 @@ class Map {
   bool step_anybody(CharacterAction action, WithPosition &anybody) noexcept;
   bool action_person(CharacterAction action);
   void action_enemy(CharacterAction action, EnemyWithPosition& enemy);
-  void punch_cells_in_order(std::vector<Abstract::Position> positions,
-                            Characteristics characteristics) noexcept;
-  bool punch(ICharacter character, Characteristics characteristics) noexcept;
+  void punch_cells_in_order(const std::vector<Abstract::Position>& positions,
+                            const Characteristics& characteristics) noexcept;
+  bool punch(ICharacter& character, const Characteristics& characteristics) noexcept;
   void generate_map_and_door() noexcept;
   void set_positions() noexcept;
 
@@ -132,7 +133,7 @@ public:
    * @param map_options - map options
    * @param level - map level
    */
-  Map(std::set<Enemy> enemies, Person person, MapOptions map_options,
+  Map(std::set<Enemy> enemies, std::shared_ptr<Person> person, MapOptions map_options,
       int level);
   /**
    * @brief Get the game status. 

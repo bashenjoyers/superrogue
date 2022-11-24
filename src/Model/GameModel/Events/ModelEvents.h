@@ -1,4 +1,5 @@
 #include "ChangeItemModelEvent.h"
+#include "ChangeWeaponModelEvent.h"
 #include "PotionModelEvent.h"
 #include "PunchBackModelEvent.h"
 #include "PunchForwardModelEvent.h"
