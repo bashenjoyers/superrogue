@@ -20,7 +20,7 @@ bool IEnemyClass::is_vacant(Abstract::MapEntity map_entity) const noexcept {
 
 CharacterAction IEnemyClass::default_fight_behavior(
     int dx, int dy, vector<CharacterAction> &possible_actions,
-    bool can_punch) const noexcept { // FIXME(do it adequately)
+    bool can_punch) const noexcept {
   if (abs(dx) <= abs(dy)) {
     if (dx == 0) {
       if (dy > 0) {

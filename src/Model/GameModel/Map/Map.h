@@ -2,7 +2,6 @@
 #include "Model/Exceptions/exceptions.h"
 #include "Model/GameModel/GameObject/Character/CharacterAction.h"
 #include "Model/GameModel/GameObject/Character/Class/Enemy/IEnemyClass.h"
-#include "Model/GameModel/GameObject/Character/Class/Enemy/Ordinary.h"
 #include "Model/GameModel/GameObject/Character/Class/Person/IPersonClass.h"
 #include "Model/GameModel/GameObject/Character/Enemy.h"
 #include "Model/GameModel/GameObject/Character/ICharacter.h"

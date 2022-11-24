@@ -131,6 +131,7 @@ bool Map::is_anybody_cell(int x, int y) const noexcept {
   MapEntity map_entity = map[x][y];
   return map_entity == MapEntity::PERSON || map_entity == MapEntity::ENEMY ||
          map_entity == MapEntity::ENEMY_AGRESSIVE ||
+         map_entity == MapEntity::ENEMY_COWARD ||
          map_entity == MapEntity::ENEMY_FLYING ||
          map_entity == MapEntity::ENEMY_INDIFFERENT ||
          map_entity == MapEntity::ENEMY_ORDINARY ||
@@ -465,7 +466,7 @@ bool Map::action_person(CharacterAction action) {
 
 void Map::action_enemy(
     CharacterAction action,
-    EnemyWithPosition& enemy_with_position) { // FIXME(copypaste)
+    EnemyWithPosition& enemy_with_position) {
   bool correct = false;
   int range = enemy_with_position.get_attack_range();
   Position pos = enemy_with_position.pos;

@@ -4,6 +4,7 @@
 #include "Model/GameModel/GameObject/Character/Class/Enemy/IEnemyClass.h"
 #include "Model/GameModel/GameObject/Character/Class/Enemy/Indifferent.h"
 #include "Model/GameModel/GameObject/Character/Class/Enemy/Ordinary.h"
+#include "Model/GameModel/GameObject/Character/Class/Enemy/Coward.h"
 #include "Model/GameModel/GameObject/Character/Class/Enemy/Traveler.h"
 #include "Model/GameModel/GameObject/Character/Class/Person/Alchemist.h"
 #include "Model/GameModel/GameObject/Character/Class/Person/Farsighted.h"
@@ -217,6 +218,10 @@ get_enemy_class(GameModel::Abstract::EnemyClass enemy_class,
         "Hates everyone (if he sees at least someone (not necessarily a "
         "Character), he strives to reach him and kill)",
         settings);
+  case GameModel::Abstract::EnemyClass::COWARD:
+    return std::make_shared<GameModel::Coward>(
+        "Afraid of everything (always runs from the hero if he sees him. dexterity is 3 times more than normal)",
+        settings);
   case GameModel::Abstract::EnemyClass::FLYING:
     return std::make_shared<GameModel::Flying>(
         "Looks down on everyone (can ignore all obstacles (walls))", settings);
@@ -241,6 +246,7 @@ get_enemy_class(GameModel::Abstract::EnemyClass enemy_class,
 
 static std::vector<GameModel::Abstract::EnemyClass> enemy_classes = {
     GameModel::Abstract::EnemyClass::AGRESSIVE,
+    GameModel::Abstract::EnemyClass::COWARD,
     GameModel::Abstract::EnemyClass::FLYING,
     GameModel::Abstract::EnemyClass::INDIFFERENT,
     GameModel::Abstract::EnemyClass::ORDINARY,

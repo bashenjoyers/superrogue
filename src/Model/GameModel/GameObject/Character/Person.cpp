@@ -48,7 +48,7 @@ bool Person::is_weapon_melee() const noexcept { return weapon_melee; }
 void Person::take_item() const noexcept {}
 
 Characteristics
-Person::get_full_characteristics() const noexcept { // FIXME(do it adequately)
+Person::get_full_characteristics() const noexcept {
   Characteristics full_characteristics =
       get_characteristics() + level_characteristics;
   vector<optional<Item>> items = {

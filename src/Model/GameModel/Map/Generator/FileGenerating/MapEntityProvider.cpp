@@ -9,6 +9,7 @@ GameModel::Map::MapEntityProvider::MapEntityProvider() {
             {'#', Abstract::MapEntity::WALL},
             {'0', Abstract::MapEntity::PERSON},
             {'A', Abstract::MapEntity::ENEMY_AGRESSIVE},
+            {'C', Abstract::MapEntity::ENEMY_COWARD},
             {'F', Abstract::MapEntity::ENEMY_FLYING},
             {'I', Abstract::MapEntity::ENEMY_ORDINARY},
             {'O', Abstract::MapEntity::ENEMY_ORDINARY},

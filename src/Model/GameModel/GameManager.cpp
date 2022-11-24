@@ -109,6 +109,8 @@ set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
       default:
         throw GameObjectException("wrong characteristic_i_gen");
       }
+    } else if (enemy_class_name == EnemyClass::COWARD) {
+      characteristics.dexterity *= 3;
     }
     Enemy enemy =
         Enemy(i, lastname + " " + firstname, characteristics, enemy_class);
