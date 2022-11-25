@@ -28,6 +28,12 @@ class IEnemyClass : public ICharacterClass {
   // enemy settings
   EnemySettings settings;
 
+protected:
+  // default behavior provided that he sees the character
+  CharacterAction
+  default_fight_behavior(int dx, int dy,
+                         std::vector<CharacterAction> &possible_actions,
+                         bool can_punch = true) const noexcept;
 public:
   // return enemy settings
   EnemySettings get_settings() const noexcept;
@@ -37,11 +43,6 @@ public:
   };
   // returns whether this cell is empty for the character of the current class
   bool is_vacant(Abstract::MapEntity map_entity) const noexcept;
-  // default behavior provided that he sees the character
-  CharacterAction
-  default_fight_behavior(int dx, int dy,
-                         std::vector<CharacterAction> &possible_actions,
-                         bool can_punch = true) const noexcept;
   // returns the strategy for the current class
   virtual CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
                            const Abstract::Position &pos) noexcept;

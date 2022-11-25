@@ -27,7 +27,7 @@ class GameManager {
   Map::MapOptions map_options;
   std::shared_ptr<Map::Map> map_ref;
   std::shared_ptr<Person> generate_person() noexcept;
-  std::set<Enemy> generate_enemies(GameOptions game_options);
+  std::set<std::shared_ptr<IEnemy>> generate_enemies(GameOptions game_options);
   Characteristics
   generate_characteristics(float characteristic_k) const noexcept;
   GameOptions generate_game_options() noexcept;

@@ -2,10 +2,16 @@
 #include "Model/GameModel/GameObject/Character/IEnemy.h"
 
 namespace GameModel {
+enum class ConfusedState {
+  NO,
+  DISCARBED,
+  STAND
+};
+
 class IConfusionEnemy : public IEnemy {
   std::shared_ptr<IEnemy> ienemy;
   std::uniform_real_distribution<float> confuse_gen;
-
+  ConfusedState confused_state = ConfusedState::NO;
 public:
   IConfusionEnemy(std::shared_ptr<IEnemy> ienemy);
   virtual bool damaged(int value) noexcept override;
@@ -13,10 +19,14 @@ public:
   virtual std::string get_name() const noexcept override;
   virtual std::string get_description() const noexcept override;
   virtual Characteristics get_characteristics() const noexcept override;
-  virtual std::shared_ptr<IEnemyClass> get_enemy_class() const noexcept override;
   virtual float get_attack_range() const noexcept override;
   virtual void add_health(int value) noexcept override;
   virtual void step() override;
   virtual void punch() override;
+  virtual CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
+                           const Abstract::Position &pos) noexcept override;
+  virtual EnemySettings get_settings() const noexcept override;
+  virtual Abstract::MapEntity get_map_entity() const noexcept override;
+  virtual bool is_vacant(Abstract::MapEntity map_entity) const noexcept override;
 };
 }; // namespace GameModel

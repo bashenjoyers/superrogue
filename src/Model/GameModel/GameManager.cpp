@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "Model/Exceptions/exceptions.h"
 #include "Model/GameModel/GameObject/Character/Enemy.h"
+#include "Model/GameModel/GameObject/Character/IConfusionEnemy.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
 #include "Model/GameModel/Inventory/Inventory.h"
 #include "abstract.h"
@@ -77,8 +78,8 @@ std::shared_ptr<Person> GameManager::generate_person() noexcept {
                 inventory);
 }
 
-set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
-  set<Enemy> enemies = {};
+set<std::shared_ptr<IEnemy>> GameManager::generate_enemies(GameOptions game_options) {
+  set<std::shared_ptr<IEnemy>> enemies = {};
   for (int i = 0; i < game_options.enemies_count; i++) {
     string firstname =
         firstnames[GameModel::Generation::firstname_i_gen(Values::generator)];
@@ -112,9 +113,9 @@ set<Enemy> GameManager::generate_enemies(GameOptions game_options) {
     } else if (enemy_class_name == EnemyClass::COWARD) {
       characteristics.dexterity *= 3;
     }
-    Enemy enemy =
-        Enemy(i, lastname + " " + firstname, characteristics, enemy_class);
-    enemies.insert(enemy);
+    auto enemy = std::make_shared<Enemy>(i, lastname + " " + firstname, characteristics, enemy_class);
+    auto confused_enemy = std::make_shared<IConfusionEnemy>(enemy);
+    enemies.insert(confused_enemy);
   }
   return enemies;
 }
@@ -129,7 +130,7 @@ std::shared_ptr<Map::Map> GameManager::generate_map() noexcept {
     person_level_up(Characteristics(2, 2, 0, 1)); // user can choose it later
   }
   GameOptions game_options = generate_game_options();
-  set<Enemy> enemies = generate_enemies(game_options);
+  set<std::shared_ptr<IEnemy>> enemies = generate_enemies(game_options);
   if (map_ref == nullptr) {
     map_ref = std::make_shared<Map::Map>(enemies, person, map_options, level);
   } else {

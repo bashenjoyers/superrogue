@@ -14,11 +14,13 @@ namespace GameModel {
  * 
  */
 class IEnemy : public ICharacter {
-  // Enemy class. Gives certain features and strategy when playin
-  std::shared_ptr<IEnemyClass> enemy_class;
   // character behavior when hitting it
   void disturb() noexcept;
-
+protected:
+  // enemy ID on the level
+  int id; // not changed
+  // Enemy class. Gives certain features and strategy when playin
+  std::shared_ptr<IEnemyClass> enemy_class; // not changed
 public:
 // redefines description to class description
   virtual std::string get_description() const noexcept override;
@@ -32,11 +34,22 @@ public:
    * @param enemy_class 
    */
   IEnemy(std::string name, Characteristics characteristics,
-         std::shared_ptr<IEnemyClass> enemy_class);
+         std::shared_ptr<IEnemyClass> enemy_class, int id);
   // returns the class of the character
   IEnemy() {};
-  virtual std::shared_ptr<IEnemyClass> get_enemy_class() const noexcept;
-  bool damaged(int value) noexcept override;
+  
+  virtual CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
+                           const Abstract::Position &pos) noexcept;
+  virtual EnemySettings get_settings() const noexcept;
+  virtual Abstract::MapEntity get_map_entity() const noexcept;
+  virtual bool is_vacant(Abstract::MapEntity map_entity) const noexcept;
+  // Enemy class. Gives certain features and strategy when playin
+  std::shared_ptr<IEnemyClass> get_enemy_class() const noexcept;
+  int get_id() const noexcept;
+  virtual bool damaged(int value) noexcept override;
+    // internal storage statements
+  bool operator==(const IEnemy &other) const noexcept;
+  bool operator<(const IEnemy &other) const noexcept;
   virtual ~IEnemy() {}
 };
 }; // namespace GameModel

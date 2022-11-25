@@ -25,7 +25,7 @@ CharacterAction IEnemyClass::default_fight_behavior(
     if (dx == 0) {
       if (dy > 0) {
         if (dy <= get_settings().attack_range && can_punch) {
-          if (settings.intellect > INTELLECT_STEP_PUNCH_K && find(possible_actions.begin(), possible_actions.end(), CharacterAction::STEP_BACK) != possible_actions.end())
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && dy == 1)
             return CharacterAction::STEP_BACK;
           return CharacterAction::PUNCH_BACK;
         } else {
@@ -46,7 +46,7 @@ CharacterAction IEnemyClass::default_fight_behavior(
         }
       } else {
         if (-dy <= get_settings().attack_range && can_punch) {
-          if (settings.intellect > INTELLECT_STEP_PUNCH_K && find(possible_actions.begin(), possible_actions.end(), CharacterAction::STEP_FORWARD) != possible_actions.end())
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && -dy == 1)
             return CharacterAction::STEP_FORWARD;
           return CharacterAction::PUNCH_FORWARD;
         } else {
@@ -105,7 +105,7 @@ CharacterAction IEnemyClass::default_fight_behavior(
     if (dy == 0) {
       if (dx > 0) {
         if (dx <= get_settings().attack_range && can_punch) {
-          if (settings.intellect > INTELLECT_STEP_PUNCH_K && find(possible_actions.begin(), possible_actions.end(), CharacterAction::STEP_RIGHT) != possible_actions.end())
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && dx == 1)
             return CharacterAction::STEP_RIGHT;
           return CharacterAction::PUNCH_RIGHT;
         } else {
@@ -126,7 +126,7 @@ CharacterAction IEnemyClass::default_fight_behavior(
         }
       } else {
         if (-dx <= get_settings().attack_range && can_punch) {
-          if (settings.intellect > INTELLECT_STEP_PUNCH_K && find(possible_actions.begin(), possible_actions.end(), CharacterAction::STEP_LEFT) != possible_actions.end())
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && -dx == 1)
             return CharacterAction::STEP_LEFT;
           return CharacterAction::PUNCH_LEFT;
         } else {

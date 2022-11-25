@@ -27,5 +27,5 @@ const float DEFAULT_DODGE_CHANCE = 0.01;
 const float LUCKY_LUCK = 0.9;
 const int DEFENCE_DEFAULT_DAMAGE = 0;
 const float INTELLECT_STEP_PUNCH_K = 0.7;
-const float CONFUSION_K = 0.9;
+const float CONFUSION_K = 0.1;
 }; // namespace GameModel
