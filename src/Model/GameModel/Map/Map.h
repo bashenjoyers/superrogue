@@ -2,7 +2,6 @@
 #include "Model/Exceptions/exceptions.h"
 #include "Model/GameModel/GameObject/Character/CharacterAction.h"
 #include "Model/GameModel/GameObject/Character/Class/Enemy/IEnemyClass.h"
-#include "Model/GameModel/GameObject/Character/Class/Enemy/Ordinary.h"
 #include "Model/GameModel/GameObject/Character/Class/Person/IPersonClass.h"
 #include "Model/GameModel/GameObject/Character/Enemy.h"
 #include "Model/GameModel/GameObject/Character/ICharacter.h"
@@ -39,20 +38,14 @@ struct WithPosition {
 };
 
 /**
- * @brief Class containing person and position
+ * @brief Class containing character and position
  * 
  */
-struct PersonWithPosition : Person, WithPosition {
-  PersonWithPosition(Person& person) : Person(person){};
-};
-
-/**
- * @brief Class containing enemy and position
- * 
- */
-struct EnemyWithPosition : Enemy, WithPosition {
+struct CharacterWithPosition: WithPosition {
+  std::shared_ptr<ICharacter> character;
   std::vector<Abstract::Position> area; // where Enemy can be
-  EnemyWithPosition(Enemy& enemy) : Enemy(enemy){};
+  CharacterWithPosition(std::shared_ptr<ICharacter> character) : character(character) {};
+  virtual ~CharacterWithPosition(){};
 };
 
 /**
@@ -84,7 +77,7 @@ struct MapInfo {
   // character's chosen weapon - melee
   bool weapon_melee;
   MapInfo(std::vector<Abstract::MapEntityWithPosition> map_positions,
-          PersonWithPosition person, MapOptions mapOptions);
+          CharacterWithPosition person, MapOptions mapOptions);
 };
 
 /**
@@ -94,9 +87,8 @@ struct MapInfo {
 class Map {
   MapOptions map_options;
   int level;
-  std::vector<EnemyWithPosition> enemies_with_positions;
-  PersonWithPosition person_with_position;
-  std::shared_ptr<Person> person_ref; // using only after end of level (not IN_PROGRESS)
+  std::vector<CharacterWithPosition> enemies_with_positions;
+  CharacterWithPosition person_with_position;
   std::vector<std::vector<Abstract::MapEntity>> map;
   Abstract::Position door; // cell near the edge of Map
   std::map<Abstract::Position, std::shared_ptr<IItem>> items;
@@ -112,15 +104,18 @@ class Map {
                 const std::vector<Abstract::Position> &area) const noexcept;
   std::optional<std::shared_ptr<IItem>> drop_item() const noexcept;
   void change_item();
-  bool any_step_anybody(WithPosition &anybody, Abstract::Position pos) noexcept;
-  bool step_anybody(CharacterAction action, WithPosition &anybody) noexcept;
+  bool any_step_anybody(CharacterWithPosition &anybody, Abstract::Position pos) noexcept;
+  bool any_punch_step_anybody(CharacterWithPosition &anybody, Abstract::Position pos) noexcept;
+  bool step_anybody(CharacterAction action, CharacterWithPosition &anybody) noexcept;
   bool action_person(CharacterAction action);
-  void action_enemy(CharacterAction action, EnemyWithPosition& enemy);
+  void action_enemy(CharacterAction action, CharacterWithPosition& enemy);
   void punch_cells_in_order(const std::vector<Abstract::Position>& positions,
                             const Characteristics& characteristics) noexcept;
-  bool punch(ICharacter& character, const Characteristics& characteristics) noexcept;
+  bool punch(CharacterWithPosition& character_with_position, const Characteristics& characteristics) noexcept;
+  bool punch_step(const CharacterWithPosition& character1_with_position, const CharacterWithPosition& character2_with_position) noexcept;
   void generate_map_and_door() noexcept;
   void set_positions() noexcept;
+  void remove_enemy(const CharacterWithPosition& character_with_position) noexcept; // make it easier
 
   void convertMapFromBool(const std::vector<std::vector<bool>> &genMap);
 
@@ -133,7 +128,7 @@ public:
    * @param map_options - map options
    * @param level - map level
    */
-  Map(std::set<Enemy> enemies, std::shared_ptr<Person> person, MapOptions map_options,
+  Map(std::set<std::shared_ptr<IEnemy>> enemies, std::shared_ptr<Person> person, MapOptions map_options,
       int level);
   /**
    * @brief Get the game status. 

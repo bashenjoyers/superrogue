@@ -1,5 +1,6 @@
-#include "Agressive.h"
+#include "Coward.h"
 #include "Model/GameModel/values.h"
+#include <vector>
 
 using std::string;
 using std::vector;
@@ -7,35 +8,23 @@ using std::vector;
 namespace GameModel {
 using namespace Abstract;
 
-Agressive::Agressive(string description, EnemySettings settings)
+Coward::Coward(string description, EnemySettings settings)
     : IEnemyClass(description, settings) {}
 
-MapEntity Agressive::get_map_entity() const noexcept {
+MapEntity Coward::get_map_entity() const noexcept {
   if (get_settings().intellect < 0.9)
-    return MapEntity::ENEMY_AGRESSIVE;
+    return MapEntity::ENEMY_COWARD;
   return MapEntity::ENEMY;
 }
 
-CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
-                                    const Position &pos) noexcept {
-  bool person_was = false;
-  std::optional<Position> anybody_pos = std::nullopt;
+CharacterAction Coward::strategy(vector<MapEntityWithPosition> &cells,
+                                   const Position &pos) noexcept {
+  std::optional<Position> person_pos = std::nullopt;
   vector<CharacterAction> possible_actions = {CharacterAction::WAIT};
   for (MapEntityWithPosition cell : cells) {
-    if (cell.map_entity == MapEntity::PERSON ||
-        cell.map_entity == MapEntity::ENEMY ||
-        cell.map_entity == MapEntity::ENEMY_AGRESSIVE ||
-        cell.map_entity == MapEntity::ENEMY_COWARD ||
-        cell.map_entity == MapEntity::ENEMY_FLYING ||
-        cell.map_entity == MapEntity::ENEMY_INDIFFERENT ||
-        cell.map_entity == MapEntity::ENEMY_ORDINARY ||
-        cell.map_entity == MapEntity::ENEMY_TRAVELER) {
-      if (!person_was) {
-        if (cell.map_entity == MapEntity::PERSON)
-          person_was = true;
-        anybody_pos = cell.pos;
-        continue;
-      }
+    if (cell.map_entity == MapEntity::PERSON) {
+      person_pos = cell.pos;
+      continue;
     }
     if (cell.pos.x == pos.x) {
       if (cell.pos.y == pos.y + 1 && is_vacant(cell.map_entity)) {
@@ -51,19 +40,19 @@ CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
       }
     }
   }
-  if (!anybody_pos.has_value()) {
+  if (!person_pos.has_value()) {
     if (get_settings().intellect > 0.5) {
       int dx = (int)last_character_position.x - pos.x;
       int dy = (int)last_character_position.y - pos.y;
-      return default_fight_behavior(dx, dy, possible_actions, false);
+      return default_fight_behavior(-dx, -dy, possible_actions, false);
     }
     std::uniform_int_distribution<int> position_gen(0, possible_actions.size() -
                                                            1);
     return possible_actions[position_gen(Values::generator)];
   }
-  last_character_position = anybody_pos.value();
-  int dx = (int)anybody_pos.value().x - pos.x;
-  int dy = (int)anybody_pos.value().y - pos.y;
-  return default_fight_behavior(dx, dy, possible_actions);
+  last_character_position = person_pos.value();
+  int dx = (int)person_pos.value().x - pos.x;
+  int dy = (int)person_pos.value().y - pos.y;
+  return default_fight_behavior(-dx, -dy, possible_actions, false);
 }
 }; // namespace GameModel

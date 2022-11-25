@@ -12,6 +12,7 @@ enum class MapEntity {
   PERSON,
   ENEMY, // only if the Class of the Enemy is not known (he is smart enough to
          // hide it)
+  ENEMY_COWARD,
   ENEMY_AGRESSIVE,
   ENEMY_FLYING,
   ENEMY_INDIFFERENT,
@@ -29,7 +30,7 @@ enum class GameStatus { IN_PROGRESS, NEXT_LVL, END };
 
 enum class PersonClass { ALCHEMIST, FARSIGHTED, LUCKY, SECRETIVE, WISE };
 
-enum class EnemyClass { AGRESSIVE, FLYING, INDIFFERENT, ORDINARY, TRAVELER };
+enum class EnemyClass { AGRESSIVE, COWARD, FLYING, INDIFFERENT, ORDINARY, TRAVELER };
 
 struct Position {
   size_t x, y;

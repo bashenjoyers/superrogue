@@ -3,7 +3,7 @@
 #include "Model/UIModel/Events/MovePotionDownEvent.h"
 
 TEST(MOVE_POTION_DOWN_EVENT_TESTS, TEST_EXECUTE) {
-    std::set<GameModel::Enemy> enemies = std::set<GameModel::Enemy>();
+    std::set<std::shared_ptr<GameModel::IEnemy>> enemies = std::set<std::shared_ptr<GameModel::IEnemy>>();
     std::shared_ptr<GameModel::Person> person = std::make_shared<GameModel::Person>();
     GameModel::Map::MapOptions mapOptions = GameModel::Map::MapOptions();
     mapOptions.height = 24;

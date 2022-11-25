@@ -21,8 +21,8 @@ public:
   std::string get_description() const noexcept override;
   // use potion
   virtual void potion(int potion_i) = 0;
-  // returns the class of the character
-  std::shared_ptr<IPersonClass> get_person_class() const noexcept;
+  // returns the person settings
+  virtual PersonSettings get_settings() const noexcept;
   /**
    * @brief Construct a new IPerson by standard properties (without a description, it is taken separately) and by person class
    * 

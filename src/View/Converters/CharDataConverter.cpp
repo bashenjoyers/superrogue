@@ -46,6 +46,10 @@ CharConverter::convertMap(std::shared_ptr<GameModel::Map::MapInfo> mapInfo) {
               renderElem = 'A';
           } break;
 
+          case GameModel::Abstract::MapEntity::ENEMY_COWARD : {
+              renderElem = 'C';
+          } break;
+
           case GameModel::Abstract::MapEntity::ENEMY_FLYING : {
               renderElem = 'F';
           } break;

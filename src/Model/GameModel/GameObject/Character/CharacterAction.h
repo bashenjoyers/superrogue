@@ -19,7 +19,7 @@ enum class CharacterAction {
   POTION_5,
   CHANGE_WEAPON,
   CHANGE_ITEM,  // do not count as an action in the game (enemies do not move, the duration of the zakat does not decrease)
-  WAIT
+  WAIT,
 };
 
 // string representation of actions for internal errors
@@ -54,7 +54,7 @@ inline const std::string to_string(CharacterAction action) {
   case CharacterAction::CHANGE_WEAPON:
     return "change weapon";
   case CharacterAction::CHANGE_ITEM:
-    return "change Item";
+    return "change item";
   case CharacterAction::WAIT:
     return "wait";
   default:

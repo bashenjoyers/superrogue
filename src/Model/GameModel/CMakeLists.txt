@@ -22,6 +22,7 @@ set(GAMEMODEL_SOURCES
         GameModel/GameObject/IGameObject.cpp
         GameModel/GameObject/Character/Enemy.cpp
         GameModel/GameObject/Character/ICharacter.cpp
+        GameModel/GameObject/Character/IConfusionEnemy.cpp
         GameModel/GameObject/Character/IEnemy.cpp
         GameModel/GameObject/Character/IPerson.cpp
         GameModel/GameObject/Character/Person.cpp
@@ -38,6 +39,7 @@ set(GAMEMODEL_SOURCES
         GameModel/GameObject/Character/Class/Enemy/Flying.cpp
         GameModel/GameObject/Character/Class/Enemy/Indifferent.cpp
         GameModel/GameObject/Character/Class/Enemy/Ordinary.cpp
+        GameModel/GameObject/Character/Class/Enemy/Coward.cpp
         GameModel/GameObject/Character/Class/Enemy/Traveler.cpp
 
         GameModel/GameObject/Item/IItem.cpp

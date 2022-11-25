@@ -20,11 +20,13 @@ bool IEnemyClass::is_vacant(Abstract::MapEntity map_entity) const noexcept {
 
 CharacterAction IEnemyClass::default_fight_behavior(
     int dx, int dy, vector<CharacterAction> &possible_actions,
-    bool can_punch) const noexcept { // FIXME(do it adequately)
+    bool can_punch) const noexcept {
   if (abs(dx) <= abs(dy)) {
     if (dx == 0) {
       if (dy > 0) {
         if (dy <= get_settings().attack_range && can_punch) {
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && dy == 1)
+            return CharacterAction::STEP_BACK;
           return CharacterAction::PUNCH_BACK;
         } else {
           if (find(possible_actions.begin(), possible_actions.end(),
@@ -44,6 +46,8 @@ CharacterAction IEnemyClass::default_fight_behavior(
         }
       } else {
         if (-dy <= get_settings().attack_range && can_punch) {
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && -dy == 1)
+            return CharacterAction::STEP_FORWARD;
           return CharacterAction::PUNCH_FORWARD;
         } else {
           if (find(possible_actions.begin(), possible_actions.end(),
@@ -101,6 +105,8 @@ CharacterAction IEnemyClass::default_fight_behavior(
     if (dy == 0) {
       if (dx > 0) {
         if (dx <= get_settings().attack_range && can_punch) {
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && dx == 1)
+            return CharacterAction::STEP_RIGHT;
           return CharacterAction::PUNCH_RIGHT;
         } else {
           if (find(possible_actions.begin(), possible_actions.end(),
@@ -120,6 +126,8 @@ CharacterAction IEnemyClass::default_fight_behavior(
         }
       } else {
         if (-dx <= get_settings().attack_range && can_punch) {
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && -dx == 1)
+            return CharacterAction::STEP_LEFT;
           return CharacterAction::PUNCH_LEFT;
         } else {
           if (find(possible_actions.begin(), possible_actions.end(),

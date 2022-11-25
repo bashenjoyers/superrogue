@@ -37,6 +37,7 @@ void Person::step() { before_any_action(); }
 void Person::punch() { before_any_action(); }
 
 bool Person::change_weapon() noexcept {
+  before_any_action();
   if (weapon_melee && !inventory.get_weapon_distant().has_value())
     return false;
   weapon_melee = !weapon_melee;
@@ -48,7 +49,7 @@ bool Person::is_weapon_melee() const noexcept { return weapon_melee; }
 void Person::take_item() const noexcept {}
 
 Characteristics
-Person::get_full_characteristics() const noexcept { // FIXME(do it adequately)
+Person::get_full_characteristics() const noexcept {
   Characteristics full_characteristics =
       get_characteristics() + level_characteristics;
   vector<optional<Item>> items = {
