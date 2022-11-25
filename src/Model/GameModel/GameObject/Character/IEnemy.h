@@ -21,9 +21,9 @@ class IEnemy : public ICharacter {
 
 public:
 // redefines description to class description
-  std::string get_description() const noexcept override;
+  virtual std::string get_description() const noexcept override;
   // returns attack range (generated separately, does not depend on class, can be melee or ranged)
-  float get_attack_range() const noexcept;
+  virtual float get_attack_range() const noexcept;
   /**
    * @brief Construct a new IEnemy by standard properties (without a description, it is taken separately) and by enemy class
    * 
@@ -34,7 +34,8 @@ public:
   IEnemy(std::string name, Characteristics characteristics,
          std::shared_ptr<IEnemyClass> enemy_class);
   // returns the class of the character
-  std::shared_ptr<IEnemyClass> get_enemy_class() const noexcept;
+  IEnemy() {};
+  virtual std::shared_ptr<IEnemyClass> get_enemy_class() const noexcept;
   bool damaged(int value) noexcept override;
   virtual ~IEnemy() {}
 };

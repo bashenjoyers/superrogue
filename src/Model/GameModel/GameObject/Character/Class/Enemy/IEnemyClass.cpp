@@ -25,7 +25,9 @@ CharacterAction IEnemyClass::default_fight_behavior(
     if (dx == 0) {
       if (dy > 0) {
         if (dy <= get_settings().attack_range && can_punch) {
-          return (settings.intellect > INTELLECT_STEP_PUNCH_K) ? CharacterAction::STEP_BACK : CharacterAction::PUNCH_BACK;
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && find(possible_actions.begin(), possible_actions.end(), CharacterAction::STEP_BACK) != possible_actions.end())
+            return CharacterAction::STEP_BACK;
+          return CharacterAction::PUNCH_BACK;
         } else {
           if (find(possible_actions.begin(), possible_actions.end(),
                    CharacterAction::STEP_BACK) != possible_actions.end()) {
@@ -44,7 +46,9 @@ CharacterAction IEnemyClass::default_fight_behavior(
         }
       } else {
         if (-dy <= get_settings().attack_range && can_punch) {
-          return (settings.intellect > INTELLECT_STEP_PUNCH_K) ? CharacterAction::STEP_FORWARD : CharacterAction::PUNCH_FORWARD;
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && find(possible_actions.begin(), possible_actions.end(), CharacterAction::STEP_FORWARD) != possible_actions.end())
+            return CharacterAction::STEP_FORWARD;
+          return CharacterAction::PUNCH_FORWARD;
         } else {
           if (find(possible_actions.begin(), possible_actions.end(),
                    CharacterAction::STEP_FORWARD) != possible_actions.end()) {
@@ -101,7 +105,9 @@ CharacterAction IEnemyClass::default_fight_behavior(
     if (dy == 0) {
       if (dx > 0) {
         if (dx <= get_settings().attack_range && can_punch) {
-          return (settings.intellect > INTELLECT_STEP_PUNCH_K) ? CharacterAction::STEP_RIGHT : CharacterAction::PUNCH_RIGHT;
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && find(possible_actions.begin(), possible_actions.end(), CharacterAction::STEP_RIGHT) != possible_actions.end())
+            return CharacterAction::STEP_RIGHT;
+          return CharacterAction::PUNCH_RIGHT;
         } else {
           if (find(possible_actions.begin(), possible_actions.end(),
                    CharacterAction::STEP_RIGHT) != possible_actions.end()) {
@@ -120,7 +126,9 @@ CharacterAction IEnemyClass::default_fight_behavior(
         }
       } else {
         if (-dx <= get_settings().attack_range && can_punch) {
-          return (settings.intellect > INTELLECT_STEP_PUNCH_K) ? CharacterAction::STEP_LEFT : CharacterAction::PUNCH_LEFT;
+          if (settings.intellect > INTELLECT_STEP_PUNCH_K && find(possible_actions.begin(), possible_actions.end(), CharacterAction::STEP_LEFT) != possible_actions.end())
+            return CharacterAction::STEP_LEFT;
+          return CharacterAction::PUNCH_LEFT;
         } else {
           if (find(possible_actions.begin(), possible_actions.end(),
                    CharacterAction::STEP_LEFT) != possible_actions.end()) {

@@ -22,6 +22,7 @@ set(GAMEMODEL_SOURCES
         GameModel/GameObject/IGameObject.cpp
         GameModel/GameObject/Character/Enemy.cpp
         GameModel/GameObject/Character/ICharacter.cpp
+        GameModel/GameObject/Character/IConfusionEnemy.cpp
         GameModel/GameObject/Character/IEnemy.cpp
         GameModel/GameObject/Character/IPerson.cpp
         GameModel/GameObject/Character/Person.cpp
