@@ -22,6 +22,11 @@ void Boot::play() {
         if (map->get_game_status() == GameStatus::NEXT_LVL) {
             gm->generate_map();
         }
+
+        if (map->get_game_status() == GameStatus::END) {
+            return;
+        }
+
         gc->interact();
     }
 }

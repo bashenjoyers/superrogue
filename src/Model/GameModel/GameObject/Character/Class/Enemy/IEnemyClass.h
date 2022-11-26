@@ -4,6 +4,7 @@
 #include "Model/GameModel/abstract.h"
 #include "Model/GameModel/const.h"
 #include <random>
+#include <optional>
 
 namespace GameModel {
 /**
