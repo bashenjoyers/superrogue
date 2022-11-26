@@ -7,10 +7,11 @@
 #include "Model/GameModel/Map/Generator/FileGenerating/MapEntityProvider.h"
 #include "Model/GameModel/Map/Generator/FileGenerating/FileReader.h"
 #include "Common/environmentVariables/EnvironmentVariablesProvider.h"
+#include "Model/GameModel/Map/Generator/MapGenerator.h"
 
 namespace GameModel::Map {
 
-    class FileGenerator {
+    class FileGenerator : public MapGenerator {
     public:
         FileGenerator();
         std::vector<std::vector<GameModel::Abstract::MapEntity>> generate();
