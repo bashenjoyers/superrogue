@@ -19,5 +19,7 @@ public:
   void step() noexcept;
   // returns whether the potion is still working (time has not expired)
   bool is_work() const noexcept;
+
+    Abstract::MapEntity getMapEntity() override;
 };
 }; // namespace GameModel

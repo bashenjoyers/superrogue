@@ -41,7 +41,7 @@ public:
   virtual CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
                            const Abstract::Position &pos) noexcept;
   virtual EnemySettings get_settings() const noexcept;
-  virtual Abstract::MapEntity get_map_entity() const noexcept;
+  virtual Abstract::MapEntity get_map_entity() const noexcept override;
   virtual bool is_vacant(Abstract::MapEntity map_entity) const noexcept;
   // Enemy class. Gives certain features and strategy when playin
   std::shared_ptr<IEnemyClass> get_enemy_class() const noexcept;

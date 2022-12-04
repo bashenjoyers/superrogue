@@ -2,7 +2,7 @@
 #include <fstream>
 #include "Model/Exceptions/exceptions.h"
 
-std::vector<std::string> GameModel::Map::FileReader::readFile(const std::string& path) {
+std::vector<std::string> GameModel::Generation::Map::FileReader::readFile(const std::string& path) {
     std::vector<std::string> result = std::vector<std::string>();
     std::ifstream file(path);
 

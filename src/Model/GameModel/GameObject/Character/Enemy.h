@@ -16,7 +16,7 @@ public:
   /**
    * @brief Construct a new Enemy according to the standard characteristics of the object
    */
-  Enemy(int id, std::string name, Characteristics characteristics,
+  Enemy(int id, const std::string &name, Characteristics characteristics,
         std::shared_ptr<IEnemyClass> enemy_class);
   Enemy(const Enemy &enemy) = default;
 };

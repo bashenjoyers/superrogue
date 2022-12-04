@@ -3,7 +3,7 @@
 #include <map>
 #include "Model/GameModel/abstract.h"
 
-namespace GameModel::Map {
+namespace GameModel::Generation::Map {
 
 class MapEntityProvider {
 public:

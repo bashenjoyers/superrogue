@@ -1,5 +1,6 @@
 #pragma once
 #include "Model/GameModel/GameObject/IGameObject.h"
+#include "Model/GameModel/abstract.h"
 
 namespace GameModel {
 /**
@@ -13,8 +14,10 @@ public:
    * 
    */
   IItem(std::string name, std::string description,
-        Characteristics characteristics);
-  IItem() : IGameObject(){};
+		Characteristics characteristics);
+  IItem() : IGameObject() {};
   virtual ~IItem() {}
+
+  virtual Abstract::MapEntity getMapEntity() = 0;
 };
 }; // namespace GameModel

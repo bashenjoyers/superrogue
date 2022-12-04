@@ -11,5 +11,10 @@ PersonSettings IPerson::get_settings() const noexcept { return person_class->get
 IPerson::IPerson(string name, Characteristics characteristics,
                  std::shared_ptr<IPersonClass> person_class)
     : ICharacter(name, person_class->get_description(), characteristics),
-      person_class(person_class){};
+      person_class(person_class){}
+
+Abstract::MapEntity IPerson::get_map_entity() const noexcept {
+    return Abstract::MapEntity::PERSON;
+}
+
 }; // namespace GameModel

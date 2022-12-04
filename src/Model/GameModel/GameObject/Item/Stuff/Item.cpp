@@ -7,4 +7,8 @@ Item::Item(std::string name, std::string description,
     : IItem(name, description, characteristics), itemType(itemType) {}
 
 ItemType Item::get_item_type() const noexcept { return this->itemType; }
+
+Abstract::MapEntity Item::getMapEntity() {
+    return Abstract::MapEntity::ITEM;
+}
 }; // namespace GameModel

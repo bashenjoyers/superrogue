@@ -31,5 +31,7 @@ public:
           std::shared_ptr<IPersonClass> person_class);
   IPerson(){};
   virtual ~IPerson() {}
+
+    Abstract::MapEntity get_map_entity() const noexcept override;
 };
 }; // namespace GameModel

@@ -1,6 +1,6 @@
 #pragma once
 #include <random>
-
+#include "values.h"
 /**
  * @brief entity with a set of generators for GameModel
  * 
@@ -22,4 +22,6 @@ static std::uniform_int_distribution<int>
 static std::uniform_real_distribution<float> intellect_gen(0, 1);
 static std::uniform_int_distribution<int> melee_gen(0, 1);
 static std::uniform_int_distribution<int> characteristic_i_gen(0, 3);
+
+
 }; // namespace GameModel::Generation

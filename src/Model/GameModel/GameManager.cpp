@@ -4,6 +4,8 @@
 #include "Model/GameModel/GameObject/Character/IConfusionEnemy.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
 #include "Model/GameModel/Inventory/Inventory.h"
+#include "Model/GameModel/GameObject/Character/Generation/FantasyEnemyFactory.h"
+#include "Model/GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.h"
 #include "abstract.h"
 #include "generator.h"
 #include "values.h"
@@ -23,13 +25,6 @@ using namespace Abstract;
 GameManager::GameManager(Map::MapOptions map_options)
     : map_options(map_options) {
   person = generate_person();
-}
-
-GameOptions GameManager::generate_game_options() noexcept {
-  GameOptions options = GameOptions();
-  options.enemies_count =
-      GameModel::Generation::enemies_count_gen(Values::generator);
-  return options;
 }
 
 Characteristics GameManager::generate_characteristics(
@@ -78,48 +73,6 @@ std::shared_ptr<Person> GameManager::generate_person() noexcept {
                 inventory);
 }
 
-set<std::shared_ptr<IEnemy>> GameManager::generate_enemies(GameOptions game_options) {
-  set<std::shared_ptr<IEnemy>> enemies = {};
-  for (int i = 0; i < game_options.enemies_count; i++) {
-    string firstname =
-        firstnames[GameModel::Generation::firstname_i_gen(Values::generator)];
-    string lastname =
-        lastnames[GameModel::Generation::lastname_i_gen(Values::generator)];
-    Characteristics characteristics = generate_characteristics(WEAKNESS_K);
-    EnemySettings settings = EnemySettings();
-    settings.attack_range =
-        GameModel::Generation::melee_gen(Values::generator) ? 1 : DISTANT_RANGE;
-    settings.intellect =
-        GameModel::Generation::intellect_gen(Values::generator);
-    EnemyClass enemy_class_name = enemy_classes[GameModel::Generation::enemy_class_i_gen(Values::generator)];
-    std::shared_ptr<IEnemyClass> enemy_class = get_enemy_class(enemy_class_name, settings);
-    if (enemy_class_name == EnemyClass::ORDINARY) {
-      switch (GameModel::Generation::characteristic_i_gen(Values::generator)) {
-      case 0:
-        characteristics.armor *= 2;
-        break;
-      case 1:
-        characteristics.damage *= 2;
-        break;
-      case 2:
-        characteristics.dexterity *= 2;
-        break;
-      case 3:
-        characteristics.health *= 2;
-        break;
-      default:
-        throw GameObjectException("wrong characteristic_i_gen");
-      }
-    } else if (enemy_class_name == EnemyClass::COWARD) {
-      characteristics.dexterity *= 3;
-    }
-    auto enemy = std::make_shared<Enemy>(i, lastname + " " + firstname, characteristics, enemy_class);
-    auto confused_enemy = std::make_shared<IConfusionEnemy>(enemy);
-    enemies.insert(confused_enemy);
-  }
-  return enemies;
-}
-
 void GameManager::person_level_up(Characteristics characteristics) {
   person->level_up(characteristics);
 }
@@ -129,12 +82,15 @@ std::shared_ptr<Map::Map> GameManager::generate_map() noexcept {
   if (level != 1) {
     person_level_up(Characteristics(2, 2, 0, 1)); // user can choose it later
   }
-  GameOptions game_options = generate_game_options();
-  set<std::shared_ptr<IEnemy>> enemies = generate_enemies(game_options);
+
+  std::shared_ptr<Generation::AbstractEnemyFactory> enemyFactory = std::make_shared<Generation::FantasyEnemyFactory>(level);
+  std::shared_ptr<Generation::ItemGenerator> itemGenerator = std::make_shared<Generation::ItemGenerator>(level, person->get_full_characteristics().luck);
+  std::shared_ptr<Generation::Map::MapGenerator> mapGenerator = std::make_shared<Generation::Map::BinaryTreeMazeGenerator>();
+
   if (map_ref == nullptr) {
-    map_ref = std::make_shared<Map::Map>(enemies, person, map_options, level);
+    map_ref = std::make_shared<Map::Map>(itemGenerator, mapGenerator, enemyFactory, person, map_options, level);
   } else {
-    *map_ref = Map::Map(enemies, person, map_options, level);
+    *map_ref = Map::Map(itemGenerator, mapGenerator, enemyFactory, person, map_options, level);
   }
   return map_ref;
 }

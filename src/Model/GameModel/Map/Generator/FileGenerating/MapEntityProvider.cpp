@@ -1,6 +1,6 @@
 #include "MapEntityProvider.h"
 
-GameModel::Map::MapEntityProvider::MapEntityProvider() {
+GameModel::Generation::Map::MapEntityProvider::MapEntityProvider() {
     entityMapping = {
             {'.', Abstract::MapEntity::FLOOR},
             {'d', Abstract::MapEntity::DOOR},
@@ -18,7 +18,7 @@ GameModel::Map::MapEntityProvider::MapEntityProvider() {
     };
 }
 
-GameModel::Abstract::MapEntity GameModel::Map::MapEntityProvider::getMapEntityBySymbol(char symbol) {
+GameModel::Abstract::MapEntity GameModel::Generation::Map::MapEntityProvider::getMapEntityBySymbol(char symbol) {
     if (entityMapping.find(symbol) == entityMapping.end())
         return Abstract::MapEntity::WALL;
     return entityMapping[symbol];
