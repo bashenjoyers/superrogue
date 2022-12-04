@@ -42,9 +42,13 @@ set(GAMEMODEL_SOURCES
         GameModel/GameObject/Character/Class/Enemy/Coward.cpp
         GameModel/GameObject/Character/Class/Enemy/Traveler.cpp
 
+        GameModel/GameObject/Character/Generation/AbstractEnemyFactory.cpp
+        GameModel/GameObject/Character/Generation/FantasyEnemyFactory.cpp
+
         GameModel/GameObject/Item/IItem.cpp
         GameModel/GameObject/Item/Stuff/Item.cpp
         GameModel/GameObject/Item/Potions/Potion.cpp
+        GameModel/GameObject/Item/Generation/ItemGenerator.cpp
 
         # INVENTORY
         GameModel/Inventory/Inventory.cpp
@@ -52,6 +56,7 @@ set(GAMEMODEL_SOURCES
         # MAP
         GameModel/Map/Map.cpp
         GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.cpp
+        GameModel/Map/MapBuilder.cpp
 
         PARENT_SCOPE
 )

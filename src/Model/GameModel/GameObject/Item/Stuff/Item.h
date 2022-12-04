@@ -25,5 +25,7 @@ public:
   ItemType get_item_type() const noexcept;
   // operator to set a item
   Item &operator=(const Item &other) = default;
+
+    Abstract::MapEntity getMapEntity() override;
 };
 }; // namespace GameModel

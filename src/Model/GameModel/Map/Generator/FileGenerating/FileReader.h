@@ -4,7 +4,7 @@
 #include <vector>
 #include "Model/GameModel/abstract.h"
 
-namespace GameModel::Map {
+namespace GameModel::Generation::Map {
 
     class FileReader {
     public:

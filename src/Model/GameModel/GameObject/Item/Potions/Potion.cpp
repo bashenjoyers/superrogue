@@ -20,4 +20,8 @@ void Potion::step() noexcept {
 }
 
 bool Potion::is_work() const noexcept { return work_time != 0; }
+
+Abstract::MapEntity Potion::getMapEntity() {
+    return Abstract::MapEntity::POTION;
+}
 }; // namespace GameModel

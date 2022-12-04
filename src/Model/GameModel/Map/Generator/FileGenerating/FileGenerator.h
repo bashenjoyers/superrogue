@@ -9,7 +9,7 @@
 #include "Common/environmentVariables/EnvironmentVariablesProvider.h"
 #include "Model/GameModel/Map/Generator/MapGenerator.h"
 
-namespace GameModel::Map {
+namespace GameModel::Generation::Map {
 
     class FileGenerator : public MapGenerator {
     public:

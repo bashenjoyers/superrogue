@@ -42,73 +42,30 @@ void Map::remove_enemy(const CharacterWithPosition& character_with_position) noe
   }
 }
 
-Map::Map(set<std::shared_ptr<IEnemy>> enemies, std::shared_ptr<Person> person, MapOptions map_options, int level)
-    : person_with_position(CharacterWithPosition(person)),
-      map_options(map_options), level(level) {
-  enemies_with_positions = {};
-  for (auto enemy : enemies) {
-    enemies_with_positions.push_back(CharacterWithPosition(enemy));
-  }
-  generate_map_and_door(); // create Map and door
-  set_positions();         // set Person and enemies positions, enemies areas
-  game_status = GameStatus::IN_PROGRESS;
+Map::Map(std::shared_ptr<Generation::ItemGenerator> itemGenerator,
+         std::shared_ptr<Generation::Map::MapGenerator> mapGenerator,
+         std::shared_ptr<Generation::AbstractEnemyFactory> enemyFactory,
+         std::shared_ptr<Person> person,
+         MapOptions map_options,
+         int level) :
+      map_options(map_options), level(level), itemGenerator(itemGenerator) {
+    Generation::Map::MapBuilder mb;
+    mb.setEnemiesCount(enemyCount);
+    mb.setItemsCount(itemsCount);
+    mb.setEnemiesFactory(enemyFactory);
+    mb.setItemsGenerator(itemGenerator);
+    mb.setMapGenerator(mapGenerator);
+    mb.setMapOptions(map_options);
+    mb.setPerson(person);
+    mb.build();
+
+    map = mb.getMap();
+    enemies_with_positions = mb.getEnemies();
+    items = mb.getItems();
+    person_with_position = *mb.getPerson();
 }
 
 GameStatus Map::get_game_status() const noexcept { return game_status; }
-
-void Map::set_positions() noexcept {
-  std::uniform_int_distribution<int> x_gen(0, map_options.width-1);
-  std::uniform_int_distribution<int> y_gen(0, map_options.height-1);
-  while (true) {
-      int x = x_gen(Values::generator);
-      int y = y_gen(Values::generator);
-      if (map[x][y] == MapEntity::FLOOR) {
-        person_with_position.pos = Position(x, y);
-        map[x][y] = MapEntity::PERSON;
-        break;
-      }
-    }
-  
-  std::vector<CharacterWithPosition> enemies_with_positions_new = {};
-  for (auto enemy : enemies_with_positions) {
-    while (true) {
-      int x = x_gen(Values::generator);
-      int y = y_gen(Values::generator);
-      if (map[x][y] == MapEntity::FLOOR) {
-        enemy.pos = Position(x, y);
-        enemies_with_positions_new.push_back(enemy);
-        map[x][y] = dynamic_cast<IEnemy*>(&*enemy.character)->get_map_entity();
-        break;
-      }
-    }
-  }
-  swap(enemies_with_positions, enemies_with_positions_new);
-}
-
-void Map::generate_map_and_door() noexcept {
-  BinaryTreeMazeGenerator gen;
-  convertMapFromBool(gen.generate(map_options));
-  map[map_options.width-1][map_options.height-1] = MapEntity::DOOR;
-
-  // remove later
-  std::uniform_int_distribution<int> x_gen(0, map_options.width-1);
-  std::uniform_int_distribution<int> y_gen(0, map_options.height-1);
-  for (int i = 0; i < 5; i++) {
-    while (true) {
-      int x = x_gen(Values::generator);
-      int y = y_gen(Values::generator);
-      if (map[x][y] == MapEntity::FLOOR) {
-        auto item = drop_item();
-        if (item != std::nullopt) {
-          items.insert({Position(x,y), item.value()});
-          auto iitem = item.value();
-          map[x][y] = (dynamic_cast<Potion*>(&*iitem) != nullptr) ? MapEntity::POTION : MapEntity::ITEM;
-        }
-        break;
-      }
-    }
-  }
-}
 
 vector<MapEntityWithPosition>
 Map::visible_cells(const Position &pos, int radius, bool ignore_walls = false,
@@ -202,20 +159,6 @@ MapInfo Map::get_map_info() const noexcept {
   return MapInfo(map_positions, person_with_position, map_options);
 }
 
-optional<std::shared_ptr<IItem>> Map::drop_item() const noexcept {
-  auto person = std::dynamic_pointer_cast<Person>(person_with_position.character);
-  float luck = person->get_full_characteristics().luck;
-  if (drop_gen(Values::generator) < luck) {
-    int i = drop_gen_i(Values::generator);
-    if (i >= Values::items_types.size()) {
-      i -= Values::items_types.size();
-      return Values::get_potion(Values::potions_types.at(i), level);
-    }
-    return Values::get_item(Values::items_types.at(i), level);
-  }
-  return std::nullopt;
-};
-
 void Map::punch_cells_in_order(const vector<Position>& positions,
                                const Characteristics& characteristics) noexcept {
   for (Position pos : positions) {
@@ -239,15 +182,13 @@ void Map::punch_cells_in_order(const vector<Position>& positions,
           }
         }
         if (erased_enemy != nullptr) {
-          optional<shared_ptr<IItem>> item = drop_item();
-          if (item == std::nullopt) {
+          shared_ptr<IItem> item = itemGenerator->generate();
+          if (item == nullptr) {
             map[erased_enemy->pos.x][erased_enemy->pos.y] =
                 get_cell_type(erased_enemy->pos);
           } else {
-            items.insert({erased_enemy->pos, item.value()});
-            auto iitem = item.value();
-            map[erased_enemy->pos.x][erased_enemy->pos.y] =
-                (dynamic_cast<Potion*>(&*iitem) != nullptr) ? MapEntity::POTION : MapEntity::ITEM;
+            items.insert({erased_enemy->pos, item});
+            map[erased_enemy->pos.x][erased_enemy->pos.y] = item->getMapEntity();
           }
           remove_enemy(*erased_enemy);
         }
@@ -640,15 +581,6 @@ void Map::action_enemy(
   if (!correct) {
     throw StepException("Enemy: failed " + to_string(action));
   }
-}
-
-void Map::convertMapFromBool(const std::vector<std::vector<bool>> &genMap) {
-    map.assign(genMap.size(), std::vector<MapEntity>(genMap.front().size(), MapEntity::FLOOR));
-    for (size_t y = 0; y < genMap.front().size(); y++) {
-        for (size_t x = 0; x < genMap.size(); x++) {
-            map[x][y] = genMap[x][y] ? MapEntity::FLOOR : MapEntity::WALL;
-        }
-    }
 }
 
 }; // namespace GameModel::Map

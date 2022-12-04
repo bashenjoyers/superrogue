@@ -2,7 +2,7 @@
 
 #include "Model/GameModel/Map/Generator/MapGenerator.h"
 
-namespace GameModel::Map {
+namespace GameModel::Generation::Map {
 
 /**
  * @brief just BinaryTreeMazeGenerator. 
@@ -22,7 +22,7 @@ public:
      * @param mapOptions options
      * @return generated map 
      */
-    virtual std::vector<std::vector<Abstract::MapEntity>> generate(MapOptions mapOptions) override;
+    virtual std::vector<std::vector<Abstract::MapEntity>> generate(GameModel::Map::MapOptions mapOptions) override;
 };
 
 }
