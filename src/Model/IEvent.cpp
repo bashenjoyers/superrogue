@@ -15,4 +15,4 @@ void GameModel::Events::IEvent::addObserver(std::shared_ptr<ModelObserver> obser
     observers.push_back(observer);
 }
 
-GameModel::Events::IEvent::IEvent(std::shared_ptr<Map::Map> map, std::shared_ptr<UIModel::CursorState> cursorState) : map(map), cursorState(cursorState) {}
+GameModel::Events::IEvent::IEvent(std::shared_ptr<Map::World> map, std::shared_ptr<UIModel::CursorState> cursorState) : map(map), cursorState(cursorState) {}

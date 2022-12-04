@@ -9,7 +9,7 @@ Boot::Boot() {}
 void Boot::play() {
     gm = std::make_shared<GameModel::GameManager>(GameModel::Map::MapOptions{.height = 30, .width = 60});
     renderer = std::make_shared<View::CursesRenderer>();
-    std::shared_ptr<GameModel::Map::Map> map = gm->generate_map();
+    std::shared_ptr<GameModel::Map::World> map = gm->generate_map();
     std::shared_ptr<UIModel::CursorState> cursor =
             std::make_shared<UIModel::CursorState>();
     std::unique_ptr<Controller::EventProvider> provider =

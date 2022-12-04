@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Model/GameModel/Map/Map.h"
+#include "Model/GameModel/Map/World.h"
 #include "Model/UIModel/Events/MoveEquipmentDownEvent.h"
 #include <memory>
 
@@ -10,7 +10,7 @@ TEST(MOVE_EQUIPMENT_DOWN_EVENT_TESTS, TEST_EXECUTE) {
     GameModel::Map::MapOptions mapOptions = GameModel::Map::MapOptions();
     mapOptions.height = 24;
     mapOptions.width = 24;
-    std::shared_ptr<GameModel::Map::Map> map = std::make_shared<GameModel::Map::Map>(enemies, person, mapOptions, 0);
+    std::shared_ptr<GameModel::Map::World> map = std::make_shared<GameModel::Map::World>(enemies, person, mapOptions, 0);
 
     std::shared_ptr<UIModel::CursorState> cursorState = std::make_shared<UIModel::CursorState>();
     GameModel::Events::MoveEquipmentDownEvent moveEquipmentDownEvent = GameModel::Events::MoveEquipmentDownEvent(map, cursorState);

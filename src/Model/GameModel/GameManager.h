@@ -3,7 +3,7 @@
 #include "Model/GameModel/GameObject/Character/Enemy.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
 #include "Model/GameModel/GameObject/Characteristics.h"
-#include "Model/GameModel/Map/Map.h"
+#include "Model/GameModel/Map/World.h"
 
 #include "values.h"
 #include <iostream>
@@ -25,7 +25,7 @@ class GameManager {
   int level = 1;
   std::shared_ptr<Person> person;
   Map::MapOptions map_options;
-  std::shared_ptr<Map::Map> map_ref;
+  std::shared_ptr<Map::World> map_ref;
   std::shared_ptr<Person> generate_person() noexcept;
   std::set<std::shared_ptr<IEnemy>> generate_enemies(GameOptions game_options);
   Characteristics
@@ -46,7 +46,7 @@ public:
    * 
    * @return std::shared_ptr<Map::Map> - ref to created field
    */
-  std::shared_ptr<Map::Map> generate_map() noexcept;
+  std::shared_ptr<Map::World> generate_map() noexcept;
 };
 
 }; // namespace GameModel

@@ -1,4 +1,4 @@
-#include "Map.h"
+#include "World.h"
 #include "Model/GameModel/values.h"
 #include "Model/GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.h"
 #include <memory>
@@ -24,7 +24,7 @@ MapInfo::MapInfo(vector<MapEntityWithPosition> map_positions,
   weapon_melee = person->is_weapon_melee();
 }
 
-void Map::remove_enemy(const CharacterWithPosition& character_with_position) noexcept {
+void World::remove_enemy(const CharacterWithPosition& character_with_position) noexcept {
   auto removed_enemy = std::dynamic_pointer_cast<IEnemy>(character_with_position.character);
   if (enemies_with_positions.size() == 0) {
     return;
@@ -42,12 +42,12 @@ void Map::remove_enemy(const CharacterWithPosition& character_with_position) noe
   }
 }
 
-Map::Map(std::shared_ptr<Generation::ItemGenerator> itemGenerator,
-         std::shared_ptr<Generation::Map::MapGenerator> mapGenerator,
-         std::shared_ptr<Generation::AbstractEnemyFactory> enemyFactory,
-         std::shared_ptr<Person> person,
-         MapOptions map_options,
-         int level) :
+World::World(std::shared_ptr<Generation::ItemGenerator> itemGenerator,
+			 std::shared_ptr<Generation::Map::MapGenerator> mapGenerator,
+			 std::shared_ptr<Generation::AbstractEnemyFactory> enemyFactory,
+			 std::shared_ptr<Person> person,
+			 MapOptions map_options,
+			 int level) :
       map_options(map_options), level(level), itemGenerator(itemGenerator) {
     Generation::Map::MapBuilder mb;
     mb.setEnemiesCount(enemyCount);
@@ -65,11 +65,11 @@ Map::Map(std::shared_ptr<Generation::ItemGenerator> itemGenerator,
     person_with_position = *mb.getPerson();
 }
 
-GameStatus Map::get_game_status() const noexcept { return game_status; }
+GameStatus World::get_game_status() const noexcept { return game_status; }
 
 vector<MapEntityWithPosition>
-Map::visible_cells(const Position &pos, int radius, bool ignore_walls = false,
-                   const vector<Position> &area = {}) const noexcept {
+World::visible_cells(const Position &pos, int radius, bool ignore_walls = false,
+					 const vector<Position> &area = {}) const noexcept {
   // if area is empty - no limits for it
   // TODO (return cells visible from position)
 //  if (area.size() == 0) {
@@ -88,22 +88,22 @@ Map::visible_cells(const Position &pos, int radius, bool ignore_walls = false,
   return ans;
 }
 
-bool Map::in_map(int x, int y) const noexcept {
+bool World::in_map(int x, int y) const noexcept {
   return x >= 0 && y >= 0 && x < map_options.width && y < map_options.height;
 }
 
-bool Map::is_vacant_cell(int x, int y) const noexcept {
+bool World::is_vacant_cell(int x, int y) const noexcept {
   MapEntity map_entity = map[x][y];
   return map_entity == MapEntity::FLOOR || map_entity == MapEntity::ITEM ||
          map_entity == MapEntity::POTION || map_entity == MapEntity::DOOR;
 }
 
-bool Map::is_door_cell(int x, int y) const noexcept {
+bool World::is_door_cell(int x, int y) const noexcept {
   MapEntity map_entity = map[x][y];
   return map_entity == MapEntity::DOOR;
 }
 
-bool Map::is_anybody_cell(int x, int y) const noexcept {
+bool World::is_anybody_cell(int x, int y) const noexcept {
   MapEntity map_entity = map[x][y];
   return map_entity == MapEntity::PERSON || map_entity == MapEntity::ENEMY ||
          map_entity == MapEntity::ENEMY_AGRESSIVE ||
@@ -114,7 +114,7 @@ bool Map::is_anybody_cell(int x, int y) const noexcept {
          map_entity == MapEntity::ENEMY_TRAVELER;
 }
 
-MapEntity Map::get_cell_type(const Position& pos) const noexcept {
+MapEntity World::get_cell_type(const Position& pos) const noexcept {
   auto it_item = items.find(pos);
   if (it_item == items.end()) {
     return MapEntity::FLOOR;
@@ -125,7 +125,7 @@ MapEntity Map::get_cell_type(const Position& pos) const noexcept {
   return MapEntity::ITEM;
 }
 
-bool Map::step(CharacterAction action) {
+bool World::step(CharacterAction action) {
   if (get_game_status() != GameStatus::IN_PROGRESS) {
     return false;
   }
@@ -150,7 +150,7 @@ bool Map::step(CharacterAction action) {
   return true;
 }
 
-MapInfo Map::get_map_info() const noexcept {
+MapInfo World::get_map_info() const noexcept {
   auto person = std::dynamic_pointer_cast<Person>(person_with_position.character);
   int radius =
       person->get_settings().visible_radius;
@@ -159,8 +159,8 @@ MapInfo Map::get_map_info() const noexcept {
   return MapInfo(map_positions, person_with_position, map_options);
 }
 
-void Map::punch_cells_in_order(const vector<Position>& positions,
-                               const Characteristics& characteristics) noexcept {
+void World::punch_cells_in_order(const vector<Position>& positions,
+								 const Characteristics& characteristics) noexcept {
   for (Position pos : positions) {
     if (!in_map(pos.x, pos.y))
       break;
@@ -202,8 +202,8 @@ void Map::punch_cells_in_order(const vector<Position>& positions,
   }
 }
 
-bool Map::punch(CharacterWithPosition& character_with_position,
-                 const Characteristics& characteristics) noexcept {
+bool World::punch(CharacterWithPosition& character_with_position,
+				  const Characteristics& characteristics) noexcept {
   Characteristics character_characteristics;
   if ((dynamic_cast<Person*>(&*character_with_position.character) != nullptr)) {
     character_characteristics = dynamic_cast<Person *>(&*character_with_position.character)
@@ -222,7 +222,7 @@ bool Map::punch(CharacterWithPosition& character_with_position,
   return character_with_position.character->damaged(damage);
 }
 
-bool Map::punch_step(const CharacterWithPosition& character1_with_position, const CharacterWithPosition& character2_with_position) noexcept {
+bool World::punch_step(const CharacterWithPosition& character1_with_position, const CharacterWithPosition& character2_with_position) noexcept {
   auto person1 = std::dynamic_pointer_cast<Person>(character1_with_position.character);  //
   auto person2 = std::dynamic_pointer_cast<Person>(character2_with_position.character);  // only for get characteristics and check is it person
   Characteristics character1_characteristics, character2_characteristics;
@@ -272,7 +272,7 @@ bool Map::punch_step(const CharacterWithPosition& character1_with_position, cons
   return false;
 }
 
-bool Map::any_step_anybody(CharacterWithPosition &anybody, Position pos) noexcept {
+bool World::any_step_anybody(CharacterWithPosition &anybody, Position pos) noexcept {
   if (is_door_cell(pos.x, pos.y)) {
     if ((dynamic_cast<Person*>(&*anybody.character) != nullptr)) {
       map[anybody.pos.x][anybody.pos.y] = get_cell_type(anybody.pos);
@@ -295,7 +295,7 @@ bool Map::any_step_anybody(CharacterWithPosition &anybody, Position pos) noexcep
   return false;
 }
 
-bool Map::any_punch_step_anybody(CharacterWithPosition &anybody, Position pos) noexcept {
+bool World::any_punch_step_anybody(CharacterWithPosition &anybody, Position pos) noexcept {
   int character1_i = -1, character2_i = -1;
   for (int i = 0; i < enemies_with_positions.size() && !(character1_i != -1 && character2_i != -1); i++) {
     if (enemies_with_positions[i].pos == anybody.pos) {
@@ -314,7 +314,7 @@ bool Map::any_punch_step_anybody(CharacterWithPosition &anybody, Position pos) n
   }
 }
 
-bool Map::step_anybody(CharacterAction action, CharacterWithPosition &anybody) noexcept {
+bool World::step_anybody(CharacterAction action, CharacterWithPosition &anybody) noexcept {
   bool step_was = false;
   switch (action) {
   case CharacterAction::STEP_RIGHT:
@@ -371,7 +371,7 @@ bool Map::step_anybody(CharacterAction action, CharacterWithPosition &anybody) n
   return step_was;
 }
 
-void Map::change_item() {
+void World::change_item() {
   auto person = std::dynamic_pointer_cast<Person>(person_with_position.character);
   person->take_item();
   auto it_item = items.find(person_with_position.pos);
@@ -432,7 +432,7 @@ void Map::change_item() {
   }
 }
 
-bool Map::action_person(CharacterAction action) {
+bool World::action_person(CharacterAction action) {
   auto person = std::dynamic_pointer_cast<Person>(person_with_position.character);
   bool correct = false;
   int range = person->is_weapon_melee() ? 1 : DISTANT_RANGE;
@@ -513,7 +513,7 @@ bool Map::action_person(CharacterAction action) {
   return correct;
 }
 
-void Map::action_enemy(
+void World::action_enemy(
     CharacterAction action,
     CharacterWithPosition& enemy_with_position) {
   bool correct = false;

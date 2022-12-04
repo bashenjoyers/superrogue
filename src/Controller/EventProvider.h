@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "Model/EmptyEvent.h"
-#include "Model/GameModel/Map/Map.h"
+#include "Model/GameModel/Map/World.h"
 #include "Model/IEvent.h"
 #include "Model/UIModel/CursorState.h"
 
@@ -23,7 +23,7 @@ public:
   * @param map - represents game map
   */
   EventProvider(std::shared_ptr<UIModel::CursorState> cursorState,
-                std::shared_ptr<GameModel::Map::Map> map);
+                std::shared_ptr<GameModel::Map::World> map);
   /**
   * @brief provides event by user's key
   *

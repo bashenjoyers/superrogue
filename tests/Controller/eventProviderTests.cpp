@@ -20,7 +20,7 @@
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_W) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('w');
@@ -29,7 +29,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_W) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_A) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('a');
@@ -38,7 +38,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_A) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_S) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('s');
@@ -47,7 +47,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_S) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_D) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('d');
@@ -56,7 +56,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_D) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_Q) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('q');
@@ -65,7 +65,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_Q) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_L) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('l');
@@ -74,7 +74,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_L) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_O) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('o');
@@ -83,7 +83,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_O) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_K) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('k');
@@ -92,7 +92,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_K) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_SEMICOLON) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey(';');
@@ -101,7 +101,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_SEMICOLON) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_E) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('e');
@@ -110,7 +110,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_E) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_P) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('p');
@@ -119,7 +119,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_P) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_DOT) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('.');
@@ -128,7 +128,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_DOT) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_MINUS) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('-');
@@ -137,7 +137,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_MINUS) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_EQUALS) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('=');
@@ -146,7 +146,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_EQUALS) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_LEFT_SQUARE_BRACKET) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey(']');
@@ -155,7 +155,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_LEFT_SQUARE_BRACKET) {
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_EQUALS_IF_RIGHT_SQUARE_BRACKET) {
     std::shared_ptr<UIModel::CursorState> cursorState = std::shared_ptr<UIModel::CursorState>();
-    std::shared_ptr<GameModel::Map::Map> map = std::shared_ptr<GameModel::Map::Map>();
+    std::shared_ptr<GameModel::Map::World> map = std::shared_ptr<GameModel::Map::World>();
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, map);
 
     auto result = eventProvider.getEventByKey('[');

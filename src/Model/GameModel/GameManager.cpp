@@ -77,7 +77,7 @@ void GameManager::person_level_up(Characteristics characteristics) {
   person->level_up(characteristics);
 }
 
-std::shared_ptr<Map::Map> GameManager::generate_map() noexcept {
+std::shared_ptr<Map::World> GameManager::generate_map() noexcept {
   level++;
   if (level != 1) {
     person_level_up(Characteristics(2, 2, 0, 1)); // user can choose it later
@@ -88,9 +88,9 @@ std::shared_ptr<Map::Map> GameManager::generate_map() noexcept {
   std::shared_ptr<Generation::Map::MapGenerator> mapGenerator = std::make_shared<Generation::Map::BinaryTreeMazeGenerator>();
 
   if (map_ref == nullptr) {
-    map_ref = std::make_shared<Map::Map>(itemGenerator, mapGenerator, enemyFactory, person, map_options, level);
+    map_ref = std::make_shared<Map::World>(itemGenerator, mapGenerator, enemyFactory, person, map_options, level);
   } else {
-    *map_ref = Map::Map(itemGenerator, mapGenerator, enemyFactory, person, map_options, level);
+    *map_ref = Map::World(itemGenerator, mapGenerator, enemyFactory, person, map_options, level);
   }
   return map_ref;
 }

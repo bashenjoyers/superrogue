@@ -2,7 +2,7 @@
 
 #include "GameDataConverter.h"
 #include "Model/GameModel/GameObject/Item/Stuff/Item.h"
-#include "Model/GameModel/Map/Map.h"
+#include "Model/GameModel/Map/World.h"
 
 #include <memory>
 #include <string>

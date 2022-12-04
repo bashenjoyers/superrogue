@@ -58,7 +58,7 @@ struct MapInfo {
  * @brief map class on which everything happens
  * 
  */
-class Map {
+struct World {
   size_t enemyCount = 5;  // TODO on generation
   size_t itemsCount = 5;
 
@@ -103,14 +103,14 @@ public:
    * @param map_options - map options
    * @param level - map level
    */
-  Map(std::shared_ptr<Generation::ItemGenerator> itemGenerator,
-	  std::shared_ptr<Generation::Map::MapGenerator> mapGenerator,
-	  std::shared_ptr<Generation::AbstractEnemyFactory> enemyFactory,
-	  std::shared_ptr<Person> person,
-	  MapOptions map_options,
-	  int level);
+  World(std::shared_ptr<Generation::ItemGenerator> itemGenerator,
+		std::shared_ptr<Generation::Map::MapGenerator> mapGenerator,
+		std::shared_ptr<Generation::AbstractEnemyFactory> enemyFactory,
+		std::shared_ptr<Person> person,
+		MapOptions map_options,
+		int level);
 
-  Map(const Map &other) = default;
+  World(const World &other) = default;
 
   /**
    * @brief Get the game status. 
