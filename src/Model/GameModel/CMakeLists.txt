@@ -42,6 +42,10 @@ set(GAMEMODEL_SOURCES
         GameModel/GameObject/Character/Class/Enemy/Coward.cpp
         GameModel/GameObject/Character/Class/Enemy/Traveler.cpp
 
+        GameModel/GameObject/Character/Class/Enemy/state/behaviors.cpp
+        GameModel/GameObject/Character/Class/Enemy/state/EnemyState.cpp
+        GameModel/GameObject/Character/Class/Enemy/state/helpers.cpp
+
         GameModel/GameObject/Character/Generation/AbstractEnemyFactory.cpp
         GameModel/GameObject/Character/Generation/FantasyEnemyFactory.cpp
 

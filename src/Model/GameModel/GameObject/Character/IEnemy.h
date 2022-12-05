@@ -16,6 +16,8 @@ namespace GameModel {
 class IEnemy : public ICharacter {
   // character behavior when hitting it
   void disturb() noexcept;
+  // initial health, to know the difference with the current
+  int init_health;
 protected:
   // enemy ID on the level
   int id; // not changed
@@ -38,17 +40,24 @@ public:
   // returns the class of the character
   IEnemy() {};
   
+  // returns the step with the strategy of the current character class
   virtual CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
                            const Abstract::Position &pos) noexcept;
+  // returns character settings
   virtual EnemySettings get_settings() const noexcept;
+  // returns the cell type (how to display the character on the map)
   virtual Abstract::MapEntity get_map_entity() const noexcept override;
+  // returns whether the cell is free from the point of view of the enemy
   virtual bool is_vacant(Abstract::MapEntity map_entity) const noexcept;
   // Enemy class. Gives certain features and strategy when playin
   std::shared_ptr<IEnemyClass> get_enemy_class() const noexcept;
+  // returns enemy id (for internal use)
   int get_id() const noexcept;
+  // notifies the character that it has been hit (may change behavior/strategy depending on the class and in principle)
   virtual bool damaged(int value) noexcept override;
-    // internal storage statements
+  // internal storage statements
   bool operator==(const IEnemy &other) const noexcept;
+  // internal storage statements
   bool operator<(const IEnemy &other) const noexcept;
   virtual ~IEnemy() {}
 };

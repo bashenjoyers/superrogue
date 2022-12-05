@@ -2,7 +2,7 @@
 
 #include "Model/GameModel/Map/MapOptions.h"
 #include "Model/GameModel/abstract.h"
-#include "Model/GameModel/Generator.h"
+#include "Model/GameModel/generator.h"
 
 #include <vector>
 

@@ -28,4 +28,9 @@ const float LUCKY_LUCK = 0.9;
 const int DEFENCE_DEFAULT_DAMAGE = 0;
 const float INTELLECT_STEP_PUNCH_K = 0.7;
 const float CONFUSION_K = 0.1;
+const float CONCEALMENT_INTELLECT_K = 0.9;
+const float SAVE_LAST_POS_INTELLECT_K = 0.5;
+const float CHANGE_WALK_K = 0.1;
+const float NOT_COWARD_K = 0.05;
+const float ENEMY_SCARED_K = 0.3;
 }; // namespace GameModel

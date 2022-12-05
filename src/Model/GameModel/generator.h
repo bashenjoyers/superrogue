@@ -6,6 +6,10 @@
  * 
  */
 namespace GameModel::Generation {
+class Generator {
+};
+
+
 static std::uniform_int_distribution<int> enemies_count_gen(ENEMIES_COUNT_MIN,
                                                             ENEMIES_COUNT_MAX);
 static std::uniform_real_distribution<float> luck_gen(0, 1);
@@ -22,6 +26,7 @@ static std::uniform_int_distribution<int>
 static std::uniform_real_distribution<float> intellect_gen(0, 1);
 static std::uniform_int_distribution<int> melee_gen(0, 1);
 static std::uniform_int_distribution<int> characteristic_i_gen(0, 3);
+static std::uniform_real_distribution<float> change_state_gen(0, 1);
 
 
 }; // namespace GameModel::Generation
