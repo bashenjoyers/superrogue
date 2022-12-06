@@ -15,13 +15,16 @@ class Person : public IPerson {
   // individual characteristics obtained with the level
   Characteristics level_characteristics = Characteristics();
   // collection of used potions
-  std::vector<Potion> used_potions = {};
+  std::vector<std::shared_ptr<Potion>> used_potions = {};
   // function called before all actions
   void before_any_action();
 
-public:
-  // inventory with things and potions
   Inventory::Inventory inventory;
+
+  void take_potion(std::shared_ptr<Potion> new_potion);
+  std::shared_ptr<Item> take_equipment(std::shared_ptr<Item> new_equipment);
+
+public:
   /**
    * @brief uses the potion by its number in the collection
    * 
@@ -37,7 +40,12 @@ public:
   // returns whether the selected weapon is a melee weapon
   bool is_weapon_melee() const noexcept;
   // called when the item is changed
-  void take_item() const noexcept;
+  std::shared_ptr<IItem> take_item(std::shared_ptr<IItem> item) noexcept;
+
+  Inventory::InventoryInfo get_inventory_info();
+
+  virtual int getAttackRange() const noexcept override;
+
   /**
    * @brief Get the full characteristics object. Sums up character stats, stats gained from level, item stats, and temporary stats from potions
    * 
@@ -50,10 +58,10 @@ public:
    * @brief Construct a new Person according to the standard characteristics of the object and inventory
    */
   Person(std::string name, Characteristics characteristics,
-         std::shared_ptr<IPersonClass> person_class,
-         Inventory::Inventory inventory =
-             Inventory::Inventory(DEFAULT_POTIONS_MAX));
+		 std::shared_ptr<IPersonClass> person_class,
+		 Inventory::Inventory inventory =
+		 Inventory::Inventory(DEFAULT_POTIONS_MAX));
   Person(const Person &person) = default;
-  Person(){};
+  Person() {};
 };
 }; // namespace GameModel

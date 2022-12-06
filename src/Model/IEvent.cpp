@@ -6,8 +6,8 @@ void GameModel::Events::IEvent::execute() {
 }
 
 void GameModel::Events::IEvent::notify() {
-    for (auto observer: observers) {
-        observer->handleEvent(std::make_shared<Map::MapInfo>(map->get_map_info()), cursorState);
+    for (const auto& observer: observers) {
+        observer->handleEvent(std::make_shared<Map::MapInfo>(map->getMapInfo()), cursorState);
     }
 }
 
@@ -15,4 +15,4 @@ void GameModel::Events::IEvent::addObserver(std::shared_ptr<ModelObserver> obser
     observers.push_back(observer);
 }
 
-GameModel::Events::IEvent::IEvent(std::shared_ptr<Map::World> map, std::shared_ptr<UIModel::CursorState> cursorState) : map(map), cursorState(cursorState) {}
+GameModel::Events::IEvent::IEvent(std::shared_ptr<GameManager> map, std::shared_ptr<UIModel::CursorState> cursorState) : map(map), cursorState(cursorState) {}

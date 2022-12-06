@@ -57,6 +57,7 @@ set(GAMEMODEL_SOURCES
         GameModel/Map/World.cpp
         GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.cpp
         GameModel/Map/MapBuilder.cpp
+        GameModel/Manipulators/WorldManipulator.cpp
 
         PARENT_SCOPE
 )

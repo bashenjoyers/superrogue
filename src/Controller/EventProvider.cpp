@@ -9,7 +9,7 @@ using namespace GameModel::Events;
 using namespace UIModel;
 
 EventProvider::EventProvider(std::shared_ptr<CursorState> cursorState,
-                             std::shared_ptr<GameModel::Map::World> map) {
+                             std::shared_ptr<GameModel::GameManager> map) {
   keyMapping = {
       {'[', std::make_shared<MovePotionDownEvent>(map, cursorState)},
       {']', std::make_shared<MovePotionUpEvent>(map, cursorState)},

@@ -6,7 +6,7 @@
 namespace GameModel::Events {
 class ChangeItemModelEvent : public IEvent {
 public:
-  ChangeItemModelEvent(std::shared_ptr<Map::World> map, std::shared_ptr<UIModel::CursorState> cursorState);
+  ChangeItemModelEvent(std::shared_ptr<GameManager> map, std::shared_ptr<UIModel::CursorState> cursorState);
 
 private:
   void _execute() override;

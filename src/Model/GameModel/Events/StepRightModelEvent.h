@@ -7,7 +7,7 @@
 namespace GameModel::Events {
 class StepRightModelEvent : public IEvent {
 public:
-  StepRightModelEvent(std::shared_ptr<Map::World> map, std::shared_ptr<UIModel::CursorState> cursorState);
+  StepRightModelEvent(std::shared_ptr<GameManager> map, std::shared_ptr<UIModel::CursorState> cursorState);
 
 private:
   void _execute() override;

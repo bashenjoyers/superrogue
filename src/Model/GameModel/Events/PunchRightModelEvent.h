@@ -6,7 +6,7 @@
 namespace GameModel::Events {
 class PunchRightModelEvent : public IEvent {
 public:
-  PunchRightModelEvent(std::shared_ptr<Map::World> map, std::shared_ptr<UIModel::CursorState> cursorState);
+  PunchRightModelEvent(std::shared_ptr<GameManager> map, std::shared_ptr<UIModel::CursorState> cursorState);
 
 private:
   void _execute() override;

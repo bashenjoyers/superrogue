@@ -7,6 +7,7 @@
 #include "Model/GameModel/GameObject/Character/Generation/AbstractEnemyFactory.h"
 #include "Model/GameModel/GameObject/Item/Generation/ItemGenerator.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
+#include "World.h"
 
 namespace GameModel::Generation::Map {
 
@@ -68,22 +69,17 @@ public:
   /**
    * @brief generate whole map based on set configuration
    */
-  void build();
-
-  std::vector<std::vector<Abstract::MapEntity>> getMap();
-  std::vector<CharacterWithPosition> getEnemies();
-  std::map<Abstract::Position, std::shared_ptr<IItem>> getItems();
-  std::shared_ptr<CharacterWithPosition> getPerson();
+  GameModel::Map::World build();
 
 private:
   std::shared_ptr<IEnemy> buildEnemy(int guid);
   Abstract::Position generatePosition();
   std::shared_ptr<IItem> buildItem();
 
-  std::shared_ptr<ItemGenerator> itemGenerator;
-  std::shared_ptr<MapGenerator> mapGenerator;
-  std::shared_ptr<AbstractEnemyFactory> enemyFactory;
-  std::shared_ptr<Person> person;
+  std::shared_ptr<ItemGenerator> itemGenerator = nullptr;
+  std::shared_ptr<MapGenerator> mapGenerator = nullptr;
+  std::shared_ptr<AbstractEnemyFactory> enemyFactory = nullptr;
+  std::shared_ptr<Person> person = nullptr;
 
   GameModel::Map::MapOptions opts;
   size_t enemiesCount = 0;
@@ -92,7 +88,7 @@ private:
   std::vector<std::vector<Abstract::MapEntity>> map;
   std::vector<CharacterWithPosition> enemies;
   std::map<Abstract::Position, std::shared_ptr<IItem>> items;
-  std::shared_ptr<CharacterWithPosition> personWithPosition;
+  CharacterWithPosition personWithPosition;
 };
 
 }

@@ -33,7 +33,11 @@ enum class PersonClass { ALCHEMIST, FARSIGHTED, LUCKY, SECRETIVE, WISE };
 enum class EnemyClass { AGRESSIVE, COWARD, FLYING, INDIFFERENT, ORDINARY, TRAVELER };
 
 struct Position {
-  size_t x, y;
+  int x, y;
+
+  Position operator+(const Position &other) const {
+    return Position{x + other.x, y + other.y};
+  }
 
   friend bool operator==(const Position &it, const Position &other) {
     return it.x == other.x && it.y == other.y;
@@ -44,7 +48,7 @@ struct Position {
     }
     return it.x < other.x;
   }
-  Position(size_t x, size_t y) : x(x), y(y){};
+  Position(int x, int y) : x(x), y(y){};
   Position() = default;
 };
 

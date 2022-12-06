@@ -9,7 +9,9 @@
 #include "abstract.h"
 #include "generator.h"
 #include "values.h"
+#include "Model/GameModel/Map/MapBuilder.h"
 #include <memory>
+#include <cassert>
 
 using std::max;
 using std::set;
@@ -25,6 +27,10 @@ using namespace Abstract;
 GameManager::GameManager(Map::MapOptions map_options)
     : map_options(map_options) {
   person = generate_person();
+  enemyFactory = std::make_shared<Generation::FantasyEnemyFactory>(level);
+  itemGenerator = std::make_shared<Generation::ItemGenerator>(level, person->get_full_characteristics().luck);
+  mapGenerator = std::make_shared<Generation::Map::BinaryTreeMazeGenerator>();
+  generateMap();
 }
 
 Characteristics GameManager::generate_characteristics(
@@ -77,21 +83,59 @@ void GameManager::person_level_up(Characteristics characteristics) {
   person->level_up(characteristics);
 }
 
-std::shared_ptr<Map::World> GameManager::generate_map() noexcept {
+void GameManager::generateMap() noexcept {
   level++;
   if (level != 1) {
     person_level_up(Characteristics(2, 2, 0, 1)); // user can choose it later
   }
 
-  std::shared_ptr<Generation::AbstractEnemyFactory> enemyFactory = std::make_shared<Generation::FantasyEnemyFactory>(level);
-  std::shared_ptr<Generation::ItemGenerator> itemGenerator = std::make_shared<Generation::ItemGenerator>(level, person->get_full_characteristics().luck);
-  std::shared_ptr<Generation::Map::MapGenerator> mapGenerator = std::make_shared<Generation::Map::BinaryTreeMazeGenerator>();
+  std::shared_ptr<Generation::Map::MapBuilder> builder = std::make_shared<Generation::Map::MapBuilder>();
+  builder->setEnemiesFactory(enemyFactory);
+  builder->setItemsGenerator(itemGenerator);
+  builder->setMapGenerator(mapGenerator);
+  builder->setMapOptions(map_options);
+  builder->setEnemiesCount(enemyCount);
+  builder->setItemsCount(itemsCount);
+  builder->setPerson(person);
 
-  if (map_ref == nullptr) {
-    map_ref = std::make_shared<Map::World>(itemGenerator, mapGenerator, enemyFactory, person, map_options, level);
-  } else {
-    *map_ref = Map::World(itemGenerator, mapGenerator, enemyFactory, person, map_options, level);
-  }
-  return map_ref;
+  world = std::make_shared<Map::World>(builder->build());
+  worldManipulator = std::make_shared<Map::WorldManipulator>(world, level, itemGenerator);
+
+  status = GameStatus::IN_PROGRESS;
 }
+
+bool GameManager::step(CharacterAction action) {
+  assert(world != nullptr);
+  assert(person != nullptr);
+  assert(worldManipulator != nullptr);
+
+  if (!worldManipulator->actPersonInternal(action, world->person_with_position)) {
+	if (!worldManipulator->act(action, world->person_with_position)) {
+	  return false;
+	}
+  }
+
+  if (world->person_with_position.pos == world->door) {
+	generateMap();
+	return true;
+  }
+
+  worldManipulator->enemiesAct();
+
+  if (person->isDead()) {
+	status = GameStatus::END;
+	return true;
+  }
+
+  return true;
+}
+
+Map::MapInfo GameManager::getMapInfo() {
+  assert(worldManipulator != nullptr);
+  return worldManipulator->getMapInfo();
+}
+bool GameManager::isOver() {
+  return status == GameStatus::END;
+}
+
 }; // namespace GameModel

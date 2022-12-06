@@ -7,7 +7,7 @@
 namespace GameModel::Events {
 class PotionModelEvent : public IEvent {
 public:
-  PotionModelEvent(std::shared_ptr<Map::World> map,
+  PotionModelEvent(std::shared_ptr<GameManager> map,
                    std::shared_ptr<UIModel::CursorState> cursor_state);
 
 private:

@@ -23,7 +23,7 @@ public:
   * @param map - represents game map
   */
   EventProvider(std::shared_ptr<UIModel::CursorState> cursorState,
-                std::shared_ptr<GameModel::Map::World> map);
+                std::shared_ptr<GameModel::GameManager> map);
   /**
   * @brief provides event by user's key
   *

@@ -13,6 +13,8 @@ class IGameObject {
   std::string name;
   // description of the object
   std::string description;
+
+protected:
   // characteristics of the object
   Characteristics characteristics;
 
@@ -23,8 +25,6 @@ public:
   virtual Characteristics get_characteristics() const noexcept;
   // adds health for object (only used for character so far)
   virtual void add_health(int value) noexcept;
-  // takes away health for object (only used for character/enemy so far)
-  virtual bool damaged(int value) noexcept; // return is GameObject destroed
   // creates IGameObject by setting basic properties
   IGameObject(std::string name, std::string description,
               Characteristics characteristics);

@@ -24,8 +24,4 @@ void IGameObject::add_health(int value) noexcept {
   characteristics.health += value;
 }
 
-bool IGameObject::damaged(int value) noexcept {
-  characteristics.health = max(characteristics.health - value, 0);
-  return characteristics.health == 0;
-}
 }; // namespace GameModel

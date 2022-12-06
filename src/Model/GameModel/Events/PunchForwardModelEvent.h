@@ -6,7 +6,7 @@
 namespace GameModel::Events {
 class PunchForwardModelEvent : public IEvent {
 public:
-  PunchForwardModelEvent(std::shared_ptr<Map::World> map, std::shared_ptr<UIModel::CursorState> cursorState);
+  PunchForwardModelEvent(std::shared_ptr<GameManager> map, std::shared_ptr<UIModel::CursorState> cursorState);
 
 private:
   void _execute() override;

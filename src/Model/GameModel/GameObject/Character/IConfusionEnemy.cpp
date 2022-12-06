@@ -15,16 +15,6 @@ IConfusionEnemy::IConfusionEnemy(std::shared_ptr<IEnemy> ienemy) : ienemy(ienemy
   confuse_gen = std::uniform_real_distribution<float>(0, 1);
 };
 
-bool IConfusionEnemy::damaged(int value) noexcept {
-  if (ienemy->damaged(value))
-    return true;
-  float confuse = confuse_gen(Values::generator);
-  if (confuse < CONFUSION_K) {
-    confused_state = ConfusedState::DISCARBED;
-  }
-  return false;
-}
-
 CharacterAction IConfusionEnemy::strategy(vector<MapEntityWithPosition> &cells, const Position &pos) noexcept {
   vector<CharacterAction> possible_actions = {};
   switch (confused_state)
@@ -73,10 +63,6 @@ Characteristics IConfusionEnemy::get_characteristics() const noexcept {
   return ienemy->get_characteristics();
 }
 
-float IConfusionEnemy::get_attack_range() const noexcept {
-  return ienemy->get_attack_range();
-}
-
 void IConfusionEnemy::add_health(int value) noexcept {
   return ienemy->add_health(value);
 }
@@ -100,4 +86,24 @@ Abstract::MapEntity IConfusionEnemy::get_map_entity() const noexcept {
 bool IConfusionEnemy::is_vacant(Abstract::MapEntity map_entity) const noexcept {
   return ienemy->is_vacant(map_entity);
 }
+
+void IConfusionEnemy::takeDamage(int damage) {
+  ienemy->takeDamage(damage);
+  if (ienemy->isDead())
+	return;
+
+  float confuse = confuse_gen(Values::generator);
+  if (confuse < CONFUSION_K) {
+	confused_state = ConfusedState::DISCARBED;
+  }
+}
+
+bool IConfusionEnemy::isDead() {
+  return ienemy->isDead();
+}
+
+int IConfusionEnemy::getAttackRange() const noexcept {
+  return ienemy->getAttackRange();
+}
+
 }; // namespace GameModel
