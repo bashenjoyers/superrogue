@@ -66,7 +66,9 @@ std::vector<std::shared_ptr<Potion>> Inventory::get_potions() const noexcept { r
 std::shared_ptr<Potion> Inventory::use_potion(int potion_i) {
   if (potions.size() <= potion_i || potion_i < 0)
     return nullptr;
-  return *potions.erase(potions.begin() + potion_i);
+  auto potion = potions[potion_i];
+  potions.erase(potions.begin() + potion_i);
+  return potion;
 }
 
 InventoryInfo Inventory::get_inventory_info() {
