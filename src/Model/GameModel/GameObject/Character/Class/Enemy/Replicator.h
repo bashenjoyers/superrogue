@@ -20,6 +20,6 @@ namespace GameModel {
         // returns the strategy for the current class
         CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
                                  const Abstract::Position &pos) noexcept override;
-        double getReplicationProbability();
+        double get_replication_probability();
     };
 }; // namespace GameModel

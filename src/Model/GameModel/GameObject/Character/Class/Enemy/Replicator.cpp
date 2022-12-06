@@ -59,7 +59,7 @@ namespace GameModel {
         return default_fight_behavior(dx, dy, possible_actions);
     }
 
-    double Replicator::getReplicationProbability() {
+    double Replicator::get_replication_probability() {
         return replication_prob;
     }
 }; // namespace GameModel

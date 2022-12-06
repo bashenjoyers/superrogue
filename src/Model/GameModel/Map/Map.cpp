@@ -151,7 +151,7 @@ bool Map::step(CharacterAction action) {
     auto replicator = dynamic_cast<Replicator*>(&*enemy);
     if (replicator != nullptr) {
         bool is_vacant = is_vacant_cell(enemies_with_positions[i].pos.x, enemies_with_positions[i].pos.y);
-        if (replicator->getReplicationProbability() > 0.5 && is_vacant) {
+        if (replicator->get_replication_probability() > 0.5 && is_vacant) {
             CharacterWithPosition character = CharacterWithPosition(replicator);
             this->enemies_with_positions.push_back(replicator);
         }
