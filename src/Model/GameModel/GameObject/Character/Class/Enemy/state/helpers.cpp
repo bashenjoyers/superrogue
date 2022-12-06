@@ -16,6 +16,7 @@ EnemyEnvironmentInfo get_environment_info(vector<MapEntityWithPosition> &cells, 
   bool person_was = false;
   info.own_pos = pos;
   for (MapEntityWithPosition cell : cells) {
+    if (cell.pos == pos) continue;
     if (smbs.find(cell.map_entity) != smbs.end()) {
       if (cell.map_entity == MapEntity::PERSON) {
         info.smb_pos = cell.pos;

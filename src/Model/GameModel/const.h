@@ -7,7 +7,7 @@
 
 namespace GameModel {
 const int PARAMETER_COUNT = 4;
-const int DEFAULT_VISIBLE_RADIUS = 4;
+const int DEFAULT_VISIBLE_RADIUS = 10;
 const int DEFAULT_POTION_WORK_TIME = 5;
 const int DEFAULT_POTIONS_MAX = 3;
 const int POTIONS_MAX_ALCHEMIST = 5;
