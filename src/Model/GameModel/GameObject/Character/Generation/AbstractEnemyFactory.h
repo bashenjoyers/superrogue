@@ -16,6 +16,7 @@ public:
     virtual std::shared_ptr<IEnemy> generateIndifferent(int guid) = 0;
     virtual std::shared_ptr<IEnemy> generateOrdinary(int guid) = 0;
     virtual std::shared_ptr<IEnemy> generateTraveler(int guid) = 0;
+    virtual std::shared_ptr<IEnemy> generateReplicator(int guid) = 0;
 
 protected:
     Characteristics generateCharacteristics();

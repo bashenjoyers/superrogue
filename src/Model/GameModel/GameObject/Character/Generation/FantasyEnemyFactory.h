@@ -20,6 +20,8 @@ public:
 
     std::shared_ptr<IEnemy> generateTraveler(int guid) override;
 
+    std::shared_ptr<IEnemy> generateReplicator(int guid) override;
+
 private:
 
 };

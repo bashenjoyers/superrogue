@@ -17,6 +17,7 @@
 #include "Model/GameModel/GameObject/Item/Stuff/Item.h"
 #include "Model/GameModel/GameObject/Item/Stuff/StuffType.h"
 #include "const.h"
+#include "Model/GameModel/GameObject/Character/Class/Enemy/Replicator.h"
 #include <unordered_map>
 #include <vector>
 #include <memory>
@@ -238,6 +239,10 @@ get_enemy_class(GameModel::Abstract::EnemyClass enemy_class,
   case GameModel::Abstract::EnemyClass::TRAVELER:
     return std::make_shared<GameModel::Traveler>(
         "Can be anywhere he wants (he can be located anywhere on the Map)",
+        settings);
+  case GameModel::Abstract::EnemyClass::REPLICATOR:
+    return std::make_shared<GameModel::Replicator>(
+        "Can randomly replicates on the nearest cell",
         settings);
   default:
     throw GameObjectException("wrong PersonClass");

@@ -29,7 +29,8 @@ CharacterAction Agressive::strategy(vector<MapEntityWithPosition> &cells,
         cell.map_entity == MapEntity::ENEMY_FLYING ||
         cell.map_entity == MapEntity::ENEMY_INDIFFERENT ||
         cell.map_entity == MapEntity::ENEMY_ORDINARY ||
-        cell.map_entity == MapEntity::ENEMY_TRAVELER) {
+        cell.map_entity == MapEntity::ENEMY_TRAVELER ||
+        cell.map_entity == MapEntity::ENEMY_REPLICATOR) {
       if (!person_was) {
         if (cell.map_entity == MapEntity::PERSON)
           person_was = true;

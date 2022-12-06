@@ -6,6 +6,6 @@ set(MODEL_SOURCES
         EmptyEvent.cpp
 
         Exceptions/exceptions.cpp
-)
+        GameModel/GameObject/Character/Class/Enemy/Replicator.cpp GameModel/GameObject/Character/Class/Enemy/Replicator.h)
 
 add_library(Model ${MODEL_SOURCES} ${GAMEMODEL_SOURCES} ${UIMODEL_SOURCES})

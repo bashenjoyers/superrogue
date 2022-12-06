@@ -111,7 +111,8 @@ bool Map::is_anybody_cell(int x, int y) const noexcept {
          map_entity == MapEntity::ENEMY_FLYING ||
          map_entity == MapEntity::ENEMY_INDIFFERENT ||
          map_entity == MapEntity::ENEMY_ORDINARY ||
-         map_entity == MapEntity::ENEMY_TRAVELER;
+         map_entity == MapEntity::ENEMY_TRAVELER ||
+         map_entity == MapEntity::ENEMY_REPLICATOR;
 }
 
 MapEntity Map::get_cell_type(const Position& pos) const noexcept {
@@ -146,6 +147,15 @@ bool Map::step(CharacterAction action) {
     CharacterAction enemy_action =
         enemy->strategy(cells, enemies_with_positions[i].pos);
     action_enemy(enemy_action, enemies_with_positions[i]);
+
+    auto replicator = dynamic_cast<Replicator*>(&*enemy);
+    if (replicator != nullptr) {
+        bool is_vacant = is_vacant_cell(enemies_with_positions[i].pos.x, enemies_with_positions[i].pos.y);
+        if (replicator->getReplicationProbability() > 0.5 && is_vacant) {
+            CharacterWithPosition character = CharacterWithPosition(replicator);
+            this->enemies_with_positions.push_back(replicator);
+        }
+    }
   }
   return true;
 }

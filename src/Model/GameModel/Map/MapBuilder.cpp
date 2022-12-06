@@ -84,6 +84,11 @@ std::shared_ptr<IEnemy> MapBuilder::buildEnemy(int guid) {
   }
 	break;
 
+  case Abstract::EnemyClass::REPLICATOR: {
+      enemy = enemyFactory->generateReplicator(guid);
+  }
+      break;
+
   case Abstract::EnemyClass::ORDINARY: {
 	enemy = enemyFactory->generateOrdinary(guid);
   }

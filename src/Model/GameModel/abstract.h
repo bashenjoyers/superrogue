@@ -18,6 +18,7 @@ enum class MapEntity {
   ENEMY_INDIFFERENT,
   ENEMY_ORDINARY,
   ENEMY_TRAVELER,
+  ENEMY_REPLICATOR,
   WALL,
   SHADOW,
   FLOOR,
@@ -30,7 +31,7 @@ enum class GameStatus { IN_PROGRESS, NEXT_LVL, END };
 
 enum class PersonClass { ALCHEMIST, FARSIGHTED, LUCKY, SECRETIVE, WISE };
 
-enum class EnemyClass { AGRESSIVE, COWARD, FLYING, INDIFFERENT, ORDINARY, TRAVELER };
+enum class EnemyClass { AGRESSIVE, COWARD, FLYING, INDIFFERENT, ORDINARY, TRAVELER, REPLICATOR };
 
 struct Position {
   size_t x, y;
