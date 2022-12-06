@@ -109,13 +109,13 @@ bool GameManager::step(CharacterAction action) {
   assert(person != nullptr);
   assert(worldManipulator != nullptr);
 
-  if (!worldManipulator->actPersonInternal(action, world->person_with_position)) {
-	if (!worldManipulator->act(action, world->person_with_position)) {
+  if (!worldManipulator->actPersonInternal(action, world->person)) {
+	if (!worldManipulator->act(action, world->person)) {
 	  return false;
 	}
   }
 
-  if (world->person_with_position.pos == world->door) {
+  if (world->person->get_position() == world->door) {
 	generateMap();
 	return true;
   }
@@ -126,6 +126,8 @@ bool GameManager::step(CharacterAction action) {
 	status = GameStatus::END;
 	return true;
   }
+
+  worldManipulator->clearDeadEnemies();
 
   return true;
 }

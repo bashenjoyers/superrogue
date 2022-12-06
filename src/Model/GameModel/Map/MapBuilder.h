@@ -86,9 +86,8 @@ private:
   size_t itemsCount = 0;
 
   std::vector<std::vector<Abstract::MapEntity>> map;
-  std::vector<CharacterWithPosition> enemies;
+  std::vector<std::shared_ptr<IEnemy>> enemies;
   std::map<Abstract::Position, std::shared_ptr<IItem>> items;
-  CharacterWithPosition personWithPosition;
 };
 
 }

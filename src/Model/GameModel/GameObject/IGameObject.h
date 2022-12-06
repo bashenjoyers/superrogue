@@ -1,5 +1,6 @@
 #pragma once
 #include "Characteristics.h"
+#include "Model/GameModel/abstract.h"
 #include <iostream>
 #include <string>
 
@@ -17,6 +18,7 @@ class IGameObject {
 protected:
   // characteristics of the object
   Characteristics characteristics;
+  Abstract::Position position;
 
 public:
   // getters for properties above
@@ -30,5 +32,8 @@ public:
               Characteristics characteristics);
   IGameObject(){};
   virtual ~IGameObject() {}
+
+  Abstract::Position get_position();
+  void set_position(Abstract::Position newPos);
 };
 }; // namespace GameModel

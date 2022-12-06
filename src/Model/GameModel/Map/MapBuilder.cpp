@@ -43,11 +43,10 @@ GameModel::Map::World MapBuilder::build() {
   for (int i = 0; i < enemiesCount; i++) {
 	std::shared_ptr<IEnemy> enemy = buildEnemy(i);
 	Abstract::Position pos = generatePosition();
-	map[pos.x][pos.y] = enemy->get_map_entity();
+	enemy->set_position(pos);
 
-	CharacterWithPosition enemyWithPosition(enemy);
-	enemyWithPosition.pos = pos;
-	enemies.push_back(enemyWithPosition);
+	map[enemy->get_position().x][enemy->get_position().y] = enemy->get_map_entity();
+	enemies.push_back(enemy);
   }
 
   for (size_t i = 0; i < itemsCount; i++) {
@@ -62,16 +61,15 @@ GameModel::Map::World MapBuilder::build() {
 
   if (person != nullptr) {
 	Abstract::Position pos = generatePosition();
-	personWithPosition = CharacterWithPosition(person);
-	personWithPosition.pos = pos;
+	person->set_position(pos);
 
 	map[pos.x][pos.y] = person->get_map_entity();
   }
 
-  return GameModel::Map::World {
+  return GameModel::Map::World{
 	  .map_options = opts,
-	  .enemies_with_positions = enemies,
-	  .person_with_position = personWithPosition,
+	  .enemies = enemies,
+	  .person = person,
 	  .map = map,
 	  .door = door,
 	  .items = items

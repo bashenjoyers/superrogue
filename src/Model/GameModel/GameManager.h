@@ -25,7 +25,7 @@ struct GameOptions {
  * 
  */
 class GameManager {
-  size_t enemyCount = 0;  // TODO on generation
+  size_t enemyCount = 10;  // TODO on generation
   size_t itemsCount = 8;
 
   int level = 1;

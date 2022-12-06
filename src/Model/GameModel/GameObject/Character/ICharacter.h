@@ -34,26 +34,5 @@ public:
   virtual ~ICharacter() {}
 };
 
-/**
- * @brief interface for anything that has a position
- *
- */
-struct WithPosition {
-    Abstract::Position pos;
-    virtual ~WithPosition(){};
-};
-
-/**
-* @brief Class containing character and position
-*
-*/
-struct CharacterWithPosition: WithPosition {
-    std::shared_ptr<ICharacter> character;
-    std::vector<Abstract::Position> area; // where Enemy can be
-    CharacterWithPosition(std::shared_ptr<ICharacter> character) : character(character) {};
-    CharacterWithPosition() = default;
-    virtual ~CharacterWithPosition(){};
-};
-
 }; // namespace GameModel
 

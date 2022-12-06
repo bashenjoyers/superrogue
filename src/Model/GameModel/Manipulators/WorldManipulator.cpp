@@ -6,31 +6,6 @@
 
 //TODO BAGRORG get_settings() TO VIRTUAL
 
-
-// TODO WHAT LOGIC BEHIND THIS?
-void GameModel::Map::WorldManipulator::removeEnemy(const GameModel::CharacterWithPosition &enemyToRemove) noexcept {
-  auto removedEnemy = std::dynamic_pointer_cast<IEnemy>(enemyToRemove.character);
-  assert(removedEnemy != nullptr);
-
-  if (world->enemies_with_positions.empty()) {
-	return;
-  }
-
-  // If this is not enemy for remove, will return it back
-  CharacterWithPosition lastEnemy = world->enemies_with_positions.back();
-  world->enemies_with_positions.pop_back();
-  if (removedEnemy == std::dynamic_pointer_cast<IEnemy>(lastEnemy.character)) {
-	return;
-  }
-
-  for (auto &otherEnemy : world->enemies_with_positions) {
-	if (removedEnemy == std::dynamic_pointer_cast<IEnemy>(otherEnemy.character)) {
-	  otherEnemy = lastEnemy;
-	  return;
-	}
-  }
-}
-
 void GameModel::Map::WorldManipulator::setWorld(std::shared_ptr<World> newWorld) {
   assert(newWorld != nullptr);
   world = newWorld;
@@ -75,35 +50,38 @@ GameModel::Abstract::MapEntity GameModel::Map::WorldManipulator::getCellType(con
   return item->second->getMapEntity();
 }
 
-bool GameModel::Map::WorldManipulator::moveCharacter(GameModel::CharacterWithPosition &characterWithPosition,
+bool GameModel::Map::WorldManipulator::moveCharacter(std::shared_ptr<ICharacter> characterWithPosition,
 													 GameModel::Abstract::Position pos) noexcept {
   using Abstract::MapEntity;
   if (isDoorCell(pos.x, pos.y)) {
-	if (std::dynamic_pointer_cast<Person>(characterWithPosition.character) == nullptr) {
+	if (std::dynamic_pointer_cast<Person>(characterWithPosition) == nullptr) {
 	  // Enemy can't go in door
 	  return false;
 	}
   }
 
-  world->map[characterWithPosition.pos.x][characterWithPosition.pos.y] =
-	  getCellType(characterWithPosition.pos); // POGREBNOJAK FIXME(update later: mb WALL)
-  world->map[pos.x][pos.y] = characterWithPosition.character->get_map_entity();
-  characterWithPosition.pos = pos;
+  Abstract::Position characterPosition = characterWithPosition->get_position();
+  world->map[characterPosition.x][characterPosition.y] =
+	  getCellType(characterPosition);
+  world->map[pos.x][pos.y] = characterWithPosition->get_map_entity();
+  characterWithPosition->set_position(pos);
   return true;
 }
 
-bool GameModel::Map::WorldManipulator::makeAStep(GameModel::CharacterWithPosition &actingCharacter,
+bool GameModel::Map::WorldManipulator::makeAStep(std::shared_ptr<ICharacter> actingCharacter,
 												 Abstract::Position newPosition) noexcept {
   if (inMap(newPosition.x, newPosition.y)) {
 	if (isVacantCell(newPosition.x, newPosition.y)) {
 	  return moveCharacter(actingCharacter, newPosition);
 	} else if (isAnybodyAtCell(newPosition.x, newPosition.y)) {
-	  CharacterWithPosition *character = getCharacterByPosition(newPosition);
+	  std::shared_ptr<ICharacter> character = getCharacterByPosition(newPosition);
 	  assert(character != nullptr);
 
-	  if (punchWhileStep(actingCharacter, *character)) {
+	  if (punchWhileStep(actingCharacter, character)) {
+		assert(isVacantCell(newPosition.x, newPosition.y));
 		return moveCharacter(actingCharacter, newPosition);
 	  }
+	  assert(isAnybodyAtCell(newPosition.x, newPosition.y));
 	  return true;
 	}
   }
@@ -111,13 +89,13 @@ bool GameModel::Map::WorldManipulator::makeAStep(GameModel::CharacterWithPositio
   return false;
 }
 
-bool GameModel::Map::WorldManipulator::act(GameModel::CharacterAction action, CharacterWithPosition &character) {
+bool GameModel::Map::WorldManipulator::act(GameModel::CharacterAction action, std::shared_ptr<ICharacter> character) {
   using namespace Abstract;
 
-  Position position = character.pos;
+  Position position = character->get_position();
   bool acted = false;
 
-  int range = character.character->getAttackRange();
+  int range = character->getAttackRange();
 
   switch (action) {
   case CharacterAction::PUNCH_RIGHT:
@@ -156,25 +134,25 @@ bool GameModel::Map::WorldManipulator::act(GameModel::CharacterAction action, Ch
 	break;
   case CharacterAction::STEP_FORWARD:
 	if (makeAStep(character, position + Abstract::Position{0, -1})) {
-	  character.character->step();
+	  character->step();
 	  acted = true;
 	}
 	break;
   case CharacterAction::STEP_BACK:
 	if (makeAStep(character, position + Abstract::Position{0, 1})) {
-	  character.character->step();
+	  character->step();
 	  acted = true;
 	}
 	break;
   case CharacterAction::STEP_LEFT:
 	if (makeAStep(character, position + Abstract::Position{-1, 0})) {
-	  character.character->step();
+	  character->step();
 	  acted = true;
 	}
 	break;
   case CharacterAction::STEP_RIGHT:
 	if (makeAStep(character, position + Abstract::Position{1, 0})) {
-	  character.character->step();
+	  character->step();
 	  acted = true;
 	}
 	break;
@@ -185,19 +163,18 @@ bool GameModel::Map::WorldManipulator::act(GameModel::CharacterAction action, Ch
 }
 
 // TODO METHOD?
-GameModel::Characteristics getCharacteristicsForPunch(GameModel::CharacterWithPosition &characterWithPosition) {
-  auto character = characterWithPosition.character;
-  if (auto person = std::dynamic_pointer_cast<GameModel::Person>(character); person != nullptr) {
+GameModel::Characteristics getCharacteristicsForPunch(std::shared_ptr<GameModel::ICharacter> characterWithPosition) {
+  if (auto person = std::dynamic_pointer_cast<GameModel::Person>(characterWithPosition); person != nullptr) {
 	return person->get_full_characteristics();
   }
 
-  return character->get_characteristics();
+  return characterWithPosition->get_characteristics();
 }
 
-void GameModel::Map::WorldManipulator::punch(CharacterWithPosition &puncher,
-											 CharacterWithPosition &punchee,
+void GameModel::Map::WorldManipulator::punch(std::shared_ptr<ICharacter> puncher,
+											 std::shared_ptr<ICharacter> punchee,
 											 bool ignoreArmor) noexcept {
-  puncher.character->punch();        // TODO BAGRORG RIGHT ORDER OF EXECUTION?
+  puncher->punch();        // TODO BAGRORG RIGHT ORDER OF EXECUTION?
   Characteristics puncherChar = getCharacteristicsForPunch(puncher);
   Characteristics puncheeChar = getCharacteristicsForPunch(punchee);
 
@@ -215,26 +192,28 @@ void GameModel::Map::WorldManipulator::punch(CharacterWithPosition &puncher,
 	damage = std::max(damage - puncherChar.armor, DEFENCE_DEFAULT_DAMAGE * level);
   }
 
-  punchee.character->takeDamage(damage);
+  punchee->takeDamage(damage);
 }
 
-bool GameModel::Map::WorldManipulator::punchWhileStep(CharacterWithPosition &walking,
-													  CharacterWithPosition &standing) noexcept {
+bool GameModel::Map::WorldManipulator::punchWhileStep(std::shared_ptr<ICharacter> walking,
+													  std::shared_ptr<ICharacter> standing) noexcept {
   // TODO BAGRORG OK WITH ORDER?
+  assert(std::abs(walking->get_position().x - standing->get_position().x) <= 1);
+  assert(std::abs(walking->get_position().y - standing->get_position().y) <= 1);
+
   punch(walking, standing, true);
-  if (standing.character->isDead()) {
+  punch(standing, walking, true);
+  if (standing->isDead()) {
 	handleDeath(standing);
-	return true;
+  }
+  if (walking->isDead()) {
+	handleDeath(walking);
   }
 
-  punch(standing, walking, true);
-  if (walking.character->isDead())
-	handleDeath(walking);
-
-  return false;
+  return standing->isDead();
 }
 
-void GameModel::Map::WorldManipulator::orientedCellsPunch(CharacterWithPosition &actingCharacter,
+void GameModel::Map::WorldManipulator::orientedCellsPunch(std::shared_ptr<ICharacter> actingCharacter,
 														  const std::vector<Abstract::Position> &positions) {
   using Abstract::Position;
   for (Position pos : positions) {
@@ -242,12 +221,12 @@ void GameModel::Map::WorldManipulator::orientedCellsPunch(CharacterWithPosition 
 	  return;
 
 	if (isAnybodyAtCell(pos.x, pos.y)) {
-	  CharacterWithPosition *character = getCharacterByPosition(pos);
+	  std::shared_ptr<ICharacter> character = getCharacterByPosition(pos);
 	  assert(character != nullptr);
 
-	  punch(actingCharacter, *character, false);
-	  if (character->character->isDead())
-		handleDeath(*character);
+	  punch(actingCharacter, character, false);
+	  if (character->isDead())
+		handleDeath(character);
 
 	} else if (!isVacantCell(pos.x, pos.y)) {
 	  return;
@@ -287,32 +266,34 @@ std::vector<GameModel::Abstract::MapEntityWithPosition> GameModel::Map::WorldMan
   return ans;
 }
 
-GameModel::CharacterWithPosition *GameModel::Map::WorldManipulator::getCharacterByPosition(GameModel::Abstract::Position pos) {
-  if (world->person_with_position.pos == pos) {
-	return &world->person_with_position;
+std::shared_ptr<GameModel::ICharacter> GameModel::Map::WorldManipulator::getCharacterByPosition(GameModel::Abstract::Position pos) const {
+  if (world->person->get_position() == pos) {
+	return world->person;
   }
 
-  for (CharacterWithPosition &enemy : world->enemies_with_positions) {
-	if (enemy.pos == pos)
-	  return &enemy;
-  }
+  auto e = std::find_if(world->enemies.begin(), world->enemies.end(), [pos](auto e) {
+	return e->get_position() == pos;
+  });
+
+  if (e != world->enemies.end())
+	return *e;
 
   return nullptr;
 }
 
-void GameModel::Map::WorldManipulator::handleDeath(GameModel::CharacterWithPosition &deadCharacter) {
-  assert(deadCharacter.character->isDead());
+void GameModel::Map::WorldManipulator::handleDeath(std::shared_ptr<ICharacter> deadCharacter) {
+  assert(deadCharacter->isDead());
   assert(itemGenerator != nullptr);
 
-  auto person = std::dynamic_pointer_cast<Person>(deadCharacter.character);
-  world->map[deadCharacter.pos.x][deadCharacter.pos.y] = getCellType(deadCharacter.pos);
+  auto person = std::dynamic_pointer_cast<Person>(deadCharacter);
+  auto pos = deadCharacter->get_position();
+  world->map[pos.x][pos.y] = getCellType(pos);
   if (person == nullptr) {
 	std::shared_ptr<IItem> item = itemGenerator->generate();
 	if (item != nullptr) {
-	  world->items.insert({deadCharacter.pos, item});
-	  world->map[deadCharacter.pos.x][deadCharacter.pos.y] = item->getMapEntity();
+	  world->items.insert({pos, item});
+	  world->map[pos.x][pos.y] = item->getMapEntity();
 	}
-	removeEnemy(deadCharacter);
   }
 }
 
@@ -329,22 +310,24 @@ GameModel::Map::WorldManipulator::WorldManipulator(std::shared_ptr<World> newWor
 }
 
 void GameModel::Map::WorldManipulator::enemiesAct() {
-  for (CharacterWithPosition &enemyWithPosition : world->enemies_with_positions) {
-	auto enemy = std::dynamic_pointer_cast<IEnemy>(enemyWithPosition.character);
+  for (auto enemy : world->enemies) {
+	auto enemyPtr = std::dynamic_pointer_cast<IEnemy>(enemy);
 	assert(enemy != nullptr);
 
 	std::vector<Abstract::MapEntityWithPosition> cells = visible_cells();
-	CharacterAction enemyAction = enemy->strategy(cells, enemyWithPosition.pos);
-	act(enemyAction, enemyWithPosition);
+	CharacterAction enemyAction = enemyPtr->strategy(cells, enemyPtr->get_position());
+	act(enemyAction, enemy);
   }
 }
+
 GameModel::Map::MapInfo GameModel::Map::WorldManipulator::getMapInfo() {
   std::vector<Abstract::MapEntityWithPosition> map_positions = visible_cells(/*person_with_position.pos, radius*/);
-  return MapInfo(map_positions, world->person_with_position, world->map_options);
+  return MapInfo(map_positions, world->person, world->map_options);
 }
+
 bool GameModel::Map::WorldManipulator::actPersonInternal(GameModel::CharacterAction action,
-														 GameModel::CharacterWithPosition &character) {
-  auto person = std::dynamic_pointer_cast<Person>(world->person_with_position.character);
+														 std::shared_ptr<ICharacter> character) {
+  auto person = std::dynamic_pointer_cast<Person>(world->person);
   assert(person != nullptr);
 
   switch (action) {
@@ -360,16 +343,30 @@ bool GameModel::Map::WorldManipulator::actPersonInternal(GameModel::CharacterAct
 	return true;
   case CharacterAction::CHANGE_WEAPON: return person->change_weapon();
   case CharacterAction::CHANGE_ITEM: {
-	if (world->items.find(character.pos) == world->items.end()) {
+	if (world->items.find(character->get_position()) == world->items.end()) {
 	  return true;
 	}
 
-	assert(world->items[character.pos] != nullptr);
-	auto oldItem = person->take_item(world->items[character.pos]);
-	if (oldItem == nullptr) world->items.erase(character.pos);
-	else world->items[character.pos] = oldItem;
+	assert(world->items[character->get_position()] != nullptr);
+	auto oldItem = person->take_item(world->items[character->get_position()]);
+	if (oldItem == nullptr)
+	  world->items.erase(character->get_position());
+	else
+	  world->items[character->get_position()] = oldItem;
   }
   default: return false;
   }
   return false;
+}
+
+void GameModel::Map::WorldManipulator::clearDeadEnemies() {
+  std::vector<std::shared_ptr<IEnemy>> oldEnemies = std::move(world->enemies);
+  world->enemies = std::vector<std::shared_ptr<IEnemy>>();
+
+  std::copy_if(oldEnemies.begin(),
+			   oldEnemies.end(),
+			   std::back_inserter(world->enemies),
+			   [](auto enemy) { return !enemy->isDead(); });
+
+  assert(std::all_of(world->enemies.begin(), world->enemies.end(), [](auto e) { return !e->isDead(); }));
 }

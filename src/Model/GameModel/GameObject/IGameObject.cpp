@@ -23,5 +23,11 @@ Characteristics IGameObject::get_characteristics() const noexcept {
 void IGameObject::add_health(int value) noexcept {
   characteristics.health += value;
 }
+Abstract::Position IGameObject::get_position() {
+  return position;
+}
+void IGameObject::set_position(Abstract::Position newPos) {
+  position = newPos;
+}
 
 }; // namespace GameModel
