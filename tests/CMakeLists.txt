@@ -9,6 +9,8 @@ Model/GameModel/GameManager.cpp
 Model/GameModel/Map/Map.cpp
 Model/GameModel/Map/Generator/MazeGenerator.cpp
 Model/GameModel/Inventory/Inventory.cpp
+Model/GameModel/GameObject/Item/Stuff/ItemTests.cpp
+Model/GameModel/GameObject/Item/Potions/PotionTests.cpp
 
 # Controller tests
 Controller/eventProviderTests.cpp
@@ -19,8 +21,6 @@ Model/UIModel/Events/MoveEquipmentDownEventTests.cpp
 Model/UIModel/Events/MoveEquipmentUpEventTests.cpp
 Model/UIModel/Events/MovePotionDownEventTests.cpp
 Model/UIModel/Events/MovePotionUpEventTests.cpp
-Model/GameModel/GameObject/Item/Stuff/ItemTests.cpp
-Model/GameModel/GameObject/Item/Potions/PotionTests.cpp
 
 # Exception tests
 Model/Exceptions/exceptions.cpp)
