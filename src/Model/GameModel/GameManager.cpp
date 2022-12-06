@@ -27,8 +27,6 @@ using namespace Abstract;
 GameManager::GameManager(Map::MapOptions map_options)
     : map_options(map_options) {
   person = generate_person();
-  enemyFactory = std::make_shared<Generation::FantasyEnemyFactory>(level);
-  itemGenerator = std::make_shared<Generation::ItemGenerator>(level, person->get_full_characteristics().luck);
   mapGenerator = std::make_shared<Generation::Map::BinaryTreeMazeGenerator>();
   generateMap();
 }
@@ -89,6 +87,8 @@ void GameManager::generateMap() noexcept {
     person_level_up(Characteristics(2, 2, 0, 1)); // user can choose it later
   }
 
+  enemyFactory = std::make_shared<Generation::FantasyEnemyFactory>(level);
+  itemGenerator = std::make_shared<Generation::ItemGenerator>(level, person->get_full_characteristics().luck);
   std::shared_ptr<Generation::Map::MapBuilder> builder = std::make_shared<Generation::Map::MapBuilder>();
   builder->setEnemiesFactory(enemyFactory);
   builder->setItemsGenerator(itemGenerator);

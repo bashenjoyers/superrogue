@@ -102,7 +102,7 @@ bool GameModel::Map::WorldManipulator::makeAStep(GameModel::CharacterWithPositio
 	  assert(character != nullptr);
 
 	  if (punchWhileStep(actingCharacter, *character)) {
-		moveCharacter(actingCharacter, newPosition);
+		return moveCharacter(actingCharacter, newPosition);
 	  }
 	  return true;
 	}
@@ -360,6 +360,10 @@ bool GameModel::Map::WorldManipulator::actPersonInternal(GameModel::CharacterAct
 	return true;
   case CharacterAction::CHANGE_WEAPON: return person->change_weapon();
   case CharacterAction::CHANGE_ITEM: {
+	if (world->items.find(character.pos) == world->items.end()) {
+	  return true;
+	}
+
 	assert(world->items[character.pos] != nullptr);
 	auto oldItem = person->take_item(world->items[character.pos]);
 	if (oldItem == nullptr) world->items.erase(character.pos);

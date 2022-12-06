@@ -30,7 +30,7 @@ void Boot::play() {
   gc = std::make_shared<Controller::GameController>(std::move(provider));
 
   while (true) {
-	if (gm->isOver()) assert(false);
+	if (gm->isOver()) return;
 	gc->interact();
   }
 }
