@@ -60,7 +60,6 @@ namespace GameModel {
     }
 
     double Replicator::getReplicationProbability() {
-        CharacterWithPosition character = CharacterWithPosition();
         return replication_prob;
     }
 }; // namespace GameModel
