@@ -4,12 +4,7 @@
 #include "Model/GameModel/GameObject/Character/IEnemy.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
 
-//TODO BAGRORG get_settings() TO VIRTUAL
-
-void GameModel::Map::WorldManipulator::setWorld(std::shared_ptr<World> newWorld) {
-  assert(newWorld != nullptr);
-  world = newWorld;
-}
+//TODO BAGRORG get_settings() TO VIRTUA
 
 bool GameModel::Map::WorldManipulator::inMap(int x, int y) const noexcept {
   return x >= 0 && y >= 0 && x < world->map_options.width && y < world->map_options.height;
@@ -253,10 +248,6 @@ std::vector<GameModel::Abstract::Position> GameModel::Map::WorldManipulator::gen
   return positions;
 }
 
-void GameModel::Map::WorldManipulator::setLevel(int newLevel) {
-  level = newLevel;
-}
-
 std::vector<GameModel::Abstract::MapEntityWithPosition> GameModel::Map::WorldManipulator::visible_cells() const noexcept {
   using Abstract::MapEntityWithPosition;
   using Abstract::Position;
@@ -302,17 +293,10 @@ void GameModel::Map::WorldManipulator::handleDeath(std::shared_ptr<ICharacter> d
   }
 }
 
-void GameModel::Map::WorldManipulator::setItemGenerator(std::shared_ptr<Generation::ItemGenerator> newGenerator) {
-  assert(newGenerator != nullptr);
-  itemGenerator = newGenerator;
-}
 GameModel::Map::WorldManipulator::WorldManipulator(std::shared_ptr<World> newWorld,
 												   int level,
-												   std::shared_ptr<Generation::ItemGenerator> newGenerator) {
-  setWorld(newWorld);
-  setLevel(level);
-  setItemGenerator(newGenerator);
-}
+												   std::shared_ptr<Generation::ItemGenerator> newGenerator) : world(
+	newWorld), level(level), itemGenerator(newGenerator) {}
 
 void GameModel::Map::WorldManipulator::enemiesAct() {
   for (auto enemy : world->enemies) {

@@ -9,10 +9,6 @@ class WorldManipulator {
 public:
   WorldManipulator(std::shared_ptr<World> newWorld, int level, std::shared_ptr<Generation::ItemGenerator> newGenerator);
 
-  void setWorld(std::shared_ptr<World> newWorld);
-  void setLevel(int newLevel);    // TODO LEVEL IN WORLD?
-  void setItemGenerator(std::shared_ptr<Generation::ItemGenerator> newGenerator);        // TODO TO CONSTRUCTOR?
-
   bool inMap(int x, int y) const noexcept;
   bool isVacantCell(int x, int y) const noexcept;
   bool isDoorCell(int x, int y) const noexcept;
