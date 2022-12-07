@@ -54,9 +54,10 @@ set(GAMEMODEL_SOURCES
         GameModel/Inventory/Inventory.cpp
 
         # MAP
-        GameModel/Map/Map.cpp
+        GameModel/Map/World.cpp
         GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.cpp
         GameModel/Map/MapBuilder.cpp
+        GameModel/Manipulators/WorldManipulator.cpp
 
         PARENT_SCOPE
 )

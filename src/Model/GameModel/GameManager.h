@@ -3,9 +3,12 @@
 #include "Model/GameModel/GameObject/Character/Enemy.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
 #include "Model/GameModel/GameObject/Characteristics.h"
-#include "Model/GameModel/Map/Map.h"
+#include "Model/GameModel/Map/World.h"
 
 #include "values.h"
+#include "Model/GameModel/Manipulators/WorldManipulator.h"
+#include "Model/GameModel/Map/Generator/MapGenerator.h"
+#include "Model/GameModel/GameObject/Character/Generation/AbstractEnemyFactory.h"
 #include <iostream>
 #include <memory>
 #include <random>
@@ -22,17 +25,28 @@ struct GameOptions {
  * 
  */
 class GameManager {
+  size_t enemyCount = 10;  // TODO on generation
+  size_t itemsCount = 8;
+
   int level = 1;
   std::shared_ptr<Person> person;
+
   Map::MapOptions map_options;
-  std::shared_ptr<Map::Map> map_ref;
+
   std::shared_ptr<Person> generate_person() noexcept;
-  std::set<std::shared_ptr<IEnemy>> generate_enemies(GameOptions game_options);
-  Characteristics
-  generate_characteristics(float characteristic_k) const noexcept;
-  GameOptions generate_game_options() noexcept;
+  Characteristics generate_characteristics(float characteristic_k) const noexcept;
   void person_level_up(Characteristics characteristics);
 
+  std::shared_ptr<Generation::AbstractEnemyFactory> enemyFactory;
+  std::shared_ptr<Generation::ItemGenerator> itemGenerator;
+  std::shared_ptr<Generation::Map::MapGenerator> mapGenerator;
+
+  std::shared_ptr<Map::World> world;
+  std::shared_ptr<Map::WorldManipulator> worldManipulator;
+
+  Abstract::GameStatus status;
+
+  // TODO BAGRORG CHANGE ITEM
 public:
   /**
    * @brief Construct a new Game Manager object. 
@@ -46,7 +60,12 @@ public:
    * 
    * @return std::shared_ptr<Map::Map> - ref to created field
    */
-  std::shared_ptr<Map::Map> generate_map() noexcept;
+  void generateMap() noexcept;
+
+  bool step(CharacterAction action);
+
+  Map::MapInfo getMapInfo();
+  bool isOver();
 };
 
 }; // namespace GameModel

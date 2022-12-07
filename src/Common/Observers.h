@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Model/GameModel/GameObject/Item/Stuff/Item.h"
-#include "Model/GameModel/Map/Map.h"
+#include "Model/GameModel/Map/World.h"
 #include "Model/UIModel/CursorState.h"
 
 #include <memory>

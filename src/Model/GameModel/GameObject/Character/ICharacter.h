@@ -20,32 +20,18 @@ public:
   // determines the action on punch
   virtual void punch(){};
   virtual Abstract::MapEntity get_map_entity() const noexcept = 0;
+
+  virtual void takeDamage(int damage);
+  virtual bool isDead();
+
+  // returns attack range (generated separately, does not depend on class, can be melee or ranged)
+  virtual int getAttackRange() const noexcept = 0;
+
   // creates an instance according to the standard properties of the object
   ICharacter(std::string name, std::string description,
              Characteristics characteristics);
   ICharacter(){};
   virtual ~ICharacter() {}
-};
-
-/**
- * @brief interface for anything that has a position
- *
- */
-struct WithPosition {
-    Abstract::Position pos;
-    virtual ~WithPosition(){};
-};
-
-/**
-* @brief Class containing character and position
-*
-*/
-struct CharacterWithPosition: WithPosition {
-    std::shared_ptr<ICharacter> character;
-    std::vector<Abstract::Position> area; // where Enemy can be
-    CharacterWithPosition(std::shared_ptr<ICharacter> character) : character(character) {};
-    CharacterWithPosition() = default;
-    virtual ~CharacterWithPosition(){};
 };
 
 }; // namespace GameModel

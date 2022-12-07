@@ -14,12 +14,10 @@ class IConfusionEnemy : public IEnemy {
   ConfusedState confused_state = ConfusedState::NO;
 public:
   IConfusionEnemy(std::shared_ptr<IEnemy> ienemy);
-  virtual bool damaged(int value) noexcept override;
   
   virtual std::string get_name() const noexcept override;
   virtual std::string get_description() const noexcept override;
   virtual Characteristics get_characteristics() const noexcept override;
-  virtual float get_attack_range() const noexcept override;
   virtual void add_health(int value) noexcept override;
   virtual void step() override;
   virtual void punch() override;
@@ -28,5 +26,9 @@ public:
   virtual EnemySettings get_settings() const noexcept override;
   virtual Abstract::MapEntity get_map_entity() const noexcept override;
   virtual bool is_vacant(Abstract::MapEntity map_entity) const noexcept override;
+
+  void takeDamage(int damage) override;
+  bool isDead() override;
+  int getAttackRange() const noexcept override;
 };
 }; // namespace GameModel

@@ -35,18 +35,18 @@ void MapBuilder::setMapOptions(GameModel::Map::MapOptions newOpts) {
   opts = newOpts;
 }
 
-void MapBuilder::build() {
+GameModel::Map::World MapBuilder::build() {
   map = mapGenerator->generate(opts);
-  map[opts.width - 1][opts.height - 1] = Abstract::MapEntity::DOOR;
+  Abstract::Position door = {opts.width - 1, opts.height - 1};
+  map[door.x][door.y] = Abstract::MapEntity::DOOR;
 
   for (int i = 0; i < enemiesCount; i++) {
 	std::shared_ptr<IEnemy> enemy = buildEnemy(i);
 	Abstract::Position pos = generatePosition();
-	map[pos.x][pos.y] = enemy->get_map_entity();
+	enemy->set_position(pos);
 
-	CharacterWithPosition enemyWithPosition(enemy);
-	enemyWithPosition.pos = pos;
-	enemies.push_back(enemyWithPosition);
+	map[enemy->get_position().x][enemy->get_position().y] = enemy->get_map_entity();
+	enemies.push_back(enemy);
   }
 
   for (size_t i = 0; i < itemsCount; i++) {
@@ -61,11 +61,19 @@ void MapBuilder::build() {
 
   if (person != nullptr) {
 	Abstract::Position pos = generatePosition();
-	personWithPosition = std::make_shared<CharacterWithPosition>(person);
-	personWithPosition->pos = pos;
+	person->set_position(pos);
 
 	map[pos.x][pos.y] = person->get_map_entity();
   }
+
+  return GameModel::Map::World{
+	  .map_options = opts,
+	  .enemies = enemies,
+	  .person = person,
+	  .map = map,
+	  .door = door,
+	  .items = items
+  };
 }
 
 std::shared_ptr<IEnemy> MapBuilder::buildEnemy(int guid) {
@@ -108,21 +116,13 @@ std::shared_ptr<IEnemy> MapBuilder::buildEnemy(int guid) {
   return enemy;
 }
 
-std::vector<std::vector<Abstract::MapEntity>> MapBuilder::getMap() {
-  return map;
-}
-
-std::vector<CharacterWithPosition> MapBuilder::getEnemies() {
-  return enemies;
-}
-
 Abstract::Position MapBuilder::generatePosition() {
-  std::uniform_int_distribution<size_t> xGen(0, opts.width - 1);
-  std::uniform_int_distribution<size_t> yGen(0, opts.height - 1);
+  std::uniform_int_distribution<int> xGen(0, opts.width - 1);
+  std::uniform_int_distribution<int> yGen(0, opts.height - 1);
 
   while (true) {
-	size_t x = xGen(Values::generator);
-	size_t y = yGen(Values::generator);
+	int x = xGen(Values::generator);
+	int y = yGen(Values::generator);
 	if (map[x][y] == Abstract::MapEntity::FLOOR) {
 	  return {x, y};
 	}
@@ -142,16 +142,8 @@ void MapBuilder::setItemsGenerator(std::shared_ptr<ItemGenerator> newItemGenerat
   itemGenerator = newItemGenerator;
 }
 
-std::map<Abstract::Position, std::shared_ptr<IItem>> MapBuilder::getItems() {
-  return items;
-}
-
 void MapBuilder::setPerson(std::shared_ptr<Person> newPerson) {
   person = newPerson;
-}
-
-std::shared_ptr<CharacterWithPosition> MapBuilder::getPerson() {
-  return personWithPosition;
 }
 
 }

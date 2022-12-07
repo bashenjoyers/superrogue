@@ -24,8 +24,7 @@ protected:
 public:
 // redefines description to class description
   virtual std::string get_description() const noexcept override;
-  // returns attack range (generated separately, does not depend on class, can be melee or ranged)
-  virtual float get_attack_range() const noexcept;
+  virtual int getAttackRange() const noexcept override;
   /**
    * @brief Construct a new IEnemy by standard properties (without a description, it is taken separately) and by enemy class
    * 
@@ -45,8 +44,8 @@ public:
   virtual bool is_vacant(Abstract::MapEntity map_entity) const noexcept;
   // Enemy class. Gives certain features and strategy when playin
   std::shared_ptr<IEnemyClass> get_enemy_class() const noexcept;
+  virtual void takeDamage(int damage) override;
   int get_id() const noexcept;
-  virtual bool damaged(int value) noexcept override;
     // internal storage statements
   bool operator==(const IEnemy &other) const noexcept;
   bool operator<(const IEnemy &other) const noexcept;
