@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "Model/GameModel/values.h"
 #include "Model/GameModel/const.h"
-#include "Model/GameModel/generator.h"
+#include "Model/GameModel/generation_utils.h"
 
 using GameModel::Generation::enemies_count_gen;
 using GameModel::Values::generator;

@@ -6,7 +6,7 @@
 
 #include "Model/GameModel/GameObject/Item/IItem.h"
 #include "Model/GameModel/values.h"
-#include "Model/GameModel/generator.h"
+#include "Model/GameModel/Generator.h"
 
 namespace GameModel::Generation {
 class ItemGenerator : public Generator {

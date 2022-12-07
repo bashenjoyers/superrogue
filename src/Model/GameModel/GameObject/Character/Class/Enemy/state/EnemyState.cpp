@@ -1,7 +1,7 @@
 #include "Model/GameModel/GameObject/Character/Class/Enemy/state/EnemyState.h"
 #include "Model/GameModel/values.h"
 #include "Model/GameModel/GameObject/Character/Class/Enemy/state/behaviors.h"
-#include "Model/GameModel/generator.h"
+#include "Model/GameModel/generation_utils.h"
 
 using std::string;
 using std::shared_ptr;

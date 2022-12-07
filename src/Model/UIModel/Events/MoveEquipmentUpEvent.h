@@ -6,7 +6,7 @@ namespace GameModel::Events {
 
     class MoveEquipmentUpEvent : public IEvent {
     public:
-        MoveEquipmentUpEvent(std::shared_ptr<Map::Map> map, std::shared_ptr<UIModel::CursorState> cursorState);
+        MoveEquipmentUpEvent(std::shared_ptr<GameManager> map, std::shared_ptr<UIModel::CursorState> cursorState);
     private:
         virtual void _execute() override;
     };

@@ -25,7 +25,7 @@ void IEnemy::disturb() noexcept {
   }
 }
 
-float IEnemy::get_attack_range() const noexcept {
+int IEnemy::getAttackRange() const noexcept {
   return enemy_class->get_settings().attack_range;
 }
 
@@ -58,8 +58,9 @@ bool IEnemy::operator<(const IEnemy &other) const noexcept {
   return this->id < other.id;
 }
 
-bool IEnemy::damaged(int value) noexcept {
+void IEnemy::takeDamage(int damage) {
   disturb();
-  return ICharacter::damaged(value);
+  ICharacter::takeDamage(damage);
 }
+
 }; // namespace GameModel

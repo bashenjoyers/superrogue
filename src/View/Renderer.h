@@ -3,7 +3,7 @@
 #include "Common/Observers.h"
 
 #include "Model/GameModel/GameObject/Item/Stuff/Item.h"
-#include "Model/GameModel/Map/Map.h"
+#include "Model/GameModel/Map/World.h"
 
 namespace View {
 

@@ -1,6 +1,6 @@
 #include "AbstractEnemyFactory.h"
 #include "Model/GameModel/const.h"
-#include "Model/GameModel/generator.h"
+#include "Model/GameModel/generation_utils.h"
 #include "Model/GameModel/values.h"
 
 GameModel::Characteristics GameModel::Generation::AbstractEnemyFactory::generateCharacteristics() {

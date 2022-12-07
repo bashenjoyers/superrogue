@@ -21,6 +21,10 @@ public:
    */
   Item(std::string name, std::string description,
        Characteristics characteristics, ItemType itemType);
+
+  Item(const Item &other) = default;
+  Item() = default;
+
   // returns the type of the item
   ItemType get_item_type() const noexcept;
   // operator to set a item
