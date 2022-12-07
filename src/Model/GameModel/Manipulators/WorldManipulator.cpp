@@ -198,19 +198,24 @@ void GameModel::Map::WorldManipulator::punch(std::shared_ptr<ICharacter> puncher
 bool GameModel::Map::WorldManipulator::punchWhileStep(std::shared_ptr<ICharacter> walking,
 													  std::shared_ptr<ICharacter> standing) noexcept {
   // TODO BAGRORG OK WITH ORDER?
-  assert(std::abs(walking->get_position().x - standing->get_position().x) <= 1 && walking->get_position().y == standing->get_position().y);
-  assert(std::abs(walking->get_position().y - standing->get_position().y) <= 1 && walking->get_position().x == standing->get_position().x);
+  assert((std::abs(walking->get_position().x - standing->get_position().x) <= 1
+	  && walking->get_position().y == standing->get_position().y) ||
+	  (std::abs(walking->get_position().y - standing->get_position().y) <= 1
+		  && walking->get_position().x == standing->get_position().x));
 
   punch(walking, standing, true);
-  punch(standing, walking, true);
   if (standing->isDead()) {
 	handleDeath(standing);
+	return true;
   }
+
+  punch(standing, walking, true);
+
   if (walking->isDead()) {
 	handleDeath(walking);
   }
 
-  return standing->isDead();
+  return false;
 }
 
 void GameModel::Map::WorldManipulator::orientedCellsPunch(std::shared_ptr<ICharacter> actingCharacter,
