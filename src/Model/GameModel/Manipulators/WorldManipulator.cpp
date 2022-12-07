@@ -189,7 +189,7 @@ void GameModel::Map::WorldManipulator::punch(std::shared_ptr<ICharacter> puncher
 
   int damage = puncherChar.damage;
   if (!ignoreArmor) {
-	damage = std::max(damage - puncherChar.armor, DEFENCE_DEFAULT_DAMAGE * level);
+	damage = std::max(damage - puncheeChar.armor, DEFENCE_DEFAULT_DAMAGE * level);
   }
 
   punchee->takeDamage(damage);
@@ -198,8 +198,8 @@ void GameModel::Map::WorldManipulator::punch(std::shared_ptr<ICharacter> puncher
 bool GameModel::Map::WorldManipulator::punchWhileStep(std::shared_ptr<ICharacter> walking,
 													  std::shared_ptr<ICharacter> standing) noexcept {
   // TODO BAGRORG OK WITH ORDER?
-  assert(std::abs(walking->get_position().x - standing->get_position().x) <= 1);
-  assert(std::abs(walking->get_position().y - standing->get_position().y) <= 1);
+  assert(std::abs(walking->get_position().x - standing->get_position().x) <= 1 && walking->get_position().y == standing->get_position().y);
+  assert(std::abs(walking->get_position().y - standing->get_position().y) <= 1 && walking->get_position().x == standing->get_position().x);
 
   punch(walking, standing, true);
   punch(standing, walking, true);
