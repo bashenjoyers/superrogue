@@ -7,7 +7,7 @@
 #include "Model/GameModel/GameObject/Character/Generation/FantasyEnemyFactory.h"
 #include "Model/GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.h"
 #include "abstract.h"
-#include "generator.h"
+#include "generation_utils.h"
 #include "values.h"
 #include "Model/GameModel/Map/MapBuilder.h"
 #include <memory>

@@ -3,7 +3,7 @@
 #include "Model/GameModel/values.h"
 #include "Model/GameModel/GameObject/Character/IConfusionEnemy.h"
 #include "Model/GameModel/GameObject/Character/Enemy.h"
-#include "Model/GameModel/generator.h"
+#include "Model/GameModel/generation_utils.h"
 #include <string>
 
 std::shared_ptr<GameModel::IEnemy> GameModel::Generation::FantasyEnemyFactory::generateAgressive(int guid) {
