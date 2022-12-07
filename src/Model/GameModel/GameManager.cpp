@@ -121,7 +121,7 @@ bool GameManager::step(CharacterAction action) {
 
   worldManipulator->enemiesAct();
 
-  if (person->isDead()) {
+  if (person->is_dead()) {
 	status = GameStatus::END;
 	return true;
   }

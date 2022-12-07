@@ -41,7 +41,7 @@ GameModel::Map::World MapBuilder::build() {
   map[door.x][door.y] = Abstract::MapEntity::DOOR;
 
   for (int i = 0; i < enemiesCount; i++) {
-	std::shared_ptr<IEnemy> enemy = buildEnemy(i);
+	std::shared_ptr<Enemy> enemy = buildEnemy(i);
 	Abstract::Position pos = generatePosition();
 	enemy->set_position(pos);
 
@@ -76,10 +76,10 @@ GameModel::Map::World MapBuilder::build() {
   };
 }
 
-std::shared_ptr<IEnemy> MapBuilder::buildEnemy(int guid) {
+std::shared_ptr<Enemy> MapBuilder::buildEnemy(int guid) {
   Abstract::EnemyClass
 	  enemy_class_name = Values::enemy_classes[GameModel::Generation::enemy_class_i_gen(Values::generator)];
-  std::shared_ptr<IEnemy> enemy;
+  std::shared_ptr<Enemy> enemy;
 
   switch (enemy_class_name) {
   case Abstract::EnemyClass::AGRESSIVE: {

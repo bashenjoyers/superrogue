@@ -8,11 +8,11 @@ ICharacter::ICharacter(string name, string description,
     : IGameObject(name, description, characteristics){}
 
 
-void ICharacter::takeDamage(int damage) {
+void ICharacter::take_damage(int damage) {
   characteristics.health = std::max(characteristics.health - damage, 0);
 }
 
-bool ICharacter::isDead() {
+bool ICharacter::is_dead() {
   return characteristics.health == 0;
 }
 

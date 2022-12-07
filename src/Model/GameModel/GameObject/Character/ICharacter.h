@@ -21,11 +21,11 @@ public:
   virtual void punch(){};
   virtual Abstract::MapEntity get_map_entity() const noexcept = 0;
 
-  virtual void takeDamage(int damage);
-  virtual bool isDead();
+  virtual void take_damage(int damage);
+  virtual bool is_dead();
 
   // returns attack range (generated separately, does not depend on class, can be melee or ranged)
-  virtual int getAttackRange() const noexcept = 0;
+  virtual int get_attack_range() const noexcept = 0;
 
   // creates an instance according to the standard properties of the object
   ICharacter(std::string name, std::string description,

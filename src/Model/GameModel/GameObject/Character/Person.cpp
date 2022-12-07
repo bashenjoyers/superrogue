@@ -82,7 +82,7 @@ Person::Person(string name, Characteristics characteristics,
 			   std::shared_ptr<IPersonClass> person_class, Inventory::Inventory inventory)
 	: IPerson(name, characteristics, person_class), inventory(inventory) {}
 
-int Person::getAttackRange() const noexcept {
+int Person::get_attack_range() const noexcept {
   return weapon_melee ? 1 : DISTANT_RANGE;
 }
 

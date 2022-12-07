@@ -44,7 +44,7 @@ public:
 
   Inventory::InventoryInfo get_inventory_info();
 
-  virtual int getAttackRange() const noexcept override;
+  virtual int get_attack_range() const noexcept override;
 
   /**
    * @brief Get the full characteristics object. Sums up character stats, stats gained from level, item stats, and temporary stats from potions
