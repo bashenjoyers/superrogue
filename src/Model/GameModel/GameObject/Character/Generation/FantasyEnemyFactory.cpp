@@ -99,10 +99,12 @@ std::shared_ptr<GameModel::IEnemy> GameModel::Generation::FantasyEnemyFactory::g
 
 std::shared_ptr<GameModel::IEnemy> GameModel::Generation::FantasyEnemyFactory::generateReplicator(int guid) {
     std::string firstname = "Crazy";
-    std::string lastname = "Replicator";
+    std::string lastname = "GreenHairReplicator";
 
     Characteristics characteristics = generateCharacteristics();
     EnemySettings settings = generateSettings();
+
+    if ()
     std::shared_ptr<IEnemyClass> enemyClass = Values::get_enemy_class(Abstract::EnemyClass::REPLICATOR, settings);
 
     auto enemy = std::make_shared<Enemy>(guid, lastname + " " + firstname, characteristics, enemyClass);

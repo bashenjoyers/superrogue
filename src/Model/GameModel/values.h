@@ -17,7 +17,8 @@
 #include "Model/GameModel/GameObject/Item/Stuff/Item.h"
 #include "Model/GameModel/GameObject/Item/Stuff/StuffType.h"
 #include "const.h"
-#include "Model/GameModel/GameObject/Character/Class/Enemy/Replicator.h"
+#include "Model/GameModel/GameObject/Character/Class/Enemy/GreenHairReplicator.h"
+#include "Model/GameModel/GameObject/Character/Class/Enemy/RedHairReplicator.h"
 #include <unordered_map>
 #include <vector>
 #include <memory>
@@ -240,10 +241,14 @@ get_enemy_class(GameModel::Abstract::EnemyClass enemy_class,
     return std::make_shared<GameModel::Traveler>(
         "Can be anywhere he wants (he can be located anywhere on the Map)",
         settings);
-  case GameModel::Abstract::EnemyClass::REPLICATOR:
-    return std::make_shared<GameModel::Replicator>(
-        "Can randomly replicates on the nearest cell",
+  case GameModel::Abstract::EnemyClass::GREEN_REPLICATOR:
+    return std::make_shared<GameModel::GreenHairReplicator>(
+        "Can randomly replicates on the nearest cell and has green hair",
         settings);
+  case GameModel::Abstract::EnemyClass::RED_REPLICATOR:
+      return std::make_shared<GameModel::RedHairReplicator>(
+              "Can randomly replicates on the nearest cell and has red hair",
+              settings);
   default:
     throw GameObjectException("wrong PersonClass");
   }

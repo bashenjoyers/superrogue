@@ -1,4 +1,4 @@
-#include "Replicator.h"
+#include "IReplicator.h"
 #include "Model/GameModel/abstract.h"
 #include "Model/GameModel/values.h"
 
@@ -6,9 +6,8 @@ using std::string;
 using std::vector;
 
 namespace GameModel {
-    using namespace Abstract;
 
-    Replicator::Replicator(string description, EnemySettings settings)
+    IReplicator::IReplicator(string description, EnemySettings settings)
             : IEnemyClass(description, settings) {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -16,16 +15,16 @@ namespace GameModel {
         replication_prob = dist(gen);
     }
 
-    MapEntity Replicator::get_map_entity() const noexcept {
-        return MapEntity::ENEMY_REPLICATOR;
+    Abstract::MapEntity IReplicator::get_map_entity() const noexcept {
+        return Abstract::MapEntity::ENEMY_REPLICATOR;
     }
 
-    CharacterAction Replicator::strategy(vector<MapEntityWithPosition> &cells,
-                                       const Position &pos) noexcept {
-        std::optional<Position> person_pos = std::nullopt;
+    CharacterAction IReplicator::strategy(vector <Abstract::MapEntityWithPosition> &cells,
+                                          const Abstract::Position &pos) noexcept {
+        std::optional<Abstract::Position> person_pos = std::nullopt;
         vector<CharacterAction> possible_actions = {CharacterAction::WAIT};
-        for (MapEntityWithPosition cell : cells) {
-            if (cell.map_entity == MapEntity::PERSON) {
+        for (Abstract::MapEntityWithPosition cell: cells) {
+            if (cell.map_entity == Abstract::MapEntity::PERSON) {
                 person_pos = cell.pos;
                 continue;
             }
@@ -45,8 +44,8 @@ namespace GameModel {
         }
         if (!person_pos.has_value()) {
             if (get_settings().intellect > 0.5) {
-                int dx = (int)last_character_position.x - pos.x;
-                int dy = (int)last_character_position.y - pos.y;
+                int dx = (int) last_character_position.x - pos.x;
+                int dy = (int) last_character_position.y - pos.y;
                 return default_fight_behavior(dx, dy, possible_actions, false);
             }
             std::uniform_int_distribution<int> position_gen(0, possible_actions.size() -
@@ -54,12 +53,12 @@ namespace GameModel {
             return possible_actions[position_gen(Values::generator)];
         }
         last_character_position = person_pos.value();
-        int dx = (int)person_pos.value().x - pos.x;
-        int dy = (int)person_pos.value().y - pos.y;
+        int dx = (int) person_pos.value().x - pos.x;
+        int dy = (int) person_pos.value().y - pos.y;
         return default_fight_behavior(dx, dy, possible_actions);
     }
 
-    double Replicator::get_replication_probability() {
+    double IReplicator::get_replication_probability() {
         return replication_prob;
     }
 }; // namespace GameModel

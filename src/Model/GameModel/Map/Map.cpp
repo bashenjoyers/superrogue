@@ -112,7 +112,8 @@ bool Map::is_anybody_cell(int x, int y) const noexcept {
          map_entity == MapEntity::ENEMY_INDIFFERENT ||
          map_entity == MapEntity::ENEMY_ORDINARY ||
          map_entity == MapEntity::ENEMY_TRAVELER ||
-         map_entity == MapEntity::ENEMY_REPLICATOR;
+         map_entity == MapEntity::ENEMY_REPLICATOR_GREEN ||
+         map_entity == MapEntity::ENEMY_REPLICATOR_RED;
 }
 
 MapEntity Map::get_cell_type(const Position& pos) const noexcept {
@@ -138,6 +139,7 @@ bool Map::step(CharacterAction action) {
     return false;
   }
   for (int i = 0; i < enemies_with_positions.size(); i++) {
+    auto currentPos = enemies_with_positions[i].pos;
     auto enemy = std::dynamic_pointer_cast<IEnemy>(enemies_with_positions[i].character);
     int radius = enemy->get_settings().visible_radius;
     bool ignore_walls = enemy->get_settings().ignore_walls;
@@ -148,12 +150,14 @@ bool Map::step(CharacterAction action) {
         enemy->strategy(cells, enemies_with_positions[i].pos);
     action_enemy(enemy_action, enemies_with_positions[i]);
 
-    auto replicator = dynamic_cast<Replicator*>(&*enemy);
+    auto replicator = std::dynamic_pointer_cast<IReplicator>(enemy);
     if (replicator != nullptr) {
-        bool is_vacant = is_vacant_cell(enemies_with_positions[i].pos.x, enemies_with_positions[i].pos.y);
-        if (replicator->get_replication_probability() > 0.5 && is_vacant) {
-            CharacterWithPosition character = CharacterWithPosition(replicator);
-            this->enemies_with_positions.push_back(replicator);
+        bool vacant_cell = is_vacant_cell(currentPos.x, currentPos.y);
+        if (replicator->get_replication_probability() > 0.5 && vacant_cell) {
+            auto replicatorClone = std::make_shared<GameModel::IReplicator>(replicator->clone());
+            auto characterWithPos = CharacterWithPosition(std::dynamic_pointer_cast<ICharacter>(replicatorClone));
+            characterWithPos.pos = currentPos;
+            enemies_with_positions.push_back(characterWithPos);
         }
     }
   }
