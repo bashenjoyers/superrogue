@@ -6,7 +6,7 @@
 
 #include "Model/GameModel/GameObject/Item/IItem.h"
 #include "Model/GameModel/values.h"
-#include "Model/GameModel/Generator.h"
+#include "Model/GameModel/generator.h"
 
 namespace GameModel::Generation {
 class ItemGenerator : public Generator {
@@ -21,7 +21,7 @@ private:
 
     std::uniform_real_distribution<float> dropDecider;
     std::uniform_int_distribution<size_t> itemPicker;
-    std::mt19937 e;
+    std::random_device e; // std::mt19937 e;
 
     size_t totalItemsCount = Values::items_types.size() + Values::potions_types.size() - 1;
 

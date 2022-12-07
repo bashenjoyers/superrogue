@@ -20,6 +20,9 @@ void IEnemy::disturb() noexcept {
   if (dynamic_cast<Indifferent*>(&*enemy_class) != nullptr) {
     dynamic_cast<Indifferent *>(&*enemy_class)->disturb();
   }
+  if (get_characteristics().health < init_health * ENEMY_SCARED_K) {
+    enemy_class->scare();
+  }
 }
 
 int IEnemy::getAttackRange() const noexcept {
@@ -29,7 +32,7 @@ int IEnemy::getAttackRange() const noexcept {
 IEnemy::IEnemy(string name, Characteristics characteristics,
                std::shared_ptr<IEnemyClass> enemy_class, int id)
     : ICharacter(name, enemy_class->get_description(), characteristics),
-      enemy_class(enemy_class), id(id) {};
+      enemy_class(enemy_class), id(id), init_health(characteristics.health) {};
 
 EnemySettings IEnemy::get_settings() const noexcept {
   return enemy_class->get_settings();
@@ -44,7 +47,7 @@ Abstract::MapEntity IEnemy::get_map_entity() const noexcept {
 }
 
 bool IEnemy::is_vacant(Abstract::MapEntity map_entity) const noexcept {
-  return enemy_class->is_vacant(map_entity);
+  return GameModel::is_vacant(map_entity);
 }
 
 bool IEnemy::operator==(const IEnemy &other) const noexcept {

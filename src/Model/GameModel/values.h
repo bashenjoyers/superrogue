@@ -297,5 +297,17 @@ static std::vector<std::string> lastnames = {
     "predictable", "happy",    "dexterous", "wise",  "combat",
     "persistent",  "business", "tortured",  "quick", "big"};
 
+static std::unordered_set<GameModel::Abstract::MapEntity> view_blockers = {
+  Abstract::MapEntity::PERSON,
+  Abstract::MapEntity::ENEMY,
+  Abstract::MapEntity::ENEMY_COWARD,
+  Abstract::MapEntity::ENEMY_AGRESSIVE,
+  Abstract::MapEntity::ENEMY_FLYING,
+  Abstract::MapEntity::ENEMY_INDIFFERENT,
+  Abstract::MapEntity::ENEMY_ORDINARY,
+  Abstract::MapEntity::ENEMY_TRAVELER,
+  Abstract::MapEntity::WALL
+};
+
 static std::random_device generator;
 }; // namespace GameModel::Values
