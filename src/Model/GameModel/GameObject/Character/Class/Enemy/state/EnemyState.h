@@ -4,7 +4,7 @@
 #include "Model/GameModel/GameObject/Character/Class/Enemy/state/helpers.h"
 #include "Model/GameModel/GameObject/Character/Class/Enemy/state/EnemyEnvironmentInfo.h"
 #include "Model/GameModel/abstract.h"
-
+#include <memory>
 
 namespace GameModel {
 class EnemyStateHolder;

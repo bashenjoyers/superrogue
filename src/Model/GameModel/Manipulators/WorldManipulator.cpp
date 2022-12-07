@@ -260,6 +260,115 @@ std::vector<GameModel::Abstract::MapEntityWithPosition> GameModel::Map::WorldMan
   }
 
   return ans;
+
+
+//    auto visible = vector<vector<bool>>(radius * 2 + 1, vector<bool>(radius * 2 + 1, false));
+//    int x = pos.x;
+//    int y = pos.y;
+//
+//    int radius_x_pos = min(radius, (int)map.size() - 1 - x);
+//    int radius_x_neg = min(radius, x);
+//    int radius_y_pos = min(radius, (int)map.front().size() - 1 - y);
+//    int radius_y_neg = min(radius, y);
+//
+//    vector<pair<int, int>> directions = {{1, 1}, {1, -1}, {-1, -1}, {-1, 1}};
+//    for (auto direction : directions) {
+//        int radius_x = (direction.first > 0)? radius_x_pos : radius_x_neg;
+//        int radius_y = (direction.second > 0)? radius_y_pos : radius_y_neg;
+//
+//        if (radius_x > 0) {
+//            int i = radius_x * direction.first;
+//            for (int j = 0; abs(j) <= radius_y; j += direction.second) {
+//                float del = abs((float)j/i);
+//                int dx = direction.first;
+//                int dy = 0;
+//                while (abs(dx) <= radius_x && abs(dy) <= radius_y) {
+//                    if (view_blockers.find(map[x + dx][y + dy]) == view_blockers.end()) {
+//                        visible[radius + dx][radius + dy] = true;
+//                        if (abs((float)dy/dx) >= del) {
+//                            dx += direction.first;
+//                        } else {
+//                            dy += direction.second;
+//                        }
+//                    } else {
+//                        visible[radius + dx][radius + dy] = true;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (radius_y > 0) {
+//            int i = radius_y * direction.second;
+//            for (int j = 0; abs(j) <= radius_x; j += direction.first) {
+//                float del = abs((float)j/i);
+//                int dx = 0;
+//                int dy = direction.second;
+//                while (abs(dx) <= radius_x && abs(dy) <= radius_y) {
+//                    if (view_blockers.find(map[x + dx][y + dy]) == view_blockers.end()) {
+//                        visible[radius + dx][radius + dy] = true;
+//                        if (abs((float)dx/dy) >= del) {
+//                            dy += direction.second;
+//                        } else {
+//                            dx += direction.first;
+//                        }
+//                    } else {
+//                        visible[radius + dx][radius + dy] = true;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    auto door_pos = MapEntityWithPosition{
+//            .pos = Position(map.size()-1, map.front().size()-1),
+//            .map_entity = MapEntity::DOOR,
+//    };
+//
+//    auto own_pos = MapEntityWithPosition{
+//            .pos = pos,
+//            .map_entity = map[pos.x][pos.y],
+//    };
+//
+//    vector<MapEntityWithPosition> ans;
+//    ans.push_back(own_pos);
+//    ans.push_back(door_pos);
+//
+//    for (int i = radius - radius_x_neg; i <= radius + radius_x_pos; i++) {
+//        for (int j = radius - radius_y_neg; j <= radius + radius_y_pos; j++) {
+//            if (visible[i][j]) {
+//                Position pos = Position(i - radius + x, j - radius + y);
+//                if (pos == door_pos.pos) continue;
+//                ans.push_back(MapEntityWithPosition {
+//                        .pos = pos,
+//                        .map_entity = map[i - radius + x][j - radius + y]
+//                });
+//            }
+//        }
+//    }
+//
+//    // old simple version
+//    // vector<MapEntityWithPosition> ans;
+//    // for (size_t y = 0; y < map.front().size(); y++) {
+//    //     for (size_t x = 0; x < map.size(); x++) {
+//    //         ans.push_back(MapEntityWithPosition{ .pos = Position(x, y), .map_entity = map[x][y] });
+//    //     }
+//    // }
+//
+//    // if area is empty - no limits for it
+//    if (area.size() == 0) {
+//        return ans;
+//    }
+//    // TODO update with area
+//
+//    // TODO update with characters visibility radius
+//
+//    return ans;
+
+
+
+
 }
 
 std::shared_ptr<GameModel::ICharacter> GameModel::Map::WorldManipulator::getCharacterByPosition(GameModel::Abstract::Position pos) const {

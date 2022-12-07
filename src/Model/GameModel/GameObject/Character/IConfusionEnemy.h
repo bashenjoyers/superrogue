@@ -32,7 +32,6 @@ public:
   virtual std::string get_name() const noexcept override;
   virtual std::string get_description() const noexcept override;
   virtual Characteristics get_characteristics() const noexcept override;
-  virtual float get_attack_range() const noexcept override;
   virtual void add_health(int value) noexcept override;
   virtual void step() override;
   virtual void punch() override;
