@@ -32,7 +32,6 @@ class GameManager {
   std::shared_ptr<Person> person;
 
   Map::MapOptions map_options;
-  Map::World map_ref;
 
   std::shared_ptr<Person> generate_person() noexcept;
   Characteristics generate_characteristics(float characteristic_k) const noexcept;
