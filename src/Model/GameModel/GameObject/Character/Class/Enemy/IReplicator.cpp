@@ -15,10 +15,6 @@ namespace GameModel {
         replication_prob = dist(gen);
     }
 
-    Abstract::MapEntity IReplicator::get_map_entity() const noexcept {
-        return Abstract::MapEntity::ENEMY_REPLICATOR;
-    }
-
     CharacterAction IReplicator::strategy(vector <Abstract::MapEntityWithPosition> &cells,
                                           const Abstract::Position &pos) noexcept {
         std::optional<Abstract::Position> person_pos = std::nullopt;

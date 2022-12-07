@@ -10,13 +10,14 @@ namespace GameModel {
  * randomly replicates on nearest cell and has green hair
  *
  */
-    class GreenHairReplicator : public IReplicator {
-        Hair hair_type = Hair::GREEN;
-    public:
-        GreenHairReplicator(std::string description, EnemySettings settings = EnemySettings());
+class GreenHairReplicator : public IReplicator {
+  Hair hair_type = Hair::GREEN;
+public:
+  GreenHairReplicator(std::string description, EnemySettings settings = EnemySettings());
 
-        GameModel::Hair get_hair_type() override;
+  GameModel::Hair get_hair_type() override;
 
-        IReplicator clone() override;
-    };
+  std::shared_ptr<IReplicator> clone() const override;
+  Abstract::MapEntity get_map_entity() const noexcept override;
+};
 }; // namespace GameModel

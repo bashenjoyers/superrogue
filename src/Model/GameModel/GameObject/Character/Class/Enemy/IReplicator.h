@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IEnemyClass.h"
+#include <memory>
 
 namespace GameModel {
 
@@ -21,9 +22,6 @@ namespace GameModel {
         double replication_prob;
 
     public:
-        // returns how to display it on the map (can hide its class if smart enough (character characteristic))
-        Abstract::MapEntity get_map_entity() const noexcept override;
-
         IReplicator(std::string description, EnemySettings settings = EnemySettings());
 
         // returns the strategy for the current class
@@ -32,8 +30,7 @@ namespace GameModel {
 
         double get_replication_probability();
 
-        virtual GameModel::Hair get_hair_type();
-
-        virtual IReplicator clone();
+        virtual GameModel::Hair get_hair_type() = 0;
+        virtual std::shared_ptr<IReplicator> clone() const = 0;
     };
 }; // namespace GameModel

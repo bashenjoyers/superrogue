@@ -154,7 +154,7 @@ bool Map::step(CharacterAction action) {
     if (replicator != nullptr) {
         bool vacant_cell = is_vacant_cell(currentPos.x, currentPos.y);
         if (replicator->get_replication_probability() > 0.5 && vacant_cell) {
-            auto replicatorClone = std::make_shared<GameModel::IReplicator>(replicator->clone());
+            auto replicatorClone = replicator->clone();
             auto characterWithPos = CharacterWithPosition(std::dynamic_pointer_cast<ICharacter>(replicatorClone));
             characterWithPos.pos = currentPos;
             enemies_with_positions.push_back(characterWithPos);

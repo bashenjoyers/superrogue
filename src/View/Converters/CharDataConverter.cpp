@@ -66,12 +66,12 @@ CharConverter::convertMap(std::shared_ptr<GameModel::Map::MapInfo> mapInfo) {
               renderElem = 'T';
           } break;
 
-          case GameModel::Abstract::MapEntity::ENEMY_REPLICATOR_GREEN {
-              renderElem = 'R';
+		  case GameModel::Abstract::MapEntity::ENEMY_REPLICATOR_GREEN : {
+              renderElem = 'G';
           } break;
 
           case GameModel::Abstract::MapEntity::ENEMY_REPLICATOR_RED : {
-              renderElem = 'G';
+              renderElem = 'R';
           } break;
 
           default:
