@@ -318,22 +318,29 @@ bool GameModel::Map::WorldManipulator::actPersonInternal(GameModel::CharacterAct
 														 std::shared_ptr<ICharacter> character) {
   auto person = std::dynamic_pointer_cast<Person>(world->person);
   assert(person != nullptr);
+  bool acted = false;
 
   switch (action) {
   case CharacterAction::POTION_1: person->potion(0);
-	return true;
+	acted = true;
+	break;
   case CharacterAction::POTION_2: person->potion(1);
-	return true;
+	acted = true;
+	break;
   case CharacterAction::POTION_3: person->potion(2);
-	return true;
+	acted = true;
+	break;
   case CharacterAction::POTION_4: person->potion(3);
-	return true;
+	acted = true;
+	break;
   case CharacterAction::POTION_5: person->potion(4);
-	return true;
-  case CharacterAction::CHANGE_WEAPON: return person->change_weapon();
+	acted = true;
+	break;
+  case CharacterAction::CHANGE_WEAPON: acted = person->change_weapon();
+	break;
   case CharacterAction::CHANGE_ITEM: {
 	if (world->items.find(character->get_position()) == world->items.end()) {
-	  return true;
+	  break;
 	}
 
 	assert(world->items[character->get_position()] != nullptr);
@@ -343,9 +350,11 @@ bool GameModel::Map::WorldManipulator::actPersonInternal(GameModel::CharacterAct
 	else
 	  world->items[character->get_position()] = oldItem;
   }
-  default: return false;
+	break;
+  default: acted = false;
+	break;
   }
-  return false;
+  return acted;
 }
 
 void GameModel::Map::WorldManipulator::clearDeadEnemies() {
