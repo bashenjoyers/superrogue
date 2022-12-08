@@ -62,6 +62,13 @@ std::shared_ptr<Person> GameManager::generate_person() noexcept {
   if (person_classes_name == PersonClass::FARSIGHTED) {
 	settings.visible_radius = settings.visible_radius * 2;
   }
+  if (person_classes_name == PersonClass::SECRETIVE) {
+	settings.other_visible_k = SECRETIVE_VISIBILITY_K;
+  }
+  if (person_classes_name == PersonClass::WISE) {
+	settings.visible_enemy = true;
+  }
+
   Characteristics characteristics = generate_characteristics();
   level--; // internal need;
   if (person_classes_name == PersonClass::LUCKY) {
@@ -118,6 +125,8 @@ bool GameManager::step(CharacterAction action) {
 	generateMap();
 	return true;
   }
+
+  worldManipulator->clearDeadEnemies();
 
   worldManipulator->enemiesAct();
 

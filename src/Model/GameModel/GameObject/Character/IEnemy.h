@@ -52,6 +52,7 @@ public:
   std::shared_ptr<IEnemyClass> get_enemy_class() const noexcept;
   // returns enemy id (for internal use)
   virtual void takeDamage(int damage) override;
+  // internal id
   int get_id() const noexcept;
     // internal storage statements
   bool operator==(const IEnemy &other) const noexcept;

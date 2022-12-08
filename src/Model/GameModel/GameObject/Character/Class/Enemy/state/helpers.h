@@ -6,6 +6,9 @@
 
 
 namespace GameModel {
+struct Area {
+  int x1 = 0, y1 = 0, x2 = MAX_MAP_LEN, y2 = MAX_MAP_LEN;
+};
 /**
  * @brief enemy character settings
  * 
@@ -19,6 +22,8 @@ struct EnemySettings {
   float intellect = 1; // [0..1]
   // attack range (can be melee or ranged like character)
   int attack_range = 1;
+  // area in which enemy can be
+  Area area = Area();
 };
 // the environment of the enemy, influencing his behavior
 EnemyEnvironmentInfo get_environment_info(std::vector<Abstract::MapEntityWithPosition> &cells, const Abstract::Position &pos, const std::unordered_set<Abstract::MapEntity> smbs);

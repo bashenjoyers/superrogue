@@ -41,8 +41,8 @@ GameModel::Map::World MapBuilder::build() {
   map[door.x][door.y] = Abstract::MapEntity::DOOR;
 
   for (int i = 0; i < enemiesCount; i++) {
-	std::shared_ptr<IEnemy> enemy = buildEnemy(i);
 	Abstract::Position pos = generatePosition();
+	std::shared_ptr<IEnemy> enemy = buildEnemy(i, pos);
 	enemy->set_position(pos);
 
 	map[enemy->get_position().x][enemy->get_position().y] = enemy->get_map_entity();
@@ -76,39 +76,39 @@ GameModel::Map::World MapBuilder::build() {
   };
 }
 
-std::shared_ptr<IEnemy> MapBuilder::buildEnemy(int guid) {
+std::shared_ptr<IEnemy> MapBuilder::buildEnemy(int guid, const Abstract::Position& pos) {
   Abstract::EnemyClass
 	  enemy_class_name = Values::enemy_classes[GameModel::Generation::enemy_class_i_gen(Values::generator)];
   std::shared_ptr<IEnemy> enemy;
 
   switch (enemy_class_name) {
   case Abstract::EnemyClass::AGRESSIVE: {
-	enemy = enemyFactory->generateAgressive(guid);
+	enemy = enemyFactory->generateAgressive(guid, pos);
   }
 	break;
 
   case Abstract::EnemyClass::TRAVELER: {
-	enemy = enemyFactory->generateTraveler(guid);
+	enemy = enemyFactory->generateTraveler(guid, pos);
   }
 	break;
 
   case Abstract::EnemyClass::ORDINARY: {
-	enemy = enemyFactory->generateOrdinary(guid);
+	enemy = enemyFactory->generateOrdinary(guid, pos);
   }
 	break;
 
   case Abstract::EnemyClass::INDIFFERENT: {
-	enemy = enemyFactory->generateIndifferent(guid);
+	enemy = enemyFactory->generateIndifferent(guid, pos);
   }
 	break;
 
   case Abstract::EnemyClass::FLYING: {
-	enemy = enemyFactory->generateFlying(guid);
+	enemy = enemyFactory->generateFlying(guid, pos);
   }
 	break;
 
   case Abstract::EnemyClass::COWARD: {
-	enemy = enemyFactory->generateCoward(guid);
+	enemy = enemyFactory->generateCoward(guid, pos);
   }
 	break;
   }

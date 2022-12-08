@@ -55,6 +55,7 @@ CharacterAction EnemyStateHolder::step(EnemyEnvironmentInfo& environment) {
 WaitEnemyState::WaitEnemyState() : EnemyState("Wait") {}
 
 CharacterAction WaitEnemyState::step(EnemyStateHolder* state_holder, EnemyEnvironmentInfo& environment) {
+    // TODO(maybe force change to WalkEnemyState if (hp is full))
     if (!state_holder->is_ignore() && environment.smb_pos.has_value()) {
         state_holder->update_state(std::make_shared<FightEnemyState>());
         return state_holder->step(environment);
@@ -139,7 +140,7 @@ CharacterAction CowardEnemyState::step(EnemyStateHolder* state_holder, EnemyEnvi
     }
     float change = change_state_gen(Values::generator);
     if (change < NOT_COWARD_K && state_holder->get_entity() != EnemyClass::COWARD) {
-        state_holder->update_state(std::make_shared<WalkEnemyState>());
+        state_holder->update_state(std::make_shared<WaitEnemyState>());
         return state_holder->step(environment);
     }
     if (state_holder->last_smb_pos.has_value()) {

@@ -39,7 +39,9 @@ EnemySettings IEnemy::get_settings() const noexcept {
 }
 
 CharacterAction IEnemy::strategy(std::vector<Abstract::MapEntityWithPosition> &cells, const Abstract::Position &pos) noexcept {
-  return enemy_class->strategy(cells, pos);
+  auto action = enemy_class->strategy(cells, pos);
+  if (action == CharacterAction::WAIT && characteristics.health < init_health) add_health(1); // TODO(move it after fix heirarhy)
+  return action;
 }
 
 Abstract::MapEntity IEnemy::get_map_entity() const noexcept {

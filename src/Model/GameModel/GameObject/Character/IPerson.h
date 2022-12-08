@@ -32,6 +32,7 @@ public:
   IPerson(){};
   virtual ~IPerson() {}
 
-    Abstract::MapEntity get_map_entity() const noexcept override;
+  // return how to display person on the map
+  Abstract::MapEntity get_map_entity() const noexcept override;
 };
 }; // namespace GameModel

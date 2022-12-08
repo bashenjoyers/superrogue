@@ -10,16 +10,16 @@ public:
     AbstractEnemyFactory(size_t level) : level(level) {}
     ~AbstractEnemyFactory() = default;
 
-    virtual std::shared_ptr<IEnemy> generateAgressive(int guid) = 0;
-    virtual std::shared_ptr<IEnemy> generateCoward(int guid) = 0;
-    virtual std::shared_ptr<IEnemy> generateFlying(int guid) = 0;
-    virtual std::shared_ptr<IEnemy> generateIndifferent(int guid) = 0;
-    virtual std::shared_ptr<IEnemy> generateOrdinary(int guid) = 0;
-    virtual std::shared_ptr<IEnemy> generateTraveler(int guid) = 0;
+    virtual std::shared_ptr<IEnemy> generateAgressive(int guid, const Abstract::Position& pos) = 0;
+    virtual std::shared_ptr<IEnemy> generateCoward(int guid, const Abstract::Position& pos) = 0;
+    virtual std::shared_ptr<IEnemy> generateFlying(int guid, const Abstract::Position& pos) = 0;
+    virtual std::shared_ptr<IEnemy> generateIndifferent(int guid, const Abstract::Position& pos) = 0;
+    virtual std::shared_ptr<IEnemy> generateOrdinary(int guid, const Abstract::Position& pos) = 0;
+    virtual std::shared_ptr<IEnemy> generateTraveler(int guid, const Abstract::Position& pos) = 0;
 
 protected:
     Characteristics generateCharacteristics();
-    EnemySettings generateSettings();
+    EnemySettings generateSettings(Abstract::EnemyClass enemy_class, const Abstract::Position& pos);
 
     size_t level;
 };

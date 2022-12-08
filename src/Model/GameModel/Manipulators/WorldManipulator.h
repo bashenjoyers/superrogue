@@ -14,8 +14,7 @@ public:
   bool isDoorCell(int x, int y) const noexcept;
   bool isAnybodyAtCell(int x, int y) const noexcept;
   Abstract::MapEntity getCellType(const Abstract::Position &pos) const noexcept;
-  std::vector<Abstract::MapEntityWithPosition> visible_cells(/*const Abstract::Position &pos, int radius, bool ignore_walls,
-				const std::vector<Abstract::Position> &area*/) const noexcept;
+  std::vector<Abstract::MapEntityWithPosition> visible_cells(const Abstract::Position &pos, int radius, bool ignore_walls = false, const Area& area = Area()) const noexcept;
 
   bool moveCharacter(std::shared_ptr<ICharacter> anybody, Abstract::Position pos) noexcept;
   bool makeAStep(std::shared_ptr<ICharacter> actingCharacter,
