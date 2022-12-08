@@ -126,16 +126,11 @@ bool GameManager::step(CharacterAction action) {
 	return true;
   }
 
-  worldManipulator->clearDeadEnemies();
-
   worldManipulator->enemiesAct();
 
   if (person->isDead()) {
 	status = GameStatus::END;
-	return true;
   }
-
-  worldManipulator->clearDeadEnemies();
 
   return true;
 }

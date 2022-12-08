@@ -370,7 +370,7 @@ std::vector<GameModel::Abstract::MapEntityWithPosition> GameModel::Map::WorldMan
 	return ans;
 }
 
-std::shared_ptr<GameModel::ICharacter> GameModel::Map::WorldManipulator::getCharacterByPosition(GameModel::Abstract::Position pos) const {		// FIXME
+std::shared_ptr<GameModel::ICharacter> GameModel::Map::WorldManipulator::getCharacterByPosition(GameModel::Abstract::Position pos) const {
   if (world->person->get_position() == pos) {
 	return world->person;
   }
@@ -398,6 +398,9 @@ void GameModel::Map::WorldManipulator::handleDeath(std::shared_ptr<ICharacter> d
 	  world->items.insert({pos, item});
 	  world->map[pos.x][pos.y] = item->getMapEntity();
 	}
+	clearDeadEnemies();
+  } else {
+	world->map[pos.x][pos.y] = Abstract::MapEntity::FLOOR;
   }
 }
 
@@ -407,9 +410,12 @@ GameModel::Map::WorldManipulator::WorldManipulator(std::shared_ptr<World> newWor
 	newWorld), level(level), itemGenerator(newGenerator) {}
 
 void GameModel::Map::WorldManipulator::enemiesAct() {
-  for (auto enemy : world->enemies) {
+  auto enemies(world->enemies);
+  for (auto enemy : enemies) {
 	auto enemyPtr = std::dynamic_pointer_cast<IEnemy>(enemy);
 	assert(enemy != nullptr);
+	if (enemy->isDead())
+		continue;
 
 	auto enemy_settings = enemyPtr->get_settings();
 	std::vector<Abstract::MapEntityWithPosition> cells = visible_cells(enemyPtr->get_position(), enemy_settings.visible_radius, enemy_settings.ignore_walls, enemy_settings.area);
