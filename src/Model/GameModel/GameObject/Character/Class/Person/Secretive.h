@@ -1,5 +1,5 @@
 #pragma once
-#include "IPersonClass.h"
+#include "Model/GameModel/GameObject/Character/Person.h"
 
 namespace GameModel {
 /**
@@ -8,9 +8,11 @@ namespace GameModel {
  * the field of View of opponents is 2 times smaller for the Character
  * 
  */
-class Secretive : public IPersonClass {
+class Secretive : public Person {
 public:
-  Secretive(std::string description,
-            PersonSettings settings = PersonSettings());
+  Secretive(std::string name, std::string description, Characteristics characteristics,
+            PersonSettings settings,
+            Inventory::Inventory inventory =
+            Inventory::Inventory(DEFAULT_POTIONS_MAX));
 };
 }; // namespace superrogue::GameObject::Character

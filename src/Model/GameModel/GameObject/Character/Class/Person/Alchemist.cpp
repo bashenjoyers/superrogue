@@ -3,6 +3,14 @@
 using std::string;
 
 namespace GameModel {
-Alchemist::Alchemist(string description, PersonSettings settings)
-    : IPersonClass(description, settings) {}
+
+Alchemist::Alchemist(std::string name, std::string description, Characteristics characteristics,
+                     PersonSettings settings,
+                     Inventory::Inventory inventory) : Person(name,
+                                                              description,
+                                                              characteristics,
+                                                              settings,
+                                                              inventory) {
+
+}
 }; // namespace superrogue::GameObject::Character

@@ -71,9 +71,8 @@ std::shared_ptr<Person> GameManager::generate_person() noexcept {
 					? POTIONS_MAX_ALCHEMIST
 					: DEFAULT_POTIONS_MAX;
   Inventory::Inventory inventory = Inventory::Inventory(potions_max);
-  std::shared_ptr<IPersonClass> person_class = get_person_class(person_classes_name, settings);
-  return std::make_shared<Person>(lastname + " " + firstname, characteristics, person_class,
-								  inventory);
+
+  return get_person(person_classes_name, lastname + " " + firstname, characteristics, settings, inventory);
 }
 
 void GameManager::person_level_up(Characteristics characteristics) {

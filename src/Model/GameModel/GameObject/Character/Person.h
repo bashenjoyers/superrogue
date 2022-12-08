@@ -1,15 +1,24 @@
 #pragma once
-#include "IPerson.h"
-#include "Model/GameModel/GameObject/Character/Class/Person/IPersonClass.h"
 #include "Model/GameModel/GameObject/Characteristics.h"
 #include "Model/GameModel/GameObject/Item/Potions/Potion.h"
 #include "Model/GameModel/Inventory/Inventory.h"
+#include "ICharacter.h"
 #include <iostream>
 #include <string>
 
 namespace GameModel {
+
+/**
+ * @brief Person settings
+ *
+ */
+struct PersonSettings {
+  // character visibility range
+  int visible_radius = DEFAULT_VISIBLE_RADIUS;
+};
+
 // Person class contains all parameters about him and actions
-class Person : public IPerson {
+class Person : public ICharacter {
   // melee weapon selected
   bool weapon_melee = true;
   // individual characteristics obtained with the level
@@ -20,6 +29,7 @@ class Person : public IPerson {
   void before_any_action();
 
   Inventory::Inventory inventory;
+  PersonSettings settings;
 
   void take_potion(std::shared_ptr<Potion> new_potion);
   std::shared_ptr<Item> take_equipment(std::shared_ptr<Item> new_equipment);
@@ -30,7 +40,7 @@ public:
    * 
    * @param potion_i - number
    */
-  void potion(int potion_i) override;
+  void potion(int potion_i);
   // called when the character steps
   void step() override;
   // called when the character punch smb
@@ -57,11 +67,14 @@ public:
   /**
    * @brief Construct a new Person according to the standard characteristics of the object and inventory
    */
-  Person(std::string name, Characteristics characteristics,
-		 std::shared_ptr<IPersonClass> person_class,
-		 Inventory::Inventory inventory =
-		 Inventory::Inventory(DEFAULT_POTIONS_MAX));
+  Person(std::string name,
+         std::string description,
+         Characteristics characteristics,
+         PersonSettings settings,
+         Inventory::Inventory inventory = Inventory::Inventory(DEFAULT_POTIONS_MAX));
   Person(const Person &person) = default;
   Person() {};
+  virtual ~Person() = default;
+  Abstract::MapEntity get_map_entity() const noexcept override;
 };
 }; // namespace GameModel

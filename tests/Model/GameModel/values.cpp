@@ -8,7 +8,7 @@ using GameModel::Values::get_potion;
 using GameModel::Values::enemy_classes;
 using GameModel::Values::get_enemy_class;
 using GameModel::Values::person_classes;
-using GameModel::Values::get_person_class;
+using GameModel::Values::get_person;
 using GameModel::EnemySettings;
 using GameModel::PersonSettings;
 
@@ -48,7 +48,7 @@ TEST(MODEL_GAME_MODEL, VALUES__GET_ENEMY_CLASS) {
 TEST(MODEL_GAME_MODEL, VALUES__GET_PERSON_CLASS) {
     auto settings = PersonSettings();
     for (auto person_class : person_classes) {
-        auto person_class_instance = get_person_class(person_class, settings);
+        auto person_class_instance = get_person(person_class, settings);
         auto description = person_class_instance->get_description();
         ASSERT_NE(description.size(), 0);
         auto real_settings = person_class_instance->get_settings();

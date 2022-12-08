@@ -7,7 +7,6 @@
 #include "Model/GameModel/GameObject/Character/Class/Enemy/Traveler.h"
 #include "Model/GameModel/GameObject/Character/Class/Person/Alchemist.h"
 #include "Model/GameModel/GameObject/Character/Class/Person/Farsighted.h"
-#include "Model/GameModel/GameObject/Character/Class/Person/IPersonClass.h"
 #include "Model/GameModel/GameObject/Character/Class/Person/Lucky.h"
 #include "Model/GameModel/GameObject/Character/Class/Person/Secretive.h"
 #include "Model/GameModel/GameObject/Character/Class/Person/Wise.h"
@@ -253,30 +252,30 @@ static std::vector<GameModel::Abstract::EnemyClass> enemy_classes = {
     GameModel::Abstract::EnemyClass::ORDINARY,
     GameModel::Abstract::EnemyClass::TRAVELER};
 
-static std::shared_ptr<GameModel::IPersonClass>
-get_person_class(GameModel::Abstract::PersonClass person_class,
-                 GameModel::PersonSettings settings) {
+static std::shared_ptr<GameModel::Person>
+get_person(GameModel::Abstract::PersonClass person_class,
+           std::string name,
+           Characteristics characteristics,
+           GameModel::PersonSettings settings,
+           Inventory::Inventory inventory) {
   switch (person_class) {
   case GameModel::Abstract::PersonClass::ALCHEMIST:
-    return std::make_shared<GameModel::Alchemist>("A novice alchemist (can have up to 7 Potions)",
-                                                  settings);
+    return std::make_shared<GameModel::Alchemist>(name, "A novice alchemist (can have up to 7 Potions)", characteristics,
+                                                  settings, inventory);
   case GameModel::Abstract::PersonClass::FARSIGHTED:
-    return std::make_shared<GameModel::Farsighted>(
-        "Can see far away (the field of View is 2 times larger than the "
-        "standard one)",
-        settings);
+    return std::make_shared<GameModel::Farsighted>(name, "Can see far away (the field of View is 2 times larger than the "
+                                                        "standard one)", characteristics,
+                                                  settings, inventory);
   case GameModel::Abstract::PersonClass::LUCKY:
-    return std::make_shared<GameModel::Lucky>("Just lucky Person (has luck >= 0.9)",
-                                              settings);
+    return std::make_shared<GameModel::Lucky>(name, "Just lucky Person (has luck >= 0.9)", characteristics,
+                                                  settings, inventory);
   case GameModel::Abstract::PersonClass::SECRETIVE:
-    return std::make_shared<GameModel::Secretive>(
-        "Unrealistically secretive one (the field of View of opponents is 2 "
-        "times smaller for the Character)",
-        settings);
+    return std::make_shared<GameModel::Secretive>(name, "Unrealistically secretive one (the field of View of opponents is 2 "
+                                                        "times smaller for the Character)", characteristics,
+                                                  settings, inventory);
   case GameModel::Abstract::PersonClass::WISE:
-    return std::make_shared<GameModel::Wise>(
-        "The wisest elder (can see the areas where opponents may be located)",
-        settings);
+    return std::make_shared<GameModel::Wise>(name, "The wisest elder (can see the areas where opponents may be located)", characteristics,
+                                                  settings, inventory);
   default:throw GameObjectException("wrong PersonClass");
   }
 };

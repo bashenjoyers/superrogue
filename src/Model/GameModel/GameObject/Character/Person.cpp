@@ -78,9 +78,12 @@ void Person::level_up(Characteristics characteristics) {
   level_characteristics.health += HEALTH_LVL_K;
 }
 
-Person::Person(string name, Characteristics characteristics,
-			   std::shared_ptr<IPersonClass> person_class, Inventory::Inventory inventory)
-	: IPerson(name, characteristics, person_class), inventory(inventory) {}
+Person::Person(std::string name,
+               std::string description,
+               Characteristics characteristics,
+               PersonSettings settings,
+               Inventory::Inventory inventory)
+	: ICharacter(name, description, characteristics), settings(settings), inventory(inventory) {}
 
 int Person::get_attack_range() const noexcept {
   return weapon_melee ? 1 : DISTANT_RANGE;
@@ -134,6 +137,10 @@ void Person::take_potion(std::shared_ptr<Potion> new_potion) {
 }
 Inventory::InventoryInfo Person::get_inventory_info() {
   return inventory.get_inventory_info();
+}
+
+Abstract::MapEntity Person::get_map_entity() const noexcept {
+  return Abstract::MapEntity::PERSON;
 }
 
 }; // namespace GameModel

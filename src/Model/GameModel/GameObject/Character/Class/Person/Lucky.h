@@ -1,5 +1,5 @@
 #pragma once
-#include "IPersonClass.h"
+#include "Model/GameModel/GameObject/Character/Person.h"
 
 namespace GameModel {
 /**
@@ -8,8 +8,11 @@ namespace GameModel {
  * has luck >= 0.9
  * 
  */
-class Lucky : public IPersonClass {
+class Lucky : public Person {
 public:
-  Lucky(std::string description, PersonSettings settings = PersonSettings());
+  Lucky(std::string name, std::string description, Characteristics characteristics,
+        PersonSettings settings,
+        Inventory::Inventory inventory =
+        Inventory::Inventory(DEFAULT_POTIONS_MAX));
 };
 }; // namespace superrogue::GameObject::Character
