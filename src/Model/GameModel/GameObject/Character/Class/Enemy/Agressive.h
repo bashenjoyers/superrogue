@@ -14,7 +14,6 @@ public:
   Abstract::MapEntity get_map_entity() const noexcept override;
   // creates an enemy class according to the description and settings
   Agressive(std::string name,
-            std::string description,
             Characteristics characteristics,
             int id, EnemySettings settings = EnemySettings());
   // returns the strategy for the current class

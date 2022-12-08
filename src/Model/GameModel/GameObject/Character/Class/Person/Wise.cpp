@@ -7,10 +7,6 @@ using std::string;
 
 namespace GameModel {
 
-Wise::Wise(std::string name, std::string description, Characteristics characteristics,
-           PersonSettings settings,
-           Inventory::Inventory inventory)
-    : Person(name, description, characteristics, settings, inventory) {
-
-}
+Wise::Wise(std::string name)
+    : Person(name, "The wisest elder (can see the areas where opponents may be located)", Inventory::Inventory(DEFAULT_POTIONS_MAX)) {}
 }; // namespace superrogue::GameObject::Character

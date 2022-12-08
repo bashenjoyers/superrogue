@@ -29,11 +29,11 @@ class Person : public ICharacter {
   void before_any_action();
 
   Inventory::Inventory inventory;
-  PersonSettings settings;
 
   void take_potion(std::shared_ptr<Potion> new_potion);
   std::shared_ptr<Item> take_equipment(std::shared_ptr<Item> new_equipment);
-
+protected:
+  PersonSettings settings;
 public:
   /**
    * @brief uses the potion by its number in the collection
@@ -69,8 +69,6 @@ public:
    */
   Person(std::string name,
          std::string description,
-         Characteristics characteristics,
-         PersonSettings settings,
          Inventory::Inventory inventory = Inventory::Inventory(DEFAULT_POTIONS_MAX));
   Person(const Person &person) = default;
   Person() {};

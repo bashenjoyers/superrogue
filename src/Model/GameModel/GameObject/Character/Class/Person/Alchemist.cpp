@@ -4,13 +4,9 @@ using std::string;
 
 namespace GameModel {
 
-Alchemist::Alchemist(std::string name, std::string description, Characteristics characteristics,
-                     PersonSettings settings,
-                     Inventory::Inventory inventory) : Person(name,
-                                                              description,
-                                                              characteristics,
-                                                              settings,
-                                                              inventory) {
+Alchemist::Alchemist(std::string name) : Person(name,
+                                                                         "A novice alchemist (can have up to 7 Potions)",
+                                                                         Inventory::Inventory(POTIONS_MAX_ALCHEMIST)) {
 
 }
 }; // namespace superrogue::GameObject::Character

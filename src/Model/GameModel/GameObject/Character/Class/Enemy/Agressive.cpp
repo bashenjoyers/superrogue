@@ -24,12 +24,12 @@ CharacterAction Agressive::strategy(vector <MapEntityWithPosition> &cells,
   return state_holder.step(environment);
 }
 Agressive::Agressive(std::string name,
-                     std::string description,
                      Characteristics characteristics,
                      int id,
                      EnemySettings settings) :
     Enemy(name,
-          description,
+          "Hates everyone (if he sees at least someone (not necessarily a "
+          "Character), he strives to reach him and kill)",
           characteristics,
           id,
           EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::AGRESSIVE, settings)) {}

@@ -30,26 +30,6 @@ GameManager::GameManager(Map::MapOptions map_options)
   generateMap();
 }
 
-Characteristics GameManager::generate_characteristics(
-	float characteristic_k = 1) const noexcept {
-  int points = int(level * POINTS_IN_LVL * characteristic_k);
-  int health_default = int(level * HEALTH_LVL_K * characteristic_k);
-  int damage =
-	  int(GameModel::Generation::characteristic_gen(Values::generator) /
-		  PARAMETER_COUNT * points) + 1;
-  int armor = int(GameModel::Generation::characteristic_gen(Values::generator) /
-	  PARAMETER_COUNT * points) + 1;
-  int health =
-	  int(GameModel::Generation::characteristic_gen(Values::generator) /
-		  PARAMETER_COUNT * points);
-  int dexterity =
-	  int(GameModel::Generation::characteristic_gen(Values::generator) /
-		  PARAMETER_COUNT * points);
-  float luck = GameModel::Generation::luck_gen(Values::generator);
-  return Characteristics(damage, armor, health_default + health, dexterity,
-						 luck);
-}
-
 std::shared_ptr<Person> GameManager::generate_person() noexcept {
   string firstname =
 	  firstnames[GameModel::Generation::firstname_i_gen(Values::generator)];
@@ -58,21 +38,8 @@ std::shared_ptr<Person> GameManager::generate_person() noexcept {
   PersonClass person_classes_name =
 	  person_classes[GameModel::Generation::person_class_i_gen(
 		  Values::generator)];
-  PersonSettings settings = PersonSettings();
-  if (person_classes_name == PersonClass::FARSIGHTED) {
-	settings.visible_radius = settings.visible_radius * 2;
-  }
-  Characteristics characteristics = generate_characteristics();
-  level--; // internal need;
-  if (person_classes_name == PersonClass::LUCKY) {
-	characteristics.luck = max(characteristics.luck, LUCKY_LUCK);
-  }
-  int potions_max = (person_classes_name == PersonClass::ALCHEMIST)
-					? POTIONS_MAX_ALCHEMIST
-					: DEFAULT_POTIONS_MAX;
-  Inventory::Inventory inventory = Inventory::Inventory(potions_max);
 
-  return get_person(person_classes_name, lastname + " " + firstname, characteristics, settings, inventory);
+  return get_person(person_classes_name, lastname + " " + firstname);
 }
 
 void GameManager::person_level_up(Characteristics characteristics) {

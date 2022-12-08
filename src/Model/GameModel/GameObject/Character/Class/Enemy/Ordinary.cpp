@@ -9,12 +9,12 @@ namespace GameModel {
 using namespace Abstract;
 
 Ordinary::Ordinary(std::string name,
-                   std::string description,
                    Characteristics characteristics,
                    int id,
                    EnemySettings settings) :
     Enemy(name,
-          description,
+          "Ordinary Enemy (without any special features. He has an increased one "
+          "of the characteristics)",
           characteristics,
           id,
           EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::ORDINARY, settings)) {}

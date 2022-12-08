@@ -4,13 +4,10 @@ using std::string;
 
 namespace GameModel {
 
-Secretive::Secretive(std::string name, std::string description, Characteristics characteristics,
-                     PersonSettings settings,
-                     Inventory::Inventory inventory) : Person(name,
-                                                              description,
-                                                              characteristics,
-                                                              settings,
-                                                              inventory) {
+Secretive::Secretive(std::string name) : Person(name,
+                                                                         "Unrealistically secretive one (the field of View of opponents is 2 "
+                                                                         "times smaller for the Character)",
+                                                              Inventory::Inventory(DEFAULT_POTIONS_MAX)) {
 
 }
 }; // namespace superrogue::GameObject::Character

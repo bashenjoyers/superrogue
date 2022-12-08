@@ -211,35 +211,26 @@ get_enemy(GameModel::Abstract::EnemyClass enemy_class, int id, std::string name,
   switch (enemy_class) {
   case GameModel::Abstract::EnemyClass::AGRESSIVE:
     return std::make_shared<GameModel::Agressive>(name,
-                                                  "Hates everyone (if he sees at least someone (not necessarily a "
-                                                  "Character), he strives to reach him and kill)",
                                                   characteristics, id, settings);
   case GameModel::Abstract::EnemyClass::COWARD:
-    return std::make_shared<GameModel::Agressive>(name,
-                                                  "Afraid of everything (always runs from the hero if he sees him. dexterity is 3 times more than normal)",
-                                                  characteristics,
-                                                  id,
-                                                  settings);
+    return std::make_shared<GameModel::Coward>(name,
+                                               characteristics,
+                                               id,
+                                               settings);
   case GameModel::Abstract::EnemyClass::FLYING:
-    return std::make_shared<GameModel::Agressive>(name,
-                                                  "Looks down on everyone (can ignore all obstacles (walls))",
-                                                  characteristics, id, settings);
+    return std::make_shared<GameModel::Flying>(name,
+                                               characteristics, id, settings);
   case GameModel::Abstract::EnemyClass::INDIFFERENT:
-    return std::make_shared<GameModel::Agressive>(name,
-                                                  "He doesn't care about anyone (ignores everyone if he doesn't start "
-                                                  "hitting first)",
-                                                  characteristics, id, settings);
+    return std::make_shared<GameModel::Indifferent>(name,
+                                                    characteristics, id, settings);
   case GameModel::Abstract::EnemyClass::ORDINARY:
-    return std::make_shared<GameModel::Agressive>(name,
-                                                  "Ordinary Enemy (without any special features. He has an increased one "
-                                                  "of the characteristics)",
-                                                  characteristics,
-                                                  id,
-                                                  settings);
+    return std::make_shared<GameModel::Ordinary>(name,
+                                                 characteristics,
+                                                 id,
+                                                 settings);
   case GameModel::Abstract::EnemyClass::TRAVELER:
-    return std::make_shared<GameModel::Agressive>(name,
-                                                  "Can be anywhere he wants (he can be located anywhere on the Map)",
-                                                  characteristics, id, settings);
+    return std::make_shared<GameModel::Traveler>(name,
+                                                 characteristics, id, settings);
   default:throw GameObjectException("wrong PersonClass");
   }
 };
@@ -254,28 +245,13 @@ static std::vector<GameModel::Abstract::EnemyClass> enemy_classes = {
 
 static std::shared_ptr<GameModel::Person>
 get_person(GameModel::Abstract::PersonClass person_class,
-           std::string name,
-           Characteristics characteristics,
-           GameModel::PersonSettings settings,
-           Inventory::Inventory inventory) {
+           std::string name) {
   switch (person_class) {
-  case GameModel::Abstract::PersonClass::ALCHEMIST:
-    return std::make_shared<GameModel::Alchemist>(name, "A novice alchemist (can have up to 7 Potions)", characteristics,
-                                                  settings, inventory);
-  case GameModel::Abstract::PersonClass::FARSIGHTED:
-    return std::make_shared<GameModel::Farsighted>(name, "Can see far away (the field of View is 2 times larger than the "
-                                                        "standard one)", characteristics,
-                                                  settings, inventory);
-  case GameModel::Abstract::PersonClass::LUCKY:
-    return std::make_shared<GameModel::Lucky>(name, "Just lucky Person (has luck >= 0.9)", characteristics,
-                                                  settings, inventory);
-  case GameModel::Abstract::PersonClass::SECRETIVE:
-    return std::make_shared<GameModel::Secretive>(name, "Unrealistically secretive one (the field of View of opponents is 2 "
-                                                        "times smaller for the Character)", characteristics,
-                                                  settings, inventory);
-  case GameModel::Abstract::PersonClass::WISE:
-    return std::make_shared<GameModel::Wise>(name, "The wisest elder (can see the areas where opponents may be located)", characteristics,
-                                                  settings, inventory);
+  case GameModel::Abstract::PersonClass::ALCHEMIST:return std::make_shared<GameModel::Alchemist>(name);
+  case GameModel::Abstract::PersonClass::FARSIGHTED:return std::make_shared<GameModel::Farsighted>(name);
+  case GameModel::Abstract::PersonClass::LUCKY:return std::make_shared<GameModel::Lucky>(name);
+  case GameModel::Abstract::PersonClass::SECRETIVE:return std::make_shared<GameModel::Secretive>(name);
+  case GameModel::Abstract::PersonClass::WISE:return std::make_shared<GameModel::Wise>(name);
   default:throw GameObjectException("wrong PersonClass");
   }
 };

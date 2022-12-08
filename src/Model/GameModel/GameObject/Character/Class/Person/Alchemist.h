@@ -10,9 +10,6 @@ namespace GameModel {
  */
 class Alchemist : public Person {
 public:
-  Alchemist(std::string name, std::string description, Characteristics characteristics,
-            PersonSettings settings,
-            Inventory::Inventory inventory =
-            Inventory::Inventory(DEFAULT_POTIONS_MAX));
+  Alchemist(std::string name);
 };
 }; // namespace superrogue::GameObject::Character

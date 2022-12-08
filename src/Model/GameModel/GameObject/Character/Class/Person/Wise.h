@@ -10,9 +10,6 @@ namespace GameModel {
  */
 class Wise : public Person {
 public:
-  Wise(std::string name, std::string description, Characteristics characteristics,
-       PersonSettings settings,
-       Inventory::Inventory inventory =
-       Inventory::Inventory(DEFAULT_POTIONS_MAX));
+  Wise(std::string name);
 };
 }; // namespace superrogue::GameObject::Character

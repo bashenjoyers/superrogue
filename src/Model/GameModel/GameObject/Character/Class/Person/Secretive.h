@@ -10,9 +10,6 @@ namespace GameModel {
  */
 class Secretive : public Person {
 public:
-  Secretive(std::string name, std::string description, Characteristics characteristics,
-            PersonSettings settings,
-            Inventory::Inventory inventory =
-            Inventory::Inventory(DEFAULT_POTIONS_MAX));
+  Secretive(std::string name);
 };
 }; // namespace superrogue::GameObject::Character

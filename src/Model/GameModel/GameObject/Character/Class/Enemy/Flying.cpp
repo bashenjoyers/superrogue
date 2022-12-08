@@ -13,12 +13,11 @@ MapEntity Flying::get_map_entity() const noexcept {
   return MapEntity::ENEMY;
 }
 Flying::Flying(std::string name,
-               std::string description,
                Characteristics characteristics,
                int id,
                EnemySettings settings) :
     Enemy(name,
-          description,
+          "Looks down on everyone (can ignore all obstacles (walls))",
           characteristics,
           id,
           EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::FLYING, settings)) {}

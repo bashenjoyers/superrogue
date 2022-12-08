@@ -2,6 +2,7 @@
 #include "Person.h"
 #include "Model/Exceptions/exceptions.h"
 #include "Model/GameModel/const.h"
+#include "Model/GameModel/generation_utils.h"
 
 using std::optional;
 using std::string;
@@ -80,10 +81,25 @@ void Person::level_up(Characteristics characteristics) {
 
 Person::Person(std::string name,
                std::string description,
-               Characteristics characteristics,
-               PersonSettings settings,
                Inventory::Inventory inventory)
-	: ICharacter(name, description, characteristics), settings(settings), inventory(inventory) {}
+	: ICharacter(name, description, Characteristics()), inventory(inventory) {
+  int points = int(POINTS_IN_LVL);
+  int health_default = int(HEALTH_LVL_K);
+  int damage =
+      int(GameModel::Generation::characteristic_gen(Values::generator) /
+          PARAMETER_COUNT * points) + 1;
+  int armor = int(GameModel::Generation::characteristic_gen(Values::generator) /
+      PARAMETER_COUNT * points) + 1;
+  int health =
+      int(GameModel::Generation::characteristic_gen(Values::generator) /
+          PARAMETER_COUNT * points);
+  int dexterity =
+      int(GameModel::Generation::characteristic_gen(Values::generator) /
+          PARAMETER_COUNT * points);
+  float luck = GameModel::Generation::luck_gen(Values::generator);
+  characteristics = Characteristics(damage, armor, health_default + health, dexterity,
+                                    luck);
+}
 
 int Person::get_attack_range() const noexcept {
   return weapon_melee ? 1 : DISTANT_RANGE;

@@ -10,9 +10,6 @@ namespace GameModel {
  */
 class Lucky : public Person {
 public:
-  Lucky(std::string name, std::string description, Characteristics characteristics,
-        PersonSettings settings,
-        Inventory::Inventory inventory =
-        Inventory::Inventory(DEFAULT_POTIONS_MAX));
+  Lucky(std::string name);
 };
 }; // namespace superrogue::GameObject::Character
