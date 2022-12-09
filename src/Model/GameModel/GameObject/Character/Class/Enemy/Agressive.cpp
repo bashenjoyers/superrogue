@@ -25,12 +25,10 @@ CharacterAction Agressive::strategy(vector <MapEntityWithPosition> &cells,
 }
 Agressive::Agressive(std::string name,
                      Characteristics characteristics,
-                     int id,
                      EnemySettings settings) :
     Enemy(name,
           "Hates everyone (if he sees at least someone (not necessarily a "
           "Character), he strives to reach him and kill)",
           characteristics,
-          id,
           EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::AGRESSIVE, settings)) {}
 }; // namespace GameModel

@@ -29,7 +29,6 @@ public:
   MapInfo getMapInfo();
   void clearDeadEnemies();
 private:
-  std::shared_ptr<Replicator> tryReplicateEnemy(std::shared_ptr<Replicator> enemy, Abstract::Position pos);
   void orientedCellsPunch(std::shared_ptr<ICharacter> actingCharacter,
 						  const std::vector<Abstract::Position> &positions);
   std::vector<GameModel::Abstract::Position> generateCellsRayByMask(Abstract::Position startPos,

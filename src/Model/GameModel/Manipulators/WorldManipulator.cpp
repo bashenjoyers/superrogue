@@ -32,7 +32,8 @@ bool GameModel::Map::WorldManipulator::isAnybodyAtCell(int x, int y) const noexc
 	  map_entity == MapEntity::ENEMY_FLYING ||
 	  map_entity == MapEntity::ENEMY_INDIFFERENT ||
 	  map_entity == MapEntity::ENEMY_ORDINARY ||
-	  map_entity == MapEntity::ENEMY_TRAVELER;
+	  map_entity == MapEntity::ENEMY_TRAVELER ||
+      map_entity == MapEntity::REPLICATOR;
 }
 
 GameModel::Abstract::MapEntity GameModel::Map::WorldManipulator::getCellType(const GameModel::Abstract::Position &pos) const noexcept {
@@ -417,10 +418,9 @@ void GameModel::Map::WorldManipulator::enemiesAct() {
 	CharacterAction enemyAction = enemy->strategy(cells, startPosition);
 	act(enemyAction, enemy);
 
-    auto replicator = std::dynamic_pointer_cast<Replicator>(enemy);
-    if (replicator != nullptr) {
-      auto replicated = tryReplicateEnemy(replicator, startPosition);
-      if (replicated != nullptr) replicatedEnemies.push_back(replicated);
+    if (auto r = enemy->replicate(); r != nullptr) {
+      r->set_position(startPosition);
+      replicatedEnemies.push_back(r);
     }
   }
 
@@ -485,18 +485,4 @@ void GameModel::Map::WorldManipulator::clearDeadEnemies() {
 			   [](auto enemy) { return !enemy->is_dead(); });
 
   assert(std::all_of(world->enemies.begin(), world->enemies.end(), [](auto e) { return !e->is_dead(); }));
-}
-
-std::shared_ptr<GameModel::Replicator> GameModel::Map::WorldManipulator::tryReplicateEnemy(std::shared_ptr<Replicator> enemy, Abstract::Position pos) {
-  std::random_device r;
-  std::uniform_real_distribution<float> dist(0.f, 1.f);
-
-  if (isVacantCell(pos.x, pos.y) && dist(r) > enemy->get_replication_probability()) {
-    auto replicated = enemy->clone();
-    replicated->set_position(pos);
-    world->map[pos.x][pos.y] = replicated->get_map_entity();
-    return replicated;
-  }
-
-  return nullptr;
 }

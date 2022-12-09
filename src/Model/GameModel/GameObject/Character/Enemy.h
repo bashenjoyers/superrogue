@@ -23,9 +23,6 @@ protected:
   // character behavior when hitting it
   virtual void disturb() noexcept;
 
-  // enemy ID on the level
-  int id; // not changed
-
   // stores and manages states
   EnemyStateHolder state_holder;
 public:
@@ -38,7 +35,7 @@ public:
    * @param characteristics 
    * @param enemy_class 
    */
-  Enemy(std::string name, std::string description, Characteristics characteristics, int id, EnemyStateHolder state_holder);
+  Enemy(std::string name, std::string description, Characteristics characteristics, EnemyStateHolder state_holder);
   
   // returns the step with the strategy of the current character class
   virtual CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
@@ -49,11 +46,8 @@ public:
   virtual bool is_vacant(Abstract::MapEntity map_entity) const noexcept;
   // returns enemy id (for internal use)
   virtual void take_damage(int damage) override;
-  int get_id() const noexcept;
-    // internal storage statements
-  bool operator==(const Enemy &other) const noexcept;
-  // internal storage statements
-  bool operator<(const Enemy &other) const noexcept;
+
+  virtual std::shared_ptr<Enemy> replicate();
   virtual ~Enemy() {}
 };
 }; // namespace GameModel

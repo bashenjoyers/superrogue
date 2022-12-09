@@ -8,13 +8,11 @@ namespace GameModel {
 using namespace Abstract;
 
 Indifferent::Indifferent(std::string name,
-                         Characteristics characteristics,
-                         int id, EnemySettings settings)
+                         Characteristics characteristics, EnemySettings settings)
     : Enemy(name,
             "He doesn't care about anyone (ignores everyone if he doesn't start "
             "hitting first)",
             characteristics,
-            id,
             EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::INDIFFERENT, settings, true)) {}
 
 void Indifferent::disturb() noexcept {

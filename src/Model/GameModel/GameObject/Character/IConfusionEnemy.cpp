@@ -10,7 +10,6 @@ using namespace GameModel::Values;
 
 namespace GameModel {
 IConfusionEnemy::IConfusionEnemy(std::shared_ptr<Enemy> enemy) : Enemy(*enemy), internalEnemy(enemy) {
-  id = internalEnemy->get_id();
   confuse_gen = std::uniform_real_distribution<float>(0, 1);
 };
 
@@ -103,6 +102,9 @@ bool IConfusionEnemy::is_dead() {
 
 int IConfusionEnemy::get_attack_range() const noexcept {
   return internalEnemy->get_attack_range();
+}
+std::shared_ptr<Enemy> IConfusionEnemy::replicate() {
+  return internalEnemy->replicate();
 }
 
 }; // namespace GameModel

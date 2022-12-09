@@ -14,8 +14,7 @@ public:
   Abstract::MapEntity get_map_entity() const noexcept override;
   // creates an enemy class according to the description and settings
   Agressive(std::string name,
-            Characteristics characteristics,
-            int id, EnemySettings settings = EnemySettings());
+            Characteristics characteristics, EnemySettings settings = EnemySettings());
   // returns the strategy for the current class
   CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
                            const Abstract::Position &pos) noexcept override;

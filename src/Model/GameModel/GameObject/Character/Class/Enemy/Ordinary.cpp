@@ -10,13 +10,11 @@ using namespace Abstract;
 
 Ordinary::Ordinary(std::string name,
                    Characteristics characteristics,
-                   int id,
                    EnemySettings settings) :
     Enemy(name,
           "Ordinary Enemy (without any special features. He has an increased one "
           "of the characteristics)",
           characteristics,
-          id,
           EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::ORDINARY, settings)) {}
 
 MapEntity Ordinary::get_map_entity() const noexcept {

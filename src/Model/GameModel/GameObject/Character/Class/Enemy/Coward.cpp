@@ -16,12 +16,10 @@ MapEntity Coward::get_map_entity() const noexcept {
 
 Coward::Coward(std::string name,
                Characteristics characteristics,
-               int id,
                EnemySettings settings) :
     Enemy(name,
           "Afraid of everything (always runs from the hero if he sees him. dexterity is 3 times more than normal)",
           characteristics,
-          id,
           EnemyStateHolder(std::make_shared<CowardEnemyState>(), EnemyClass::COWARD, settings)) {}
 
 }; // namespace GameModel

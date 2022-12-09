@@ -16,12 +16,10 @@ MapEntity Traveler::get_map_entity() const noexcept {
 
 Traveler::Traveler(std::string name,
                    Characteristics characteristics,
-                   int id,
                    EnemySettings settings) :
     Enemy(name,
           "Can be anywhere he wants (he can be located anywhere on the Map)",
           characteristics,
-          id,
           EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::TRAVELER, settings)) {}
 
 }; // namespace GameModel

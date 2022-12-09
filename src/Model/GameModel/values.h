@@ -207,35 +207,32 @@ static std::shared_ptr<GameModel::Potion> get_potion(PotionType potion_type,
 };
 
 static std::shared_ptr<GameModel::Enemy>
-get_enemy(GameModel::Abstract::EnemyClass enemy_class, int id, std::string name, Characteristics characteristics,
+get_enemy(GameModel::Abstract::EnemyClass enemy_class, std::string name, Characteristics characteristics,
           GameModel::EnemySettings settings) {
   switch (enemy_class) {
   case GameModel::Abstract::EnemyClass::AGRESSIVE:
     return std::make_shared<GameModel::Agressive>(name,
-                                                  characteristics, id, settings);
+                                                  characteristics, settings);
   case GameModel::Abstract::EnemyClass::COWARD:
     return std::make_shared<GameModel::Coward>(name,
                                                characteristics,
-                                               id,
                                                settings);
   case GameModel::Abstract::EnemyClass::FLYING:
     return std::make_shared<GameModel::Flying>(name,
-                                               characteristics, id, settings);
+                                               characteristics, settings);
   case GameModel::Abstract::EnemyClass::INDIFFERENT:
     return std::make_shared<GameModel::Indifferent>(name,
-                                                    characteristics, id, settings);
+                                                    characteristics, settings);
   case GameModel::Abstract::EnemyClass::ORDINARY:
     return std::make_shared<GameModel::Ordinary>(name,
                                                  characteristics,
-                                                 id,
                                                  settings);
   case GameModel::Abstract::EnemyClass::TRAVELER:
     return std::make_shared<GameModel::Traveler>(name,
-                                                 characteristics, id, settings);
+                                                 characteristics, settings);
   case GameModel::Abstract::EnemyClass::REPLICATOR:
     return std::make_shared<GameModel::Replicator>(name,
                                                    characteristics,
-                                                   id,
                                                    settings);
   default:throw GameObjectException("wrong PersonClass");
   }

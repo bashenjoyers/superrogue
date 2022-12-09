@@ -42,5 +42,6 @@ public:
   void take_damage(int damage) override;
   bool is_dead() override;
   int get_attack_range() const noexcept override;
+  std::shared_ptr<Enemy> replicate() override;
 };
 }; // namespace GameModel

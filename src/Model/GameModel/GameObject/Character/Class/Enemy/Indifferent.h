@@ -16,7 +16,6 @@ public:
   Abstract::MapEntity get_map_entity() const noexcept override;
   // creates an enemy class according to the description and settings
   Indifferent(std::string name,
-              Characteristics characteristics,
-              int id, EnemySettings settings = EnemySettings());
+              Characteristics characteristics,EnemySettings settings = EnemySettings());
 };
 }; // namespace GameModel
