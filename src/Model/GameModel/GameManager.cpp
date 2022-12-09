@@ -47,7 +47,6 @@ void GameManager::person_level_up(Characteristics characteristics) {
 }
 
 void GameManager::generateMap() noexcept {
-  level++;
   if (level != 1) {
 	person_level_up(Characteristics(2, 2, 0, 1)); // user can choose it later
   }
@@ -67,6 +66,7 @@ void GameManager::generateMap() noexcept {
   worldManipulator = std::make_shared<Map::WorldManipulator>(world, level, itemGenerator);
 
   status = GameStatus::IN_PROGRESS;
+  level++;
 }
 
 bool GameManager::step(CharacterAction action) {

@@ -25,7 +25,6 @@ set(GAMEMODEL_SOURCES
         GameModel/GameObject/Character/IConfusionEnemy.cpp
         GameModel/GameObject/Character/Person.cpp
 
-        GameModel/GameObject/Character/Class/ICharacterClass.cpp
         GameModel/GameObject/Character/Class/Person/Alchemist.cpp
         GameModel/GameObject/Character/Class/Person/Farsighted.cpp
         GameModel/GameObject/Character/Class/Person/Lucky.cpp
