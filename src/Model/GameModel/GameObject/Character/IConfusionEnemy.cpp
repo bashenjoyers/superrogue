@@ -11,6 +11,7 @@ using namespace GameModel::Values;
 namespace GameModel {
 IConfusionEnemy::IConfusionEnemy(std::shared_ptr<Enemy> enemy) : Enemy(*enemy), internalEnemy(enemy) {
   confuse_gen = std::uniform_real_distribution<float>(0, 1);
+  this->set_position(enemy->get_position());
 };
 
 CharacterAction IConfusionEnemy::strategy(vector<MapEntityWithPosition> &cells, const Position &pos) noexcept {
