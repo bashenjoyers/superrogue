@@ -15,6 +15,7 @@
 #include "Model/GameModel/GameObject/Item/Stuff/Item.h"
 #include "Model/GameModel/GameObject/Item/Stuff/StuffType.h"
 #include "const.h"
+#include "Model/GameModel/GameObject/Character/Class/Enemy/Replicator.h"
 #include <unordered_map>
 #include <vector>
 #include <memory>
@@ -231,6 +232,11 @@ get_enemy(GameModel::Abstract::EnemyClass enemy_class, int id, std::string name,
   case GameModel::Abstract::EnemyClass::TRAVELER:
     return std::make_shared<GameModel::Traveler>(name,
                                                  characteristics, id, settings);
+  case GameModel::Abstract::EnemyClass::REPLICATOR:
+    return std::make_shared<GameModel::Replicator>(name,
+                                                   characteristics,
+                                                   id,
+                                                   settings);
   default:throw GameObjectException("wrong PersonClass");
   }
 };
@@ -241,7 +247,8 @@ static std::vector<GameModel::Abstract::EnemyClass> enemy_classes = {
     GameModel::Abstract::EnemyClass::FLYING,
     GameModel::Abstract::EnemyClass::INDIFFERENT,
     GameModel::Abstract::EnemyClass::ORDINARY,
-    GameModel::Abstract::EnemyClass::TRAVELER};
+    GameModel::Abstract::EnemyClass::TRAVELER,
+    GameModel::Abstract::EnemyClass::REPLICATOR};
 
 static std::shared_ptr<GameModel::Person>
 get_person(GameModel::Abstract::PersonClass person_class,

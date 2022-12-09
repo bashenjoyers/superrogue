@@ -408,14 +408,23 @@ GameModel::Map::WorldManipulator::WorldManipulator(std::shared_ptr<World> newWor
 	newWorld), level(level), itemGenerator(newGenerator) {}
 
 void GameModel::Map::WorldManipulator::enemiesAct() {
-  for (auto enemy : world->enemies) {
-	auto enemyPtr = std::dynamic_pointer_cast<Enemy>(enemy);
-	assert(enemy != nullptr);
+  std::vector<std::shared_ptr<Enemy>> replicatedEnemies;
+
+  for (const auto& enemy : world->enemies) {
+    Abstract::Position startPosition = enemy->get_position();
 
 	std::vector<Abstract::MapEntityWithPosition> cells = visible_cells();
-	CharacterAction enemyAction = enemyPtr->strategy(cells, enemyPtr->get_position());
+	CharacterAction enemyAction = enemy->strategy(cells, startPosition);
 	act(enemyAction, enemy);
+
+    auto replicator = std::dynamic_pointer_cast<Replicator>(enemy);
+    if (replicator != nullptr) {
+      auto replicated = tryReplicateEnemy(replicator, startPosition);
+      if (replicated != nullptr) replicatedEnemies.push_back(replicated);
+    }
   }
+
+  for (const auto& r: replicatedEnemies) world->enemies.push_back(r);
 }
 
 GameModel::Map::MapInfo GameModel::Map::WorldManipulator::getMapInfo() {
@@ -476,4 +485,18 @@ void GameModel::Map::WorldManipulator::clearDeadEnemies() {
 			   [](auto enemy) { return !enemy->is_dead(); });
 
   assert(std::all_of(world->enemies.begin(), world->enemies.end(), [](auto e) { return !e->is_dead(); }));
+}
+
+std::shared_ptr<GameModel::Replicator> GameModel::Map::WorldManipulator::tryReplicateEnemy(std::shared_ptr<Replicator> enemy, Abstract::Position pos) {
+  std::random_device r;
+  std::uniform_real_distribution<float> dist(0.f, 1.f);
+
+  if (isVacantCell(pos.x, pos.y) && dist(r) > enemy->get_replication_probability()) {
+    auto replicated = enemy->clone();
+    replicated->set_position(pos);
+    world->map[pos.x][pos.y] = replicated->get_map_entity();
+    return replicated;
+  }
+
+  return nullptr;
 }

@@ -32,6 +32,7 @@ set(GAMEMODEL_SOURCES
         GameModel/GameObject/Character/Class/Person/Secretive.cpp
         GameModel/GameObject/Character/Class/Person/Wise.cpp
 
+        GameModel/GameObject/Character/Class/Enemy/Replicator.cpp
         GameModel/GameObject/Character/Class/Enemy/Agressive.cpp
         GameModel/GameObject/Character/Class/Enemy/Flying.cpp
         GameModel/GameObject/Character/Class/Enemy/Indifferent.cpp
