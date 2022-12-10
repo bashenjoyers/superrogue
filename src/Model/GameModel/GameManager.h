@@ -41,6 +41,8 @@ class GameManager {
   Abstract::GameStatus status;
 
   void generateMap() noexcept;
+
+  std::shared_ptr<Map::World> world;
 public:
   /**
    * @brief Construct a new Game Manager object. 

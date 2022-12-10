@@ -62,7 +62,7 @@ void GameManager::generateMap() noexcept {
   builder->setItemsCount(itemsCount);
   builder->setPerson(person);
 
-  auto world = std::make_shared<Map::World>(builder->build());
+  world = std::make_shared<Map::World>(builder->build());
   worldManipulator = std::make_shared<Map::WorldManipulator>(world, level, itemGenerator);
 
   status = GameStatus::IN_PROGRESS;
@@ -79,7 +79,7 @@ void GameManager::step(CharacterAction action) {
 	}
   }
 
-  if (worldManipulator->isDoorCell(person->get_position().x, person->get_position().y)) {
+  if (world->person->get_position() == world->door) {
 	generateMap();
 	return;
   }
