@@ -72,7 +72,7 @@ public:
   GameModel::Map::World build();
 
 private:
-  std::shared_ptr<Enemy> buildEnemy();
+  std::shared_ptr<Enemy> buildEnemy(const Abstract::Position& pos);
   Abstract::Position generatePosition();
   std::shared_ptr<IItem> buildItem();
 

@@ -7,7 +7,9 @@ namespace GameModel {
 Secretive::Secretive(std::string name) : Person(name,
                                                                          "Unrealistically secretive one (the field of View of opponents is 2 "
                                                                          "times smaller for the Character)",
-                                                              Inventory::Inventory(DEFAULT_POTIONS_MAX)) {
+                                                              Inventory::Inventory(DEFAULT_POTIONS_MAX), PersonSettings {
+                                                                .other_visible_k = SECRETIVE_VISIBILITY_K
+                                                              }) {
 
 }
 }; // namespace superrogue::GameObject::Character

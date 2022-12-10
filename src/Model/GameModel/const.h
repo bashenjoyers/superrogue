@@ -7,7 +7,7 @@
 
 namespace GameModel {
 const int PARAMETER_COUNT = 4;
-const int DEFAULT_VISIBLE_RADIUS = 10;
+const int DEFAULT_VISIBLE_RADIUS = 6;
 const int DEFAULT_POTION_WORK_TIME = 5;
 const int DEFAULT_POTIONS_MAX = 3;
 const int POTIONS_MAX_ALCHEMIST = 5;
@@ -33,5 +33,8 @@ const float SAVE_LAST_POS_INTELLECT_K = 0.5;
 const float CHANGE_WALK_K = 0.1;
 const float NOT_COWARD_K = 0.05;
 const float ENEMY_SCARED_K = 0.3;
+const float SECRETIVE_VISIBILITY_K = 0.5;
+const int MAX_MAP_LEN = 1000;   // useless
+const int ENEMY_AREA_SIZE = 20;
 const float DEFAULT_REPLICATION_PROBABILITY = 0.1;
 }; // namespace GameModel

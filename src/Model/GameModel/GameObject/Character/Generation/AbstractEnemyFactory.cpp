@@ -14,9 +14,17 @@ GameModel::Characteristics GameModel::Generation::AbstractEnemyFactory::generate
     return Characteristics(damage, armor, health_default + health, dexterity, luck);
 }
 
-GameModel::EnemySettings GameModel::Generation::AbstractEnemyFactory::generateSettings() {
+GameModel::EnemySettings GameModel::Generation::AbstractEnemyFactory::generateSettings(Abstract::EnemyClass enemy_class, const Abstract::Position& pos) {
     EnemySettings settings = EnemySettings();
     settings.attack_range = GameModel::Generation::melee_gen(Values::generator) ? 1 : DISTANT_RANGE;
     settings.intellect = GameModel::Generation::intellect_gen(Values::generator);
+    if (enemy_class != Abstract::EnemyClass::TRAVELER) {
+        settings.area = Area {
+            .x1 = pos.x - ENEMY_AREA_SIZE,
+            .x2 = pos.x + ENEMY_AREA_SIZE,
+            .y1 = pos.y - ENEMY_AREA_SIZE,
+            .y2 = pos.y + ENEMY_AREA_SIZE,
+        };
+    }
     return settings;
 }

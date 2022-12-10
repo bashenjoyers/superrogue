@@ -81,8 +81,9 @@ void Person::level_up(Characteristics characteristics) {
 
 Person::Person(std::string name,
                std::string description,
-               Inventory::Inventory inventory)
-	: ICharacter(name, description, Characteristics()), inventory(inventory) {
+               Inventory::Inventory inventory,
+               PersonSettings settings)
+	: ICharacter(name, description, Characteristics()), inventory(inventory), settings(settings) {
   int points = int(POINTS_IN_LVL);
   int health_default = int(HEALTH_LVL_K);
   int damage =

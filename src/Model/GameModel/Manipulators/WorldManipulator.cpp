@@ -188,7 +188,8 @@ void GameModel::Map::WorldManipulator::punch(std::shared_ptr<ICharacter> puncher
 	damage = std::max(damage - puncheeChar.armor, DEFENCE_DEFAULT_DAMAGE * level);
   }
 
-  punchee->take_damage(damage);
+  if (damage != 0)
+  	punchee->take_damage(damage);
 }
 
 bool GameModel::Map::WorldManipulator::punchWhileStep(std::shared_ptr<ICharacter> walking,
@@ -249,127 +250,15 @@ std::vector<GameModel::Abstract::Position> GameModel::Map::WorldManipulator::gen
   return positions;
 }
 
-std::vector<GameModel::Abstract::MapEntityWithPosition> GameModel::Map::WorldManipulator::visible_cells() const noexcept {
-  using Abstract::MapEntityWithPosition;
-  using Abstract::Position;
-
-  std::vector<Abstract::MapEntityWithPosition> ans;
-  for (size_t y = 0; y < world->map.front().size(); y++) {
-	for (size_t x = 0; x < world->map.size(); x++) {
-	  ans.push_back(MapEntityWithPosition{.pos = Position(x, y), .map_entity = world->map[x][y]});
-	}
-  }
-
-  return ans;
-
-
-//    auto visible = vector<vector<bool>>(radius * 2 + 1, vector<bool>(radius * 2 + 1, false));
-//    int x = pos.x;
-//    int y = pos.y;
-//
-//    int radius_x_pos = min(radius, (int)map.size() - 1 - x);
-//    int radius_x_neg = min(radius, x);
-//    int radius_y_pos = min(radius, (int)map.front().size() - 1 - y);
-//    int radius_y_neg = min(radius, y);
-//
-//    vector<pair<int, int>> directions = {{1, 1}, {1, -1}, {-1, -1}, {-1, 1}};
-//    for (auto direction : directions) {
-//        int radius_x = (direction.first > 0)? radius_x_pos : radius_x_neg;
-//        int radius_y = (direction.second > 0)? radius_y_pos : radius_y_neg;
-//
-//        if (radius_x > 0) {
-//            int i = radius_x * direction.first;
-//            for (int j = 0; abs(j) <= radius_y; j += direction.second) {
-//                float del = abs((float)j/i);
-//                int dx = direction.first;
-//                int dy = 0;
-//                while (abs(dx) <= radius_x && abs(dy) <= radius_y) {
-//                    if (view_blockers.find(map[x + dx][y + dy]) == view_blockers.end()) {
-//                        visible[radius + dx][radius + dy] = true;
-//                        if (abs((float)dy/dx) >= del) {
-//                            dx += direction.first;
-//                        } else {
-//                            dy += direction.second;
-//                        }
-//                    } else {
-//                        visible[radius + dx][radius + dy] = true;
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//
-//        if (radius_y > 0) {
-//            int i = radius_y * direction.second;
-//            for (int j = 0; abs(j) <= radius_x; j += direction.first) {
-//                float del = abs((float)j/i);
-//                int dx = 0;
-//                int dy = direction.second;
-//                while (abs(dx) <= radius_x && abs(dy) <= radius_y) {
-//                    if (view_blockers.find(map[x + dx][y + dy]) == view_blockers.end()) {
-//                        visible[radius + dx][radius + dy] = true;
-//                        if (abs((float)dx/dy) >= del) {
-//                            dy += direction.second;
-//                        } else {
-//                            dx += direction.first;
-//                        }
-//                    } else {
-//                        visible[radius + dx][radius + dy] = true;
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    auto door_pos = MapEntityWithPosition{
-//            .pos = Position(map.size()-1, map.front().size()-1),
-//            .map_entity = MapEntity::DOOR,
-//    };
-//
-//    auto own_pos = MapEntityWithPosition{
-//            .pos = pos,
-//            .map_entity = map[pos.x][pos.y],
-//    };
-//
-//    vector<MapEntityWithPosition> ans;
-//    ans.push_back(own_pos);
-//    ans.push_back(door_pos);
-//
-//    for (int i = radius - radius_x_neg; i <= radius + radius_x_pos; i++) {
-//        for (int j = radius - radius_y_neg; j <= radius + radius_y_pos; j++) {
-//            if (visible[i][j]) {
-//                Position pos = Position(i - radius + x, j - radius + y);
-//                if (pos == door_pos.pos) continue;
-//                ans.push_back(MapEntityWithPosition {
-//                        .pos = pos,
-//                        .map_entity = map[i - radius + x][j - radius + y]
-//                });
-//            }
-//        }
-//    }
-//
-//    // old simple version
-//    // vector<MapEntityWithPosition> ans;
-//    // for (size_t y = 0; y < map.front().size(); y++) {
-//    //     for (size_t x = 0; x < map.size(); x++) {
-//    //         ans.push_back(MapEntityWithPosition{ .pos = Position(x, y), .map_entity = map[x][y] });
-//    //     }
-//    // }
-//
-//    // if area is empty - no limits for it
-//    if (area.size() == 0) {
-//        return ans;
-//    }
-//    // TODO update with area
-//
-//    // TODO update with characters visibility radius
-//
-//    return ans;
-
-
-
-
+std::vector<GameModel::Abstract::MapEntityWithPosition> GameModel::Map::WorldManipulator::visible_cells(const Abstract::Position& pos, int radius, bool ignore_walls, const Area& area) {
+	visibility_builder.set_pos(pos);
+	visibility_builder.set_radius(radius);
+	visibility_builder.set_ignore_walls(ignore_walls);
+	visibility_builder.set_area(area);
+	visibility_builder.set_world(world);
+	auto res = visibility_builder.build();
+	visibility_builder.reset();
+	return res;
 }
 
 std::shared_ptr<GameModel::ICharacter> GameModel::Map::WorldManipulator::getCharacterByPosition(GameModel::Abstract::Position pos) const {
@@ -400,36 +289,44 @@ void GameModel::Map::WorldManipulator::handleDeath(std::shared_ptr<ICharacter> d
 	  world->items.insert({pos, item});
 	  world->map[pos.x][pos.y] = item->getMapEntity();
 	}
+	clearDeadEnemies();
+  } else {
+	world->map[pos.x][pos.y] = Abstract::MapEntity::FLOOR;
   }
 }
 
 GameModel::Map::WorldManipulator::WorldManipulator(std::shared_ptr<World> newWorld,
 												   int level,
 												   std::shared_ptr<Generation::ItemGenerator> newGenerator) : world(
-	newWorld), level(level), itemGenerator(newGenerator) {}
+	newWorld), level(level), itemGenerator(newGenerator), visibility_builder(VisibilityBuilder()) {}
 
 void GameModel::Map::WorldManipulator::enemiesAct() {
+  auto enemies(world->enemies);
   std::vector<std::shared_ptr<Enemy>> replicatedEnemies;
+  for (const auto& enemy : enemies) {
+	Abstract::Position startPosition = enemy->get_position();
+	if (enemy->is_dead())
+		continue;
 
-  for (const auto& enemy : world->enemies) {
-    Abstract::Position startPosition = enemy->get_position();
-
-	std::vector<Abstract::MapEntityWithPosition> cells = visible_cells();
+	auto enemy_settings = enemy->get_settings();
+	std::vector<Abstract::MapEntityWithPosition> cells = visible_cells(startPosition, enemy_settings.visible_radius, enemy_settings.ignore_walls, enemy_settings.area);
 	CharacterAction enemyAction = enemy->strategy(cells, startPosition);
 	act(enemyAction, enemy);
 
-    if (auto r = enemy->replicate(); r != nullptr) {
-      r->set_position(startPosition);
-      world->map[startPosition.x][startPosition.y] = r->get_map_entity();
-      replicatedEnemies.push_back(r);
-    }
+	if (is_step(enemyAction)) { 
+		if (auto r = enemy->replicate(); r != nullptr) {
+		r->set_position(startPosition);
+		world->map[startPosition.x][startPosition.y] = r->get_map_entity();
+		replicatedEnemies.push_back(r);
+		}
+	}
   }
 
   for (const auto& r: replicatedEnemies) world->enemies.push_back(r);
 }
 
 GameModel::Map::MapInfo GameModel::Map::WorldManipulator::getMapInfo() {
-  std::vector<Abstract::MapEntityWithPosition> map_positions = visible_cells(/*person_with_position.pos, radius*/);
+  std::vector<Abstract::MapEntityWithPosition> map_positions = visible_cells(world->person->get_position(), world->person->get_settings().visible_radius);
   return MapInfo(map_positions, world->person, world->map_options);
 }
 

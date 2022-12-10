@@ -6,7 +6,9 @@ test.cpp
 Model/GameModel/values.cpp
 Model/GameModel/generator.cpp
 Model/GameModel/GameManager.cpp
+Model/GameModel/Manipulators/VisibilityBuilder.cpp
 Model/GameModel/Map/Map.cpp
+Model/GameModel/Map/MapBuilder.cpp
 Model/GameModel/Map/Generator/MazeGenerator.cpp
 Model/GameModel/Inventory/Inventory.cpp
 Model/GameModel/GameObject/Item/Stuff/ItemTests.cpp

@@ -15,6 +15,10 @@ namespace GameModel {
 struct PersonSettings {
   // character visibility range
   int visible_radius = DEFAULT_VISIBLE_RADIUS;
+  // is person can 
+  bool visible_enemy = false;
+  // enemies visibility range for user: radius * other_visible_k
+  float other_visible_k = 1;
 };
 
 // Person class contains all parameters about him and actions
@@ -71,7 +75,8 @@ public:
    */
   Person(std::string name,
          std::string description,
-         Inventory::Inventory inventory = Inventory::Inventory(DEFAULT_POTIONS_MAX));
+         Inventory::Inventory inventory = Inventory::Inventory(DEFAULT_POTIONS_MAX),
+         PersonSettings settings = PersonSettings());
   Person(const Person &person) = default;
   Person() {};
   virtual ~Person() = default;

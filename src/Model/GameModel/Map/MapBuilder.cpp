@@ -17,7 +17,11 @@ void MapBuilder::reset() {
   mapGenerator = std::make_unique<BinaryTreeMazeGenerator>();
   enemyFactory = std::make_shared<FantasyEnemyFactory>(0);
   itemGenerator = std::make_shared<ItemGenerator>(0, 1.f);
-  opts = GameModel::Map::MapOptions();
+  opts = GameModel::Map::MapOptions {
+    .height = 0,
+    .width = 0,
+  };
+  enemies.clear();
 }
 
 void MapBuilder::setEnemiesFactory(std::shared_ptr<AbstractEnemyFactory> newEnemyFactory) {
@@ -37,13 +41,15 @@ void MapBuilder::setMapOptions(GameModel::Map::MapOptions newOpts) {
 }
 
 GameModel::Map::World MapBuilder::build() {
+  assert(opts.height > 0 && opts.width > 0);
+
   map = mapGenerator->generate(opts);
   Abstract::Position door = {opts.width - 1, opts.height - 1};
   map[door.x][door.y] = Abstract::MapEntity::DOOR;
 
   for (int i = 0; i < enemiesCount; i++) {
-	std::shared_ptr<Enemy> enemy = buildEnemy();
 	Abstract::Position pos = generatePosition();
+	std::shared_ptr<Enemy> enemy = buildEnemy(pos);
 	enemy->set_position(pos);
 
 	map[enemy->get_position().x][enemy->get_position().y] = enemy->get_map_entity();
@@ -77,43 +83,43 @@ GameModel::Map::World MapBuilder::build() {
   };
 }
 
-std::shared_ptr<Enemy> MapBuilder::buildEnemy() {
+std::shared_ptr<Enemy> MapBuilder::buildEnemy(const Abstract::Position& pos) {
   Abstract::EnemyClass
 	  enemy_class_name = Values::enemy_classes[GameModel::Generation::enemy_class_i_gen(Values::generator)];
   std::shared_ptr<Enemy> enemy;
 
   switch (enemy_class_name) {
   case Abstract::EnemyClass::AGRESSIVE: {
-	enemy = enemyFactory->generateAgressive();
+	enemy = enemyFactory->generateAgressive(pos);
   }
 	break;
 
   case Abstract::EnemyClass::TRAVELER: {
-	enemy = enemyFactory->generateTraveler();
+	enemy = enemyFactory->generateTraveler(pos);
   }
 	break;
 
   case Abstract::EnemyClass::ORDINARY: {
-	enemy = enemyFactory->generateOrdinary();
+	enemy = enemyFactory->generateOrdinary(pos);
   }
 	break;
 
   case Abstract::EnemyClass::INDIFFERENT: {
-	enemy = enemyFactory->generateIndifferent();
+	enemy = enemyFactory->generateIndifferent(pos);
   }
 	break;
 
   case Abstract::EnemyClass::FLYING: {
-	enemy = enemyFactory->generateFlying();
+	enemy = enemyFactory->generateFlying(pos);
   }
 	break;
 
   case Abstract::EnemyClass::COWARD: {
-	enemy = enemyFactory->generateCoward();
+	enemy = enemyFactory->generateCoward(pos);
   }
 	break;
   case Abstract::EnemyClass::REPLICATOR: {
-    enemy = enemyFactory->generateReplicator();
+    enemy = enemyFactory->generateReplicator(pos);
   }
   }
 

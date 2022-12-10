@@ -59,6 +59,7 @@ set(GAMEMODEL_SOURCES
         GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.cpp
         GameModel/Map/MapBuilder.cpp
         GameModel/Manipulators/WorldManipulator.cpp
+        GameModel/Manipulators/VisibilityBuilder.cpp
 
         PARENT_SCOPE
 )

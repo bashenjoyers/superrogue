@@ -6,58 +6,58 @@
 #include "Model/GameModel/generation_utils.h"
 #include <string>
 
-std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateAgressive() {
+std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateAgressive(const Abstract::Position& pos) {
     std::string firstname = "Angry";
     std::string lastname = "Ogre";
 
     Characteristics characteristics = generateCharacteristics();
-    EnemySettings settings = generateSettings();
+    EnemySettings settings = generateSettings(Abstract::EnemyClass::AGRESSIVE, pos);
 
     auto enemy = Values::get_enemy(Abstract::EnemyClass::AGRESSIVE, firstname + " " + lastname, characteristics, settings);
     return std::make_shared<IConfusionEnemy>(enemy);
 }
 
-std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateCoward() {
+std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateCoward(const Abstract::Position& pos) {
     std::string firstname = "Cowardly";
     std::string lastname = "Rat";
 
     Characteristics characteristics = generateCharacteristics();
     characteristics.dexterity *= 3;
 
-    EnemySettings settings = generateSettings();
+    EnemySettings settings = generateSettings(Abstract::EnemyClass::COWARD, pos);
 
     auto enemy = Values::get_enemy(Abstract::EnemyClass::COWARD, firstname + " " + lastname, characteristics, settings);
     return std::make_shared<IConfusionEnemy>(enemy);
 }
 
-std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateFlying() {
+std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateFlying(const Abstract::Position& pos) {
     std::string firstname = "Mighty";
     std::string lastname = "Gargoyle";
 
     Characteristics characteristics = generateCharacteristics();
-    EnemySettings settings = generateSettings();
+    EnemySettings settings = generateSettings(Abstract::EnemyClass::FLYING, pos);
 
     auto enemy = Values::get_enemy(Abstract::EnemyClass::FLYING, firstname + " " + lastname, characteristics, settings);
     return std::make_shared<IConfusionEnemy>(enemy);
 }
 
-std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateIndifferent() {
+std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateIndifferent(const Abstract::Position& pos) {
     std::string firstname = "Lost";
     std::string lastname = "Ghost";
 
     Characteristics characteristics = generateCharacteristics();
-    EnemySettings settings = generateSettings();
+    EnemySettings settings = generateSettings(Abstract::EnemyClass::INDIFFERENT, pos);
 
   auto enemy = Values::get_enemy(Abstract::EnemyClass::INDIFFERENT, firstname + " " + lastname, characteristics, settings);
     return std::make_shared<IConfusionEnemy>(enemy);
 }
 
-std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateOrdinary() {
+std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateOrdinary(const Abstract::Position& pos) {
     std::string firstname = "Skeleton";
     std::string lastname = "";
 
     Characteristics characteristics = generateCharacteristics();
-    EnemySettings settings = generateSettings();
+    EnemySettings settings = generateSettings(Abstract::EnemyClass::ORDINARY, pos);
 
     switch (GameModel::Generation::characteristic_i_gen(Values::generator)) {
         case 0:
@@ -80,23 +80,23 @@ std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::ge
     return std::make_shared<IConfusionEnemy>(enemy);
 }
 
-std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateTraveler() {
+std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateTraveler(const Abstract::Position& pos) {
     std::string firstname = "Ghoul";
     std::string lastname = "";
 
     Characteristics characteristics = generateCharacteristics();
-    EnemySettings settings = generateSettings();
+    EnemySettings settings = generateSettings(Abstract::EnemyClass::TRAVELER, pos);
 
     auto enemy = Values::get_enemy(Abstract::EnemyClass::TRAVELER, firstname + " " + lastname, characteristics, settings);
     return std::make_shared<IConfusionEnemy>(enemy);
 }
 
-std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateReplicator() {
+std::shared_ptr<GameModel::Enemy> GameModel::Generation::FantasyEnemyFactory::generateReplicator(const Abstract::Position& pos) {
   std::string firstname = "Slug";
   std::string lastname = "";
 
   Characteristics characteristics = generateCharacteristics();
-  EnemySettings settings = generateSettings();
+  EnemySettings settings = generateSettings(Abstract::EnemyClass::REPLICATOR, pos);
 
   auto enemy = Values::get_enemy(Abstract::EnemyClass::REPLICATOR, firstname + " " + lastname, characteristics, settings);
   return std::make_shared<IConfusionEnemy>(enemy);
