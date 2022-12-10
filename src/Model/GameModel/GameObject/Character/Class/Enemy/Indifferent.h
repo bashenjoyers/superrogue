@@ -1,5 +1,5 @@
 #pragma once
-#include "IEnemyClass.h"
+#include "Model/GameModel/GameObject/Character/Enemy.h"
 
 namespace GameModel {
 /**
@@ -8,14 +8,14 @@ namespace GameModel {
  * ignores everyone if he doesn't start hitting first
  * 
  */
-class Indifferent : public IEnemyClass {
-public:
+class Indifferent : public Enemy {
   // sets flag not ignore in states
-  void disturb() noexcept;
+  void disturb() noexcept override;
+public:
   // returns how to display it on the map (can hide its class if smart enough (character characteristic))
   Abstract::MapEntity get_map_entity() const noexcept override;
   // creates an enemy class according to the description and settings
-  Indifferent(std::string description,
-              EnemySettings settings = EnemySettings());
+  Indifferent(std::string name,
+              Characteristics characteristics,EnemySettings settings = EnemySettings());
 };
 }; // namespace GameModel

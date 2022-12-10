@@ -5,6 +5,7 @@
 #include "Model/GameModel/generation_utils.h"
 #include "Model/GameModel/GameObject/Character/ICharacter.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
+#include "Model/GameModel/values.h"
 
 namespace GameModel::Generation::Map {
 MapBuilder::MapBuilder() {
@@ -41,7 +42,7 @@ GameModel::Map::World MapBuilder::build() {
   map[door.x][door.y] = Abstract::MapEntity::DOOR;
 
   for (int i = 0; i < enemiesCount; i++) {
-	std::shared_ptr<IEnemy> enemy = buildEnemy(i);
+	std::shared_ptr<Enemy> enemy = buildEnemy();
 	Abstract::Position pos = generatePosition();
 	enemy->set_position(pos);
 
@@ -76,41 +77,44 @@ GameModel::Map::World MapBuilder::build() {
   };
 }
 
-std::shared_ptr<IEnemy> MapBuilder::buildEnemy(int guid) {
+std::shared_ptr<Enemy> MapBuilder::buildEnemy() {
   Abstract::EnemyClass
 	  enemy_class_name = Values::enemy_classes[GameModel::Generation::enemy_class_i_gen(Values::generator)];
-  std::shared_ptr<IEnemy> enemy;
+  std::shared_ptr<Enemy> enemy;
 
   switch (enemy_class_name) {
   case Abstract::EnemyClass::AGRESSIVE: {
-	enemy = enemyFactory->generateAgressive(guid);
+	enemy = enemyFactory->generateAgressive();
   }
 	break;
 
   case Abstract::EnemyClass::TRAVELER: {
-	enemy = enemyFactory->generateTraveler(guid);
+	enemy = enemyFactory->generateTraveler();
   }
 	break;
 
   case Abstract::EnemyClass::ORDINARY: {
-	enemy = enemyFactory->generateOrdinary(guid);
+	enemy = enemyFactory->generateOrdinary();
   }
 	break;
 
   case Abstract::EnemyClass::INDIFFERENT: {
-	enemy = enemyFactory->generateIndifferent(guid);
+	enemy = enemyFactory->generateIndifferent();
   }
 	break;
 
   case Abstract::EnemyClass::FLYING: {
-	enemy = enemyFactory->generateFlying(guid);
+	enemy = enemyFactory->generateFlying();
   }
 	break;
 
   case Abstract::EnemyClass::COWARD: {
-	enemy = enemyFactory->generateCoward(guid);
+	enemy = enemyFactory->generateCoward();
   }
 	break;
+  case Abstract::EnemyClass::REPLICATOR: {
+    enemy = enemyFactory->generateReplicator();
+  }
   }
 
   return enemy;

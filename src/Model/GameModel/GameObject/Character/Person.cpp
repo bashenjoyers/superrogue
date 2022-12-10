@@ -2,6 +2,7 @@
 #include "Person.h"
 #include "Model/Exceptions/exceptions.h"
 #include "Model/GameModel/const.h"
+#include "Model/GameModel/generation_utils.h"
 
 using std::optional;
 using std::string;
@@ -78,11 +79,29 @@ void Person::level_up(Characteristics characteristics) {
   level_characteristics.health += HEALTH_LVL_K;
 }
 
-Person::Person(string name, Characteristics characteristics,
-			   std::shared_ptr<IPersonClass> person_class, Inventory::Inventory inventory)
-	: IPerson(name, characteristics, person_class), inventory(inventory) {}
+Person::Person(std::string name,
+               std::string description,
+               Inventory::Inventory inventory)
+	: ICharacter(name, description, Characteristics()), inventory(inventory) {
+  int points = int(POINTS_IN_LVL);
+  int health_default = int(HEALTH_LVL_K);
+  int damage =
+      int(GameModel::Generation::characteristic_gen(Values::generator) /
+          PARAMETER_COUNT * points) + 1;
+  int armor = int(GameModel::Generation::characteristic_gen(Values::generator) /
+      PARAMETER_COUNT * points) + 1;
+  int health =
+      int(GameModel::Generation::characteristic_gen(Values::generator) /
+          PARAMETER_COUNT * points);
+  int dexterity =
+      int(GameModel::Generation::characteristic_gen(Values::generator) /
+          PARAMETER_COUNT * points);
+  float luck = GameModel::Generation::luck_gen(Values::generator);
+  characteristics = Characteristics(damage, armor, health_default + health, dexterity,
+                                    luck);
+}
 
-int Person::getAttackRange() const noexcept {
+int Person::get_attack_range() const noexcept {
   return weapon_melee ? 1 : DISTANT_RANGE;
 }
 
@@ -134,6 +153,13 @@ void Person::take_potion(std::shared_ptr<Potion> new_potion) {
 }
 Inventory::InventoryInfo Person::get_inventory_info() {
   return inventory.get_inventory_info();
+}
+
+Abstract::MapEntity Person::get_map_entity() const noexcept {
+  return Abstract::MapEntity::PERSON;
+}
+PersonSettings Person::get_settings() {
+  return settings;
 }
 
 }; // namespace GameModel

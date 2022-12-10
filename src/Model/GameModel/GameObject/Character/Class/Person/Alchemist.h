@@ -1,5 +1,5 @@
 #pragma once
-#include "IPersonClass.h"
+#include "Model/GameModel/GameObject/Character/Person.h"
 
 namespace GameModel {
 /**
@@ -8,9 +8,8 @@ namespace GameModel {
  * can have up to 7 Potions
  * 
  */
-class Alchemist : public IPersonClass {
+class Alchemist : public Person {
 public:
-  Alchemist(std::string description,
-            PersonSettings settings = PersonSettings());
+  Alchemist(std::string name);
 };
 }; // namespace superrogue::GameObject::Character

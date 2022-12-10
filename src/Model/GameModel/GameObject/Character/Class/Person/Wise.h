@@ -1,5 +1,5 @@
 #pragma once
-#include "IPersonClass.h"
+#include "Model/GameModel/GameObject/Character/Person.h"
 
 namespace GameModel {
 /**
@@ -8,8 +8,8 @@ namespace GameModel {
  * can see the areas where opponents may be located
  * 
  */
-class Wise : public IPersonClass {
+class Wise : public Person {
 public:
-  Wise(std::string description, PersonSettings settings = PersonSettings());
+  Wise(std::string name);
 };
 }; // namespace superrogue::GameObject::Character

@@ -1,26 +1,27 @@
 #pragma once
 
-#include "Model/GameModel/GameObject/Character/IEnemy.h"
+#include "Model/GameModel/GameObject/Character/Enemy.h"
 
 #include <memory>
 
 namespace GameModel::Generation {
 class AbstractEnemyFactory {
 public:
-    AbstractEnemyFactory(size_t level) : level(level) {}
-    ~AbstractEnemyFactory() = default;
+  AbstractEnemyFactory(size_t level) : level(level) {}
+  ~AbstractEnemyFactory() = default;
 
-    virtual std::shared_ptr<IEnemy> generateAgressive(int guid) = 0;
-    virtual std::shared_ptr<IEnemy> generateCoward(int guid) = 0;
-    virtual std::shared_ptr<IEnemy> generateFlying(int guid) = 0;
-    virtual std::shared_ptr<IEnemy> generateIndifferent(int guid) = 0;
-    virtual std::shared_ptr<IEnemy> generateOrdinary(int guid) = 0;
-    virtual std::shared_ptr<IEnemy> generateTraveler(int guid) = 0;
+  virtual std::shared_ptr<Enemy> generateAgressive() = 0;
+  virtual std::shared_ptr<Enemy> generateCoward() = 0;
+  virtual std::shared_ptr<Enemy> generateFlying() = 0;
+  virtual std::shared_ptr<Enemy> generateIndifferent() = 0;
+  virtual std::shared_ptr<Enemy> generateOrdinary() = 0;
+  virtual std::shared_ptr<Enemy> generateTraveler() = 0;
+  virtual std::shared_ptr<Enemy> generateReplicator() = 0;
 
 protected:
-    Characteristics generateCharacteristics();
-    EnemySettings generateSettings();
+  Characteristics generateCharacteristics();
+  EnemySettings generateSettings();
 
-    size_t level;
+  size_t level;
 };
 }

@@ -9,7 +9,7 @@
 #include "Model/GameModel/Inventory/Inventory.h"
 #include "Model/GameModel/GameObject/Character/ICharacter.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
-#include "Model/GameModel/GameObject/Character/IEnemy.h"
+#include "Model/GameModel/GameObject/Character/Enemy.h"
 
 /**
  * @brief The essence of the map. The game takes place on it, it can process user requests and manage other entities
@@ -51,7 +51,7 @@ struct MapInfo {
  */
 struct World {
   MapOptions map_options;
-  std::vector<std::shared_ptr<IEnemy>> enemies;
+  std::vector<std::shared_ptr<Enemy>> enemies;
   std::shared_ptr<Person> person;
 
   std::vector<std::vector<Abstract::MapEntity>> map;

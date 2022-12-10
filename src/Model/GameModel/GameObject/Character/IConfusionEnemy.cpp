@@ -1,4 +1,4 @@
-#include "IEnemy.h"
+#include "Enemy.h"
 #include "Model/GameModel/GameObject/Character/IConfusionEnemy.h"
 #include "Model/GameModel/values.h"
 
@@ -9,10 +9,9 @@ using GameModel::Abstract::Position;
 using namespace GameModel::Values;
 
 namespace GameModel {
-IConfusionEnemy::IConfusionEnemy(std::shared_ptr<IEnemy> ienemy) : ienemy(ienemy) {
-  enemy_class = ienemy->get_enemy_class();
-  id = ienemy->get_id();
+IConfusionEnemy::IConfusionEnemy(std::shared_ptr<Enemy> enemy) : Enemy(*enemy), internalEnemy(enemy) {
   confuse_gen = std::uniform_real_distribution<float>(0, 1);
+  this->set_position(enemy->get_position());
 };
 
 CharacterAction IConfusionEnemy::strategy(vector<MapEntityWithPosition> &cells, const Position &pos) noexcept {
@@ -44,7 +43,7 @@ CharacterAction IConfusionEnemy::strategy(vector<MapEntityWithPosition> &cells, 
     confused_state = ConfusedState::NO;
     return CharacterAction::WAIT;
   case ConfusedState::NO:
-    return ienemy->strategy(cells, pos);
+    return internalEnemy->strategy(cells, pos);
   }
   // case ConfusedState::DISCARBED:
   std::uniform_int_distribution<int> position_gen(0, possible_actions.size() - 1);
@@ -52,44 +51,44 @@ CharacterAction IConfusionEnemy::strategy(vector<MapEntityWithPosition> &cells, 
 }
 
 std::string IConfusionEnemy::get_name() const noexcept {
-  return ienemy->get_name();
+  return internalEnemy->get_name();
 }
 
 std::string IConfusionEnemy::get_description() const noexcept {
-  return ienemy->get_description();
+  return internalEnemy->get_description();
 }
 
 Characteristics IConfusionEnemy::get_characteristics() const noexcept {
-  return ienemy->get_characteristics();
+  return internalEnemy->get_characteristics();
 }
 
 void IConfusionEnemy::add_health(int value) noexcept {
-  return ienemy->add_health(value);
+  return internalEnemy->add_health(value);
 }
 
 void IConfusionEnemy::step() {
-  return ienemy->step();
+  return internalEnemy->step();
 }
 
 void IConfusionEnemy::punch(){
-  return ienemy->punch();
+  return internalEnemy->punch();
 }
 
 EnemySettings IConfusionEnemy::get_settings() const noexcept {
-  return ienemy->get_settings();
+  return internalEnemy->get_settings();
 }
 
 Abstract::MapEntity IConfusionEnemy::get_map_entity() const noexcept {
-  return ienemy->get_map_entity();
+  return internalEnemy->get_map_entity();
 }
 
 bool IConfusionEnemy::is_vacant(Abstract::MapEntity map_entity) const noexcept {
-  return ienemy->is_vacant(map_entity);
+  return internalEnemy->is_vacant(map_entity);
 }
 
-void IConfusionEnemy::takeDamage(int damage) {
-  ienemy->takeDamage(damage);
-  if (ienemy->isDead())
+void IConfusionEnemy::take_damage(int damage) {
+  internalEnemy->take_damage(damage);
+  if (internalEnemy->is_dead())
 	return;
 
   float confuse = confuse_gen(Values::generator);
@@ -98,12 +97,15 @@ void IConfusionEnemy::takeDamage(int damage) {
   }
 }
 
-bool IConfusionEnemy::isDead() {
-  return ienemy->isDead();
+bool IConfusionEnemy::is_dead() {
+  return internalEnemy->is_dead();
 }
 
-int IConfusionEnemy::getAttackRange() const noexcept {
-  return ienemy->getAttackRange();
+int IConfusionEnemy::get_attack_range() const noexcept {
+  return internalEnemy->get_attack_range();
+}
+std::shared_ptr<Enemy> IConfusionEnemy::replicate() {
+  return internalEnemy->replicate();
 }
 
 }; // namespace GameModel

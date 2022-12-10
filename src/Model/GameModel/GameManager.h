@@ -34,7 +34,6 @@ class GameManager {
   Map::MapOptions map_options;
 
   std::shared_ptr<Person> generate_person() noexcept;
-  Characteristics generate_characteristics(float characteristic_k) const noexcept;
   void person_level_up(Characteristics characteristics);
 
   std::shared_ptr<Generation::AbstractEnemyFactory> enemyFactory;

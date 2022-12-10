@@ -23,18 +23,15 @@ set(GAMEMODEL_SOURCES
         GameModel/GameObject/Character/Enemy.cpp
         GameModel/GameObject/Character/ICharacter.cpp
         GameModel/GameObject/Character/IConfusionEnemy.cpp
-        GameModel/GameObject/Character/IEnemy.cpp
-        GameModel/GameObject/Character/IPerson.cpp
         GameModel/GameObject/Character/Person.cpp
 
-        GameModel/GameObject/Character/Class/ICharacterClass.cpp
         GameModel/GameObject/Character/Class/Person/Alchemist.cpp
         GameModel/GameObject/Character/Class/Person/Farsighted.cpp
         GameModel/GameObject/Character/Class/Person/Lucky.cpp
         GameModel/GameObject/Character/Class/Person/Secretive.cpp
         GameModel/GameObject/Character/Class/Person/Wise.cpp
 
-        GameModel/GameObject/Character/Class/Enemy/IEnemyClass.cpp
+        GameModel/GameObject/Character/Class/Enemy/Replicator.cpp
         GameModel/GameObject/Character/Class/Enemy/Agressive.cpp
         GameModel/GameObject/Character/Class/Enemy/Flying.cpp
         GameModel/GameObject/Character/Class/Enemy/Indifferent.cpp

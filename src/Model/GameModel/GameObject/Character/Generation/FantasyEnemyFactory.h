@@ -6,19 +6,21 @@ namespace GameModel::Generation {
 
 class FantasyEnemyFactory : public AbstractEnemyFactory {
 public:
-    FantasyEnemyFactory(size_t level) : AbstractEnemyFactory(level) {}
+  FantasyEnemyFactory(size_t level) : AbstractEnemyFactory(level) {}
 
-    std::shared_ptr<IEnemy> generateAgressive(int guid) override;
+  std::shared_ptr<Enemy> generateAgressive() override;
 
-    std::shared_ptr<IEnemy> generateCoward(int guid) override;
+  std::shared_ptr<Enemy> generateCoward() override;
 
-    std::shared_ptr<IEnemy> generateFlying(int guid) override;
+  std::shared_ptr<Enemy> generateFlying() override;
 
-    std::shared_ptr<IEnemy> generateIndifferent(int guid) override;
+  std::shared_ptr<Enemy> generateIndifferent() override;
 
-    std::shared_ptr<IEnemy> generateOrdinary(int guid) override;
+  std::shared_ptr<Enemy> generateOrdinary() override;
 
-    std::shared_ptr<IEnemy> generateTraveler(int guid) override;
+  std::shared_ptr<Enemy> generateTraveler() override;
+
+  std::shared_ptr<Enemy> generateReplicator() override;
 
 private:
 

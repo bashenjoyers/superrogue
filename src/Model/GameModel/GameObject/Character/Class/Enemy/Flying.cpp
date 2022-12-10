@@ -7,12 +7,16 @@ using std::vector;
 namespace GameModel {
 using namespace Abstract;
 
-Flying::Flying(string description, EnemySettings settings)
-    : IEnemyClass(description, EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::FLYING, settings)) {}
-
 MapEntity Flying::get_map_entity() const noexcept {
   if (get_settings().intellect < CONCEALMENT_INTELLECT_K)
     return MapEntity::ENEMY_FLYING;
   return MapEntity::ENEMY;
 }
+Flying::Flying(std::string name,
+               Characteristics characteristics,
+               EnemySettings settings) :
+    Enemy(name,
+          "Looks down on everyone (can ignore all obstacles (walls))",
+          characteristics,
+          EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::FLYING, settings)) {}
 }; // namespace GameModel

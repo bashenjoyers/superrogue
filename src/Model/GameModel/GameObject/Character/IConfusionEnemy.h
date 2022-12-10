@@ -1,5 +1,5 @@
 #pragma once
-#include "Model/GameModel/GameObject/Character/IEnemy.h"
+#include "Model/GameModel/GameObject/Character/Enemy.h"
 
 namespace GameModel {
 /**
@@ -14,13 +14,13 @@ enum class ConfusedState {
   STAND
 };
 
-class IConfusionEnemy : public IEnemy {
-  std::shared_ptr<IEnemy> ienemy;
+class IConfusionEnemy : public Enemy {
+  std::shared_ptr<Enemy> internalEnemy;
   std::uniform_real_distribution<float> confuse_gen;
   ConfusedState confused_state = ConfusedState::NO;
 public:
   // adds functionality to the enemy, creates the current class
-  IConfusionEnemy(std::shared_ptr<IEnemy> ienemy);
+  IConfusionEnemy(std::shared_ptr<Enemy> enemy);
   // updates the strategy taking into account the confusion (observes what was in annotated instance)
   virtual CharacterAction strategy(std::vector<Abstract::MapEntityWithPosition> &cells,
                            const Abstract::Position &pos) noexcept override;
@@ -39,8 +39,9 @@ public:
   virtual Abstract::MapEntity get_map_entity() const noexcept override;
   virtual bool is_vacant(Abstract::MapEntity map_entity) const noexcept override;
 
-  void takeDamage(int damage) override;
-  bool isDead() override;
-  int getAttackRange() const noexcept override;
+  void take_damage(int damage) override;
+  bool is_dead() override;
+  int get_attack_range() const noexcept override;
+  std::shared_ptr<Enemy> replicate() override;
 };
 }; // namespace GameModel

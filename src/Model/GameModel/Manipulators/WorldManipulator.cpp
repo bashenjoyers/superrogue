@@ -1,7 +1,7 @@
 #include <cassert>
 #include "WorldManipulator.h"
 #include "Model/GameModel/abstract.h"
-#include "Model/GameModel/GameObject/Character/IEnemy.h"
+#include "Model/GameModel/GameObject/Character/Enemy.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
 
 //TODO BAGRORG get_settings() TO VIRTUA
@@ -32,7 +32,8 @@ bool GameModel::Map::WorldManipulator::isAnybodyAtCell(int x, int y) const noexc
 	  map_entity == MapEntity::ENEMY_FLYING ||
 	  map_entity == MapEntity::ENEMY_INDIFFERENT ||
 	  map_entity == MapEntity::ENEMY_ORDINARY ||
-	  map_entity == MapEntity::ENEMY_TRAVELER;
+	  map_entity == MapEntity::ENEMY_TRAVELER ||
+      map_entity == MapEntity::REPLICATOR;
 }
 
 GameModel::Abstract::MapEntity GameModel::Map::WorldManipulator::getCellType(const GameModel::Abstract::Position &pos) const noexcept {
@@ -90,7 +91,7 @@ bool GameModel::Map::WorldManipulator::act(GameModel::CharacterAction action, st
   Position position = character->get_position();
   bool acted = false;
 
-  int range = character->getAttackRange();
+  int range = character->get_attack_range();
 
   switch (action) {
   case CharacterAction::PUNCH_RIGHT:
@@ -187,7 +188,7 @@ void GameModel::Map::WorldManipulator::punch(std::shared_ptr<ICharacter> puncher
 	damage = std::max(damage - puncheeChar.armor, DEFENCE_DEFAULT_DAMAGE * level);
   }
 
-  punchee->takeDamage(damage);
+  punchee->take_damage(damage);
 }
 
 bool GameModel::Map::WorldManipulator::punchWhileStep(std::shared_ptr<ICharacter> walking,
@@ -199,14 +200,14 @@ bool GameModel::Map::WorldManipulator::punchWhileStep(std::shared_ptr<ICharacter
 		  && walking->get_position().x == standing->get_position().x));
 
   punch(walking, standing, true);
-  if (standing->isDead()) {
+  if (standing->is_dead()) {
 	handleDeath(standing);
 	return true;
   }
 
   punch(standing, walking, true);
 
-  if (walking->isDead()) {
+  if (walking->is_dead()) {
 	handleDeath(walking);
   }
 
@@ -225,7 +226,7 @@ void GameModel::Map::WorldManipulator::orientedCellsPunch(std::shared_ptr<IChara
 	  assert(character != nullptr);
 
 	  punch(actingCharacter, character, false);
-	  if (character->isDead())
+	  if (character->is_dead())
 		handleDeath(character);
 
 	} else if (!isVacantCell(pos.x, pos.y)) {
@@ -387,7 +388,7 @@ std::shared_ptr<GameModel::ICharacter> GameModel::Map::WorldManipulator::getChar
 }
 
 void GameModel::Map::WorldManipulator::handleDeath(std::shared_ptr<ICharacter> deadCharacter) {
-  assert(deadCharacter->isDead());
+  assert(deadCharacter->is_dead());
   assert(itemGenerator != nullptr);
 
   auto person = std::dynamic_pointer_cast<Person>(deadCharacter);
@@ -408,14 +409,22 @@ GameModel::Map::WorldManipulator::WorldManipulator(std::shared_ptr<World> newWor
 	newWorld), level(level), itemGenerator(newGenerator) {}
 
 void GameModel::Map::WorldManipulator::enemiesAct() {
-  for (auto enemy : world->enemies) {
-	auto enemyPtr = std::dynamic_pointer_cast<IEnemy>(enemy);
-	assert(enemy != nullptr);
+  std::vector<std::shared_ptr<Enemy>> replicatedEnemies;
+
+  for (const auto& enemy : world->enemies) {
+    Abstract::Position startPosition = enemy->get_position();
 
 	std::vector<Abstract::MapEntityWithPosition> cells = visible_cells();
-	CharacterAction enemyAction = enemyPtr->strategy(cells, enemyPtr->get_position());
+	CharacterAction enemyAction = enemy->strategy(cells, startPosition);
 	act(enemyAction, enemy);
+
+    if (auto r = enemy->replicate(); r != nullptr) {
+      r->set_position(startPosition);
+      replicatedEnemies.push_back(r);
+    }
   }
+
+  for (const auto& r: replicatedEnemies) world->enemies.push_back(r);
 }
 
 GameModel::Map::MapInfo GameModel::Map::WorldManipulator::getMapInfo() {
@@ -467,13 +476,13 @@ bool GameModel::Map::WorldManipulator::actPersonInternal(GameModel::CharacterAct
 }
 
 void GameModel::Map::WorldManipulator::clearDeadEnemies() {
-  std::vector<std::shared_ptr<IEnemy>> oldEnemies = std::move(world->enemies);
-  world->enemies = std::vector<std::shared_ptr<IEnemy>>();
+  std::vector<std::shared_ptr<Enemy>> oldEnemies = std::move(world->enemies);
+  world->enemies = std::vector<std::shared_ptr<Enemy>>();
 
   std::copy_if(oldEnemies.begin(),
 			   oldEnemies.end(),
 			   std::back_inserter(world->enemies),
-			   [](auto enemy) { return !enemy->isDead(); });
+			   [](auto enemy) { return !enemy->is_dead(); });
 
-  assert(std::all_of(world->enemies.begin(), world->enemies.end(), [](auto e) { return !e->isDead(); }));
+  assert(std::all_of(world->enemies.begin(), world->enemies.end(), [](auto e) { return !e->is_dead(); }));
 }
