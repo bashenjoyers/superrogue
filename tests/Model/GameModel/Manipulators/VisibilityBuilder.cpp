@@ -103,8 +103,8 @@ TEST(MODEL_GAME_MODEL, VISIBLE_CELLS_1) {
 
     auto area = Area {
         .x1 = 8,
+        .y1 = 10,
         .x2 = 12,
-        .y1 = 10, 
         .y2 = 21
     };
 	visibility_builder.set_area(area);
