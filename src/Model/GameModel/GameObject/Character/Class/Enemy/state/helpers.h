@@ -7,7 +7,7 @@
 
 namespace GameModel {
 struct Area {
-  int x1 = 0, y1 = 0, x2 = MAX_MAP_LEN, y2 = MAX_MAP_LEN;
+  int x1 = 0, y1 = 0, x2 = MAX_MAP_LEN, y2 = MAX_MAP_LEN; // borders included
 };
 /**
  * @brief enemy character settings

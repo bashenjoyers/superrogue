@@ -17,7 +17,11 @@ void MapBuilder::reset() {
   mapGenerator = std::make_unique<BinaryTreeMazeGenerator>();
   enemyFactory = std::make_shared<FantasyEnemyFactory>(0);
   itemGenerator = std::make_shared<ItemGenerator>(0, 1.f);
-  opts = GameModel::Map::MapOptions();
+  opts = GameModel::Map::MapOptions {
+    .height = 0,
+    .width = 0,
+  };
+  enemies.clear();
 }
 
 void MapBuilder::setEnemiesFactory(std::shared_ptr<AbstractEnemyFactory> newEnemyFactory) {
@@ -37,6 +41,8 @@ void MapBuilder::setMapOptions(GameModel::Map::MapOptions newOpts) {
 }
 
 GameModel::Map::World MapBuilder::build() {
+  assert(opts.height > 0 && opts.width > 0);
+
   map = mapGenerator->generate(opts);
   Abstract::Position door = {opts.width - 1, opts.height - 1};
   map[door.x][door.y] = Abstract::MapEntity::DOOR;
