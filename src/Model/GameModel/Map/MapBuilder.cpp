@@ -5,6 +5,7 @@
 #include "Model/GameModel/generation_utils.h"
 #include "Model/GameModel/GameObject/Character/ICharacter.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
+#include "Model/GameModel/values.h"
 
 namespace GameModel::Generation::Map {
 MapBuilder::MapBuilder() {
@@ -42,7 +43,7 @@ GameModel::Map::World MapBuilder::build() {
 
   for (int i = 0; i < enemiesCount; i++) {
 	Abstract::Position pos = generatePosition();
-	std::shared_ptr<IEnemy> enemy = buildEnemy(i, pos);
+	std::shared_ptr<Enemy> enemy = buildEnemy(pos);
 	enemy->set_position(pos);
 
 	map[enemy->get_position().x][enemy->get_position().y] = enemy->get_map_entity();
@@ -76,41 +77,44 @@ GameModel::Map::World MapBuilder::build() {
   };
 }
 
-std::shared_ptr<IEnemy> MapBuilder::buildEnemy(int guid, const Abstract::Position& pos) {
+std::shared_ptr<Enemy> MapBuilder::buildEnemy(const Abstract::Position& pos) {
   Abstract::EnemyClass
 	  enemy_class_name = Values::enemy_classes[GameModel::Generation::enemy_class_i_gen(Values::generator)];
-  std::shared_ptr<IEnemy> enemy;
+  std::shared_ptr<Enemy> enemy;
 
   switch (enemy_class_name) {
   case Abstract::EnemyClass::AGRESSIVE: {
-	enemy = enemyFactory->generateAgressive(guid, pos);
+	enemy = enemyFactory->generateAgressive(pos);
   }
 	break;
 
   case Abstract::EnemyClass::TRAVELER: {
-	enemy = enemyFactory->generateTraveler(guid, pos);
+	enemy = enemyFactory->generateTraveler(pos);
   }
 	break;
 
   case Abstract::EnemyClass::ORDINARY: {
-	enemy = enemyFactory->generateOrdinary(guid, pos);
+	enemy = enemyFactory->generateOrdinary(pos);
   }
 	break;
 
   case Abstract::EnemyClass::INDIFFERENT: {
-	enemy = enemyFactory->generateIndifferent(guid, pos);
+	enemy = enemyFactory->generateIndifferent(pos);
   }
 	break;
 
   case Abstract::EnemyClass::FLYING: {
-	enemy = enemyFactory->generateFlying(guid, pos);
+	enemy = enemyFactory->generateFlying(pos);
   }
 	break;
 
   case Abstract::EnemyClass::COWARD: {
-	enemy = enemyFactory->generateCoward(guid, pos);
+	enemy = enemyFactory->generateCoward(pos);
   }
 	break;
+  case Abstract::EnemyClass::REPLICATOR: {
+    enemy = enemyFactory->generateReplicator(pos);
+  }
   }
 
   return enemy;

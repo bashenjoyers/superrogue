@@ -7,11 +7,17 @@ using std::vector;
 namespace GameModel {
 using namespace Abstract;
 
-Indifferent::Indifferent(string description, EnemySettings settings)
-    : IEnemyClass(description, EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::INDIFFERENT, settings, true)) {}
+Indifferent::Indifferent(std::string name,
+                         Characteristics characteristics, EnemySettings settings)
+    : Enemy(name,
+            "He doesn't care about anyone (ignores everyone if he doesn't start "
+            "hitting first)",
+            characteristics,
+            EnemyStateHolder(std::make_shared<WalkEnemyState>(), EnemyClass::INDIFFERENT, settings, true)) {}
 
 void Indifferent::disturb() noexcept {
   state_holder.disturb();
+  Enemy::disturb();
 }
 
 MapEntity Indifferent::get_map_entity() const noexcept {

@@ -37,12 +37,14 @@ TEST(MODEL_GAME_MODEL, MAP__STEPS) {
     };
 
     static std::uniform_int_distribution<int> action_gen(0, actions.size() - 1);
+    std::mt19937 e;
+
     for (int mi = 0; mi < 10; mi++) {
-        auto map = gm.generate_map();
+        gm.generateMap();
         for (int i = 0; i < 100; i++) {
-            auto action = actions[action_gen(generator)];
-            map->step(action);
-            if (map->get_game_status() != GameStatus::IN_PROGRESS) break;
+            auto action = actions[action_gen(e)];
+            gm.step(action);
+            if (gm.isOver()) break;
         }
     }
 }

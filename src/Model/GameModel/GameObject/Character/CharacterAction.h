@@ -22,6 +22,14 @@ enum class CharacterAction {
   WAIT,
 };
 
+// check is action is step
+inline bool is_step(CharacterAction action) {
+  return action == CharacterAction::STEP_FORWARD || 
+    action == CharacterAction::STEP_RIGHT || 
+    action == CharacterAction::STEP_BACK || 
+    action == CharacterAction::STEP_LEFT;
+}
+
 // string representation of actions for internal errors
 inline const std::string to_string(CharacterAction action) {
   switch (action) {

@@ -66,6 +66,10 @@ CharConverter::convertMap(std::shared_ptr<GameModel::Map::MapInfo> mapInfo) {
               renderElem = 'T';
           } break;
 
+          case GameModel::Abstract::MapEntity::REPLICATOR : {
+            renderElem = 'R';
+          } break;
+
           default:
               renderElem = ' ';
       }

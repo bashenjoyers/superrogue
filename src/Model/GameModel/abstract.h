@@ -23,14 +23,15 @@ enum class MapEntity {
   FLOOR,
   ITEM,
   POTION,
-  DOOR
+  DOOR,
+  REPLICATOR
 };
 
 enum class GameStatus { IN_PROGRESS, NEXT_LVL, END };
 
 enum class PersonClass { ALCHEMIST, FARSIGHTED, LUCKY, SECRETIVE, WISE };
 
-enum class EnemyClass { AGRESSIVE, COWARD, FLYING, INDIFFERENT, ORDINARY, TRAVELER };
+enum class EnemyClass { AGRESSIVE, COWARD, FLYING, INDIFFERENT, ORDINARY, TRAVELER, REPLICATOR };
 
 struct Position {
   int x, y;

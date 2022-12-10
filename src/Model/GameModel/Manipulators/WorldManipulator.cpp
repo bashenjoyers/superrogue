@@ -1,7 +1,7 @@
 #include <cassert>
 #include "WorldManipulator.h"
 #include "Model/GameModel/abstract.h"
-#include "Model/GameModel/GameObject/Character/IEnemy.h"
+#include "Model/GameModel/GameObject/Character/Enemy.h"
 #include "Model/GameModel/GameObject/Character/Person.h"
 
 //TODO BAGRORG get_settings() TO VIRTUA
@@ -32,7 +32,8 @@ bool GameModel::Map::WorldManipulator::isAnybodyAtCell(int x, int y) const noexc
 	  map_entity == MapEntity::ENEMY_FLYING ||
 	  map_entity == MapEntity::ENEMY_INDIFFERENT ||
 	  map_entity == MapEntity::ENEMY_ORDINARY ||
-	  map_entity == MapEntity::ENEMY_TRAVELER;
+	  map_entity == MapEntity::ENEMY_TRAVELER ||
+      map_entity == MapEntity::REPLICATOR;
 }
 
 GameModel::Abstract::MapEntity GameModel::Map::WorldManipulator::getCellType(const GameModel::Abstract::Position &pos) const noexcept {
@@ -90,7 +91,7 @@ bool GameModel::Map::WorldManipulator::act(GameModel::CharacterAction action, st
   Position position = character->get_position();
   bool acted = false;
 
-  int range = character->getAttackRange();
+  int range = character->get_attack_range();
 
   switch (action) {
   case CharacterAction::PUNCH_RIGHT:
@@ -188,7 +189,7 @@ void GameModel::Map::WorldManipulator::punch(std::shared_ptr<ICharacter> puncher
   }
 
   if (damage != 0)
-  	punchee->takeDamage(damage);
+  	punchee->take_damage(damage);
 }
 
 bool GameModel::Map::WorldManipulator::punchWhileStep(std::shared_ptr<ICharacter> walking,
@@ -200,14 +201,14 @@ bool GameModel::Map::WorldManipulator::punchWhileStep(std::shared_ptr<ICharacter
 		  && walking->get_position().x == standing->get_position().x));
 
   punch(walking, standing, true);
-  if (standing->isDead()) {
+  if (standing->is_dead()) {
 	handleDeath(standing);
 	return true;
   }
 
   punch(standing, walking, true);
 
-  if (walking->isDead()) {
+  if (walking->is_dead()) {
 	handleDeath(walking);
   }
 
@@ -226,7 +227,7 @@ void GameModel::Map::WorldManipulator::orientedCellsPunch(std::shared_ptr<IChara
 	  assert(character != nullptr);
 
 	  punch(actingCharacter, character, false);
-	  if (character->isDead())
+	  if (character->is_dead())
 		handleDeath(character);
 
 	} else if (!isVacantCell(pos.x, pos.y)) {
@@ -249,125 +250,15 @@ std::vector<GameModel::Abstract::Position> GameModel::Map::WorldManipulator::gen
   return positions;
 }
 
-std::vector<GameModel::Abstract::MapEntityWithPosition> GameModel::Map::WorldManipulator::visible_cells(const Abstract::Position& pos, int radius, bool ignore_walls, const Area& area) const noexcept {
-	using Abstract::MapEntityWithPosition;
-	using Abstract::Position;
-
-	//   std::vector<Abstract::MapEntityWithPosition> ans;
-	//   for (size_t y = 0; y < world->map.front().size(); y++) {
-	// 	for (size_t x = 0; x < world->map.size(); x++) {
-	// 	  ans.push_back(MapEntityWithPosition{.pos = Position(x, y), .map_entity = world->map[x][y]});
-	// 	}
-	//   }
-
-	//   return ans;
-
-	auto visible = std::vector<std::vector<bool>>(radius * 2 + 1, std::vector<bool>(radius * 2 + 1, false));
-	int x = pos.x;
-	int y = pos.y;
-
-	int radius_x_pos = std::min(radius, (int)world->map.size() - 1 - x);
-	int radius_x_neg = std::min(radius, x);
-	int radius_y_pos = std::min(radius, (int)world->map.front().size() - 1 - y);
-	int radius_y_neg = std::min(radius, y);
-
-	std::vector<std::pair<int, int>> directions = {{1, 1}, {1, -1}, {-1, -1}, {-1, 1}};
-	for (auto direction : directions) {
-		int radius_x = (direction.first > 0)? radius_x_pos : radius_x_neg;
-		int radius_y = (direction.second > 0)? radius_y_pos : radius_y_neg;
-
-		if (radius_x > 0) {
-			int i = radius_x * direction.first;
-			for (int j = 0; abs(j) <= radius_y; j += direction.second) {
-				float del = abs((float)j/i);
-				int dx = direction.first;
-				int dy = 0;
-				while (abs(dx) <= radius_x && abs(dy) <= radius_y) {
-					if (Values::view_blockers.find(world->map[x + dx][y + dy]) == Values::view_blockers.end()) {
-						visible[radius + dx][radius + dy] = true;
-						if (abs((float)dy/dx) >= del) {
-							dx += direction.first;
-						} else {
-							dy += direction.second;
-						}
-					} else {
-						visible[radius + dx][radius + dy] = true;
-						break;
-					}
-				}
-			}
-		}
-
-		if (radius_y > 0) {
-			int i = radius_y * direction.second;
-			for (int j = 0; abs(j) <= radius_x; j += direction.first) {
-				float del = abs((float)j/i);
-				int dx = 0;
-				int dy = direction.second;
-				while (abs(dx) <= radius_x && abs(dy) <= radius_y) {
-					if (Values::view_blockers.find(world->map[x + dx][y + dy]) == Values::view_blockers.end()) {
-						visible[radius + dx][radius + dy] = true;
-						if (abs((float)dx/dy) >= del) {
-							dy += direction.second;
-						} else {
-							dx += direction.first;
-						}
-					} else {
-						visible[radius + dx][radius + dy] = true;
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	auto door_pos = MapEntityWithPosition{
-			.pos = Position(world->map.size()-1, world->map.front().size()-1),
-			.map_entity = Abstract::MapEntity::DOOR,
-	};
-
-	auto own_pos = MapEntityWithPosition{
-			.pos = pos,
-			.map_entity = world->map[pos.x][pos.y],
-	};
-
-	std::vector<MapEntityWithPosition> ans;
-	ans.push_back(own_pos);
-	ans.push_back(door_pos);
-
-	std::optional<MapEntityWithPosition> enemy_pos = std::nullopt;
-	if (world->person->get_settings().visible_enemy && world->enemies.size() > 0) {
-		auto visible_enemy_pos = world->enemies.front()->get_position();
-		enemy_pos = MapEntityWithPosition{
-			.pos = visible_enemy_pos,
-			.map_entity = world->map[visible_enemy_pos.x][visible_enemy_pos.y],
-		};
-		ans.push_back(enemy_pos.value());
-	}
-
-	for (int i = radius - radius_x_neg; i <= radius + radius_x_pos; i++) {
-		for (int j = radius - radius_y_neg; j <= radius + radius_y_pos; j++) {
-			if (visible[i][j]) {
-				Position vpos = Position(i - radius + x, j - radius + y);
-				if (vpos == door_pos.pos) continue;
-				if (enemy_pos.has_value() && vpos == enemy_pos.value().pos) continue;
-				if (area.x1 > vpos.x || area.y1 > vpos.y || area.x2 < vpos.x || area.y2 < vpos.y) continue;
-				Abstract::MapEntity map_entity = world->map[i - radius + x][j - radius + y];
-				if (map_entity == Abstract::MapEntity::PERSON) {
-					float visible_k = world->person->get_settings().other_visible_k;
-					if (std::max(abs((i - radius)), abs((j - radius))) > radius * visible_k) {
-						map_entity = Abstract::MapEntity::FLOOR;
-					}
-				}
-				ans.push_back(MapEntityWithPosition {
-						.pos = vpos,
-						.map_entity = map_entity,
-				});
-			}
-		}
-	}
-
-	return ans;
+std::vector<GameModel::Abstract::MapEntityWithPosition> GameModel::Map::WorldManipulator::visible_cells(const Abstract::Position& pos, int radius, bool ignore_walls, const Area& area) {
+	visibility_builder.set_pos(pos);
+	visibility_builder.set_radius(radius);
+	visibility_builder.set_ignore_walls(ignore_walls);
+	visibility_builder.set_area(area);
+	visibility_builder.set_world(world);
+	auto res = visibility_builder.build();
+	visibility_builder.reset();
+	return res;
 }
 
 std::shared_ptr<GameModel::ICharacter> GameModel::Map::WorldManipulator::getCharacterByPosition(GameModel::Abstract::Position pos) const {
@@ -386,7 +277,7 @@ std::shared_ptr<GameModel::ICharacter> GameModel::Map::WorldManipulator::getChar
 }
 
 void GameModel::Map::WorldManipulator::handleDeath(std::shared_ptr<ICharacter> deadCharacter) {
-  assert(deadCharacter->isDead());
+  assert(deadCharacter->is_dead());
   assert(itemGenerator != nullptr);
 
   auto person = std::dynamic_pointer_cast<Person>(deadCharacter);
@@ -407,21 +298,31 @@ void GameModel::Map::WorldManipulator::handleDeath(std::shared_ptr<ICharacter> d
 GameModel::Map::WorldManipulator::WorldManipulator(std::shared_ptr<World> newWorld,
 												   int level,
 												   std::shared_ptr<Generation::ItemGenerator> newGenerator) : world(
-	newWorld), level(level), itemGenerator(newGenerator) {}
+	newWorld), level(level), itemGenerator(newGenerator), visibility_builder(VisibilityBuilder()) {}
 
 void GameModel::Map::WorldManipulator::enemiesAct() {
   auto enemies(world->enemies);
-  for (auto enemy : enemies) {
-	auto enemyPtr = std::dynamic_pointer_cast<IEnemy>(enemy);
-	assert(enemy != nullptr);
-	if (enemy->isDead())
+  std::vector<std::shared_ptr<Enemy>> replicatedEnemies;
+  for (const auto& enemy : enemies) {
+	Abstract::Position startPosition = enemy->get_position();
+	if (enemy->is_dead())
 		continue;
 
-	auto enemy_settings = enemyPtr->get_settings();
-	std::vector<Abstract::MapEntityWithPosition> cells = visible_cells(enemyPtr->get_position(), enemy_settings.visible_radius, enemy_settings.ignore_walls, enemy_settings.area);
-	CharacterAction enemyAction = enemyPtr->strategy(cells, enemyPtr->get_position());
+	auto enemy_settings = enemy->get_settings();
+	std::vector<Abstract::MapEntityWithPosition> cells = visible_cells(startPosition, enemy_settings.visible_radius, enemy_settings.ignore_walls, enemy_settings.area);
+	CharacterAction enemyAction = enemy->strategy(cells, startPosition);
 	act(enemyAction, enemy);
+
+	if (is_step(enemyAction)) { 
+		if (auto r = enemy->replicate(); r != nullptr) {
+		r->set_position(startPosition);
+		world->map[startPosition.x][startPosition.y] = r->get_map_entity();
+		replicatedEnemies.push_back(r);
+		}
+	}
   }
+
+  for (const auto& r: replicatedEnemies) world->enemies.push_back(r);
 }
 
 GameModel::Map::MapInfo GameModel::Map::WorldManipulator::getMapInfo() {
@@ -473,13 +374,13 @@ bool GameModel::Map::WorldManipulator::actPersonInternal(GameModel::CharacterAct
 }
 
 void GameModel::Map::WorldManipulator::clearDeadEnemies() {
-  std::vector<std::shared_ptr<IEnemy>> oldEnemies = std::move(world->enemies);
-  world->enemies = std::vector<std::shared_ptr<IEnemy>>();
+  std::vector<std::shared_ptr<Enemy>> oldEnemies = std::move(world->enemies);
+  world->enemies = std::vector<std::shared_ptr<Enemy>>();
 
   std::copy_if(oldEnemies.begin(),
 			   oldEnemies.end(),
 			   std::back_inserter(world->enemies),
-			   [](auto enemy) { return !enemy->isDead(); });
+			   [](auto enemy) { return !enemy->is_dead(); });
 
-  assert(std::all_of(world->enemies.begin(), world->enemies.end(), [](auto e) { return !e->isDead(); }));
+  assert(std::all_of(world->enemies.begin(), world->enemies.end(), [](auto e) { return !e->is_dead(); }));
 }

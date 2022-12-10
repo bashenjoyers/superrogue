@@ -30,26 +30,6 @@ GameManager::GameManager(Map::MapOptions map_options)
   generateMap();
 }
 
-Characteristics GameManager::generate_characteristics(
-	float characteristic_k = 1) const noexcept {
-  int points = int(level * POINTS_IN_LVL * characteristic_k);
-  int health_default = int(level * HEALTH_LVL_K * characteristic_k);
-  int damage =
-	  int(GameModel::Generation::characteristic_gen(Values::generator) /
-		  PARAMETER_COUNT * points) + 1;
-  int armor = int(GameModel::Generation::characteristic_gen(Values::generator) /
-	  PARAMETER_COUNT * points) + 1;
-  int health =
-	  int(GameModel::Generation::characteristic_gen(Values::generator) /
-		  PARAMETER_COUNT * points);
-  int dexterity =
-	  int(GameModel::Generation::characteristic_gen(Values::generator) /
-		  PARAMETER_COUNT * points);
-  float luck = GameModel::Generation::luck_gen(Values::generator);
-  return Characteristics(damage, armor, health_default + health, dexterity,
-						 luck);
-}
-
 std::shared_ptr<Person> GameManager::generate_person() noexcept {
   string firstname =
 	  firstnames[GameModel::Generation::firstname_i_gen(Values::generator)];
@@ -58,29 +38,8 @@ std::shared_ptr<Person> GameManager::generate_person() noexcept {
   PersonClass person_classes_name =
 	  person_classes[GameModel::Generation::person_class_i_gen(
 		  Values::generator)];
-  PersonSettings settings = PersonSettings();
-  if (person_classes_name == PersonClass::FARSIGHTED) {
-	settings.visible_radius = settings.visible_radius * 2;
-  }
-  if (person_classes_name == PersonClass::SECRETIVE) {
-	settings.other_visible_k = SECRETIVE_VISIBILITY_K;
-  }
-  if (person_classes_name == PersonClass::WISE) {
-	settings.visible_enemy = true;
-  }
 
-  Characteristics characteristics = generate_characteristics();
-  level--; // internal need;
-  if (person_classes_name == PersonClass::LUCKY) {
-	characteristics.luck = max(characteristics.luck, LUCKY_LUCK);
-  }
-  int potions_max = (person_classes_name == PersonClass::ALCHEMIST)
-					? POTIONS_MAX_ALCHEMIST
-					: DEFAULT_POTIONS_MAX;
-  Inventory::Inventory inventory = Inventory::Inventory(potions_max);
-  std::shared_ptr<IPersonClass> person_class = get_person_class(person_classes_name, settings);
-  return std::make_shared<Person>(lastname + " " + firstname, characteristics, person_class,
-								  inventory);
+  return get_person(person_classes_name, lastname + " " + firstname);
 }
 
 void GameManager::person_level_up(Characteristics characteristics) {
@@ -88,7 +47,6 @@ void GameManager::person_level_up(Characteristics characteristics) {
 }
 
 void GameManager::generateMap() noexcept {
-  level++;
   if (level != 1) {
 	person_level_up(Characteristics(2, 2, 0, 1)); // user can choose it later
   }
@@ -108,6 +66,7 @@ void GameManager::generateMap() noexcept {
   worldManipulator = std::make_shared<Map::WorldManipulator>(world, level, itemGenerator);
 
   status = GameStatus::IN_PROGRESS;
+  level++;
 }
 
 bool GameManager::step(CharacterAction action) {
@@ -128,7 +87,7 @@ bool GameManager::step(CharacterAction action) {
 
   worldManipulator->enemiesAct();
 
-  if (person->isDead()) {
+  if (person->is_dead()) {
 	status = GameStatus::END;
   }
 

@@ -1,15 +1,28 @@
 #pragma once
-#include "IPerson.h"
-#include "Model/GameModel/GameObject/Character/Class/Person/IPersonClass.h"
 #include "Model/GameModel/GameObject/Characteristics.h"
 #include "Model/GameModel/GameObject/Item/Potions/Potion.h"
 #include "Model/GameModel/Inventory/Inventory.h"
+#include "ICharacter.h"
 #include <iostream>
 #include <string>
 
 namespace GameModel {
+
+/**
+ * @brief Person settings
+ *
+ */
+struct PersonSettings {
+  // character visibility range
+  int visible_radius = DEFAULT_VISIBLE_RADIUS;
+  // is person can 
+  bool visible_enemy = false;
+  // enemies visibility range for user: radius * other_visible_k
+  float other_visible_k = 1;
+};
+
 // Person class contains all parameters about him and actions
-class Person : public IPerson {
+class Person : public ICharacter {
   // melee weapon selected
   bool weapon_melee = true;
   // individual characteristics obtained with the level
@@ -23,14 +36,15 @@ class Person : public IPerson {
 
   void take_potion(std::shared_ptr<Potion> new_potion);
   std::shared_ptr<Item> take_equipment(std::shared_ptr<Item> new_equipment);
-
+protected:
+  PersonSettings settings;
 public:
   /**
    * @brief uses the potion by its number in the collection
    * 
    * @param potion_i - number
    */
-  void potion(int potion_i) override;
+  void potion(int potion_i);
   // called when the character steps
   void step() override;
   // called when the character punch smb
@@ -44,7 +58,9 @@ public:
 
   Inventory::InventoryInfo get_inventory_info();
 
-  virtual int getAttackRange() const noexcept override;
+  PersonSettings get_settings();
+
+  virtual int get_attack_range() const noexcept override;
 
   /**
    * @brief Get the full characteristics object. Sums up character stats, stats gained from level, item stats, and temporary stats from potions
@@ -57,11 +73,13 @@ public:
   /**
    * @brief Construct a new Person according to the standard characteristics of the object and inventory
    */
-  Person(std::string name, Characteristics characteristics,
-		 std::shared_ptr<IPersonClass> person_class,
-		 Inventory::Inventory inventory =
-		 Inventory::Inventory(DEFAULT_POTIONS_MAX));
+  Person(std::string name,
+         std::string description,
+         Inventory::Inventory inventory = Inventory::Inventory(DEFAULT_POTIONS_MAX),
+         PersonSettings settings = PersonSettings());
   Person(const Person &person) = default;
   Person() {};
+  virtual ~Person() = default;
+  Abstract::MapEntity get_map_entity() const noexcept override;
 };
 }; // namespace GameModel
