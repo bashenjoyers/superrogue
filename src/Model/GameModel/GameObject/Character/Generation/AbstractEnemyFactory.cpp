@@ -21,8 +21,8 @@ GameModel::EnemySettings GameModel::Generation::AbstractEnemyFactory::generateSe
     if (enemy_class != Abstract::EnemyClass::TRAVELER) {
         settings.area = Area {
             .x1 = pos.x - ENEMY_AREA_SIZE,
-            .x2 = pos.x + ENEMY_AREA_SIZE,
             .y1 = pos.y - ENEMY_AREA_SIZE,
+            .x2 = pos.x + ENEMY_AREA_SIZE,
             .y2 = pos.y + ENEMY_AREA_SIZE,
         };
     }

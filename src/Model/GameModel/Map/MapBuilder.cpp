@@ -1,3 +1,4 @@
+#include <cassert>
 #include "MapBuilder.h"
 #include "Model/GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.h"
 #include "Model/GameModel/GameObject/Character/Generation/FantasyEnemyFactory.h"

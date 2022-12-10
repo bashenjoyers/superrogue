@@ -1,3 +1,4 @@
+#include <cassert>
 #include "Model/GameModel/Manipulators/VisibilityBuilder.h"
 #include "Model/GameModel/values.h"
 
