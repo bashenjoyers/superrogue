@@ -25,7 +25,7 @@ struct GameOptions {
  * 
  */
 class GameManager {
-  size_t enemyCount = 10;  // TODO on generation
+  size_t enemyCount = 10;
   size_t itemsCount = 8;
 
   int level = 1;
@@ -36,16 +36,11 @@ class GameManager {
   std::shared_ptr<Person> generate_person() noexcept;
   void person_level_up(Characteristics characteristics);
 
-  std::shared_ptr<Generation::AbstractEnemyFactory> enemyFactory;
-  std::shared_ptr<Generation::ItemGenerator> itemGenerator;
-  std::shared_ptr<Generation::Map::MapGenerator> mapGenerator;
-
-  std::shared_ptr<Map::World> world;
   std::shared_ptr<Map::WorldManipulator> worldManipulator;
 
   Abstract::GameStatus status;
 
-  // TODO BAGRORG CHANGE ITEM
+  void generateMap() noexcept;
 public:
   /**
    * @brief Construct a new Game Manager object. 
@@ -54,16 +49,24 @@ public:
    */
   GameManager(Map::MapOptions map_options);
 
+
   /**
-   * @brief Generates a map and everything you need to play. After completing the level and at the beginning of the game, you need to call the generation of the map (the old map stops processing requests)
-   * 
-   * @return std::shared_ptr<Map::Map> - ref to created field
+   * @brief Make a step based on Character Action
+   * @param action to handle
+   * @return
    */
-  void generateMap() noexcept;
+  void step(CharacterAction action);
 
-  bool step(CharacterAction action);
-
+  /**
+   * @brief get current map information
+   * @return Map information
+   */
   Map::MapInfo getMapInfo();
+
+  /**
+   * @brief Is game over
+   * @return true if game is over
+   */
   bool isOver();
 };
 
