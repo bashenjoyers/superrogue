@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Model/UIModel/Events/MovePotionDownEvent.h"
+#include "Controller/Events/UI/MovePotionDownEvent.h"
 #include "Model/GameModel/GameObject/Character/Generation/AbstractEnemyFactory.h"
 #include "Model/GameModel/GameObject/Character/Generation/FantasyEnemyFactory.h"
 #include "Model/GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.h"
@@ -20,7 +20,7 @@ TEST(MOVE_POTION_DOWN_EVENT_TESTS, TEST_EXECUTE) {
   std::shared_ptr<GameModel::GameManager> gm = std::make_shared<GameModel::GameManager>(mapOptions);
 
     std::shared_ptr<UIModel::CursorState> cursorState = std::make_shared<UIModel::CursorState>();
-    GameModel::Events::MovePotionDownEvent movePotionDownEvent = GameModel::Events::MovePotionDownEvent(gm, cursorState);
+    Controller::Events::MovePotionDownEvent movePotionDownEvent = Controller::Events::MovePotionDownEvent(gm, cursorState);
 
     movePotionDownEvent.execute();
     ASSERT_EQ(cursorState->getPotionsCursor(), 3);

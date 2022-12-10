@@ -1,4 +1,5 @@
 #include "CursesSubRenderer.h"
+
 using namespace Ncurses;
 
 namespace View {
@@ -14,9 +15,9 @@ CursesMapRenderer::CursesMapRenderer(WindowConfig conf)
   win->setName("Map");
 }
 
-void CursesMapRenderer::render(RenderInfo info) {
+void CursesMapRenderer::render(RenderData data) {
   win->clearViewport();
-  std::vector<std::vector<char>> renderMap = conv.convertMap(info.mapInfo);
+  std::vector<std::vector<char>> renderMap = conv.convertMap(data.map_positions, data.opts);
 
   for (size_t y = 0; y < renderMap[0].size(); y++) {
 	for (size_t x = 0; x < renderMap.size(); x++) {
@@ -32,34 +33,30 @@ CursesInventoryRenderer::CursesInventoryRenderer(WindowConfig conf)
   spawnPotionsWindow();
 }
 
-void CursesInventoryRenderer::render(RenderInfo info) {
+void CursesInventoryRenderer::render(RenderData data) {
   potionsWin->clearViewport();
   equipmentWin->clearViewport();
-  GameModel::Inventory::InventoryInfo inventory;
-  if (info.mapInfo != nullptr)
-	inventory = info.mapInfo->inventory;
 
-  auto potions = inventory.potions;
+  auto potions = data.personInfo.inventoryInfo.potions;
 
   for (size_t curRow = 0; curRow < maxPotions; curRow++) {
 	if (curRow < potions.size())
-	  renderPotion(potions[curRow], curRow, curRow == info.cursorState->getPotionsCursor());
+	  renderPotion(potions[curRow], curRow, curRow == data.ui.potionsCursor);
 	else
-	  renderEmptyPotion(curRow, curRow == info.cursorState->getPotionsCursor());
+	  renderEmptyPotion(curRow, curRow == data.ui.potionsCursor);
   }
 
   {
-	using GameModel::ItemType;
-	renderItem(inventory.armor, ItemType::ARMOR,
-			   info.cursorState->getEquipmentCursor() == ItemType::ARMOR);
-	renderItem(inventory.boots, ItemType::BOOTS,
-			   info.cursorState->getEquipmentCursor() == ItemType::BOOTS);
-	renderItem(inventory.helmet, ItemType::HELMET,
-			   info.cursorState->getEquipmentCursor() == ItemType::HELMET);
-	renderItem(inventory.weapon_distant, ItemType::WEAPON_DISTANT,
-			   info.cursorState->getEquipmentCursor() == ItemType::WEAPON_DISTANT);
-	renderItem(inventory.weapon_melee, ItemType::WEAPON_MELEE,
-			   info.cursorState->getEquipmentCursor() == ItemType::WEAPON_MELEE);
+	renderItem(data.personInfo.inventoryInfo.armor, RenderEquipmentType::ARMOR,
+			   data.ui.equipmentCursor == RenderEquipmentType::ARMOR);
+	renderItem(data.personInfo.inventoryInfo.boots, RenderEquipmentType::BOOTS,
+               data.ui.equipmentCursor == RenderEquipmentType::BOOTS);
+	renderItem(data.personInfo.inventoryInfo.helmet, RenderEquipmentType::HELMET,
+               data.ui.equipmentCursor == RenderEquipmentType::HELMET);
+	renderItem(data.personInfo.inventoryInfo.weapon_distant, RenderEquipmentType::WEAPON_DISTANT,
+               data.ui.equipmentCursor == RenderEquipmentType::WEAPON_DISTANT);
+	renderItem(data.personInfo.inventoryInfo.weapon_melee, RenderEquipmentType::WEAPON_MELEE,
+               data.ui.equipmentCursor == RenderEquipmentType::WEAPON_MELEE);
   }
 }
 
@@ -70,60 +67,57 @@ void CursesInventoryRenderer::resetWindow(WindowConfig newConf) {
   spawnPotionsWindow();
 }
 
-void CursesInventoryRenderer::renderPotion(GameModel::Potion p, size_t row,
+void CursesInventoryRenderer::renderPotion(RenderItem p, size_t row,
 										   bool selected) {
   size_t symbolPadding = 1;
   size_t namePadding = symbolPadding + 3;
 
   char symbol = conv.convertPotion();
   potionsWin->drawElement(symbol, symbolPadding, row, selected);
-  potionsWin->drawString(p.get_name(), namePadding, row);
+  potionsWin->drawString(p.name, namePadding, row);
 }
 
-void CursesInventoryRenderer::renderItem(std::optional<GameModel::Item> item,
-										 GameModel::ItemType type,
+void CursesInventoryRenderer::renderItem(std::optional<RenderItem> item,
+										 RenderEquipmentType type,
 										 bool selected) {
-  using GameModel::Item;
   size_t symbolPadding = 1;
   size_t namePadding = symbolPadding + 3;
 
   char symbol = conv.convertItem(type);
 
-  size_t row = getItemRowOffset(type);
+  size_t row = typeToPos(type);
   equipmentWin->drawElement(symbol, symbolPadding, row, selected);
 
   if (!item.has_value())
 	return;
 
-  Item i = item.value();
-  equipmentWin->drawString(i.get_name(), namePadding, row);
+  equipmentWin->drawString(item.value().name, namePadding, row);
 }
 
-size_t CursesInventoryRenderer::getItemRowOffset(GameModel::ItemType type) {
-  using GameModel::ItemType;
+size_t CursesInventoryRenderer::typeToPos(RenderEquipmentType type) {
 
   switch (type) {
-  case ItemType::ARMOR: {
+  case RenderEquipmentType::ARMOR: {
 	return 1;
   }
 	break;
 
-  case ItemType::BOOTS: {
+  case RenderEquipmentType::BOOTS: {
 	return 2;
   }
 	break;
 
-  case ItemType::HELMET: {
+  case RenderEquipmentType::HELMET: {
 	return 0;
   }
 	break;
 
-  case ItemType::WEAPON_DISTANT: {
+  case RenderEquipmentType::WEAPON_DISTANT: {
 	return 4;
   }
 	break;
 
-  case ItemType::WEAPON_MELEE: {
+  case RenderEquipmentType::WEAPON_MELEE: {
 	return 3;
   }
 	break;
@@ -172,7 +166,7 @@ void CursesInventoryRenderer::renderEmptyPotion(size_t row, bool selected) {
 CursesMainMenuRenderer::CursesMainMenuRenderer(WindowConfig conf)
 	: CursesSubRenderer(conf) {}
 
-void CursesMainMenuRenderer::render(RenderInfo info) {}
+void CursesMainMenuRenderer::render(RenderData data) {}
 
 void CursesSubRenderer::resetWindow(WindowConfig newConf) {
   config = newConf;
@@ -180,9 +174,9 @@ void CursesSubRenderer::resetWindow(WindowConfig newConf) {
   win->moveTo(config.xPos, config.yPos);
 }
 
-void CursesHeroInfoRenderer::render(RenderInfo info) {
+void CursesHeroInfoRenderer::render(RenderData data) {
   characteristicsWin->clearViewport();
-  renderCharacteristics(info.mapInfo->characteristics);
+  renderCharacteristics(data.personInfo);
 }
 
 CursesHeroInfoRenderer::CursesHeroInfoRenderer(WindowConfig conf) : CursesSubRenderer(conf) {
@@ -190,12 +184,12 @@ CursesHeroInfoRenderer::CursesHeroInfoRenderer(WindowConfig conf) : CursesSubRen
   spawnCharacteristicsWindow();
 }
 
-void CursesHeroInfoRenderer::renderCharacteristics(GameModel::Characteristics characteristics) {
-  characteristicsWin->drawString("ARMOR: " + std::to_string(characteristics.armor), 0, 0, false);
-  characteristicsWin->drawString("DAMAGE: " + std::to_string(characteristics.damage), 0, 1, false);
-  characteristicsWin->drawString("DEXTERITY: " + std::to_string(characteristics.dexterity), 0, 2, false);
-  characteristicsWin->drawString("HEALTH: " + std::to_string(characteristics.health), 0, 3, false);
-  characteristicsWin->drawString("LUCK: " + std::to_string(characteristics.luck), 0, 4, false);
+void CursesHeroInfoRenderer::renderCharacteristics(RenderPersonInfo personInfo) {
+  characteristicsWin->drawString("ARMOR: " + std::to_string(personInfo.armor), 0, 0, false);
+  characteristicsWin->drawString("DAMAGE: " + std::to_string(personInfo.damage), 0, 1, false);
+  characteristicsWin->drawString("DEXTERITY: " + std::to_string(personInfo.dexterity), 0, 2, false);
+  characteristicsWin->drawString("HEALTH: " + std::to_string(personInfo.health), 0, 3, false);
+  characteristicsWin->drawString("LUCK: " + std::to_string(personInfo.luck), 0, 4, false);
 }
 
 void CursesHeroInfoRenderer::spawnCharacteristicsWindow() {

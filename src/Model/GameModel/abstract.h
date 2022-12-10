@@ -18,13 +18,13 @@ enum class MapEntity {
   ENEMY_INDIFFERENT,
   ENEMY_ORDINARY,
   ENEMY_TRAVELER,
+  ENEMY_REPLICATOR,
   WALL,
   SHADOW,
   FLOOR,
   ITEM,
   POTION,
   DOOR,
-  REPLICATOR
 };
 
 enum class GameStatus { IN_PROGRESS, NEXT_LVL, END };

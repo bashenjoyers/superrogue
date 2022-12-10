@@ -1,22 +1,6 @@
 set(GAMEMODEL_SOURCES
         GameModel/GameManager.cpp
 
-        # EVENTS
-        GameModel/Events/ChangeItemModelEvent.cpp
-        GameModel/Events/ChangeWeaponModelEvent.cpp
-        GameModel/Events/PotionModelEvent.cpp
-        GameModel/Events/PunchBackModelEvent.cpp
-        GameModel/Events/PunchForwardModelEvent.cpp
-        GameModel/Events/PunchLeftModelEvent.cpp
-        GameModel/Events/PunchRightModelEvent.cpp
-
-        GameModel/Events/StepBackModelEvent.cpp
-        GameModel/Events/StepForwardModelEvent.cpp
-        GameModel/Events/StepLeftModelEvent.cpp
-        GameModel/Events/StepRightModelEvent.cpp
-
-        GameModel/Events/WaitModelEvent.cpp
-
         # GAME OBJECTS
         GameModel/GameObject/Characteristics.cpp
         GameModel/GameObject/IGameObject.cpp

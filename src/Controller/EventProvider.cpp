@@ -1,11 +1,11 @@
 #include "EventProvider.h"
-#include "Model/GameModel/Events/ModelEvents.h"
-#include "Model/UIModel/Events/UIEvents.h"
+#include "Controller/Events/UI/UIEvents.h"
+#include "Controller/Events/Game/ModelEvents.h"
 
 #include "Common/Ncurses/CursesAPI.h"
 
 namespace Controller {
-using namespace GameModel::Events;
+using namespace Events;
 using namespace UIModel;
 
 EventProvider::EventProvider(std::shared_ptr<CursorState> cursorState,
@@ -30,7 +30,7 @@ EventProvider::EventProvider(std::shared_ptr<CursorState> cursorState,
       {'.', std::make_shared<WaitModelEvent>(map, cursorState)},
   };
 
-  emptyEvent = std::make_shared<GameModel::Events::EmptyEvent>(map, cursorState);
+  emptyEvent = std::make_shared<Events::EmptyEvent>(map, cursorState);
 }
 
 std::shared_ptr<IEvent> EventProvider::getEventByKey(int key) {
@@ -39,7 +39,7 @@ std::shared_ptr<IEvent> EventProvider::getEventByKey(int key) {
   return keyMapping[key];
 }
 
-void EventProvider::addObserver(std::shared_ptr<ModelObserver> obs) {
+void EventProvider::addObserver(std::shared_ptr<RenderDataObserver> obs) {
     for (auto &[key, event]: keyMapping) {
         event->addObserver(obs);
     }

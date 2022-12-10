@@ -33,7 +33,7 @@ bool GameModel::Map::WorldManipulator::isAnybodyAtCell(int x, int y) const noexc
 	  map_entity == MapEntity::ENEMY_INDIFFERENT ||
 	  map_entity == MapEntity::ENEMY_ORDINARY ||
 	  map_entity == MapEntity::ENEMY_TRAVELER ||
-      map_entity == MapEntity::REPLICATOR;
+      map_entity == MapEntity::ENEMY_REPLICATOR;
 }
 
 GameModel::Abstract::MapEntity GameModel::Map::WorldManipulator::getCellType(const GameModel::Abstract::Position &pos) const noexcept {

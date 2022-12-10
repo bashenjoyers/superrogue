@@ -1,72 +1,68 @@
 #include "CharDataConverter.h"
+#include "View/RenderData.h"
 #include <algorithm>
 
 namespace View {
 
-// TODO FIX
-std::vector<std::vector<char>>
-CharConverter::convertMap(std::shared_ptr<GameModel::Map::MapInfo> mapInfo) {
-    std::vector<GameModel::Abstract::MapEntityWithPosition> positions = mapInfo->map_positions;
-    GameModel::Map::MapOptions mapOptions = mapInfo->mapOptions;
-
-  std::vector<std::vector<char>> ans(mapOptions.width, std::vector<char>(mapOptions.height, ' '));
-  for (GameModel::Abstract::MapEntityWithPosition entity: positions) {
+std::vector<std::vector<char>> CharConverter::convertMap(std::vector<RenderEntity> entities, RenderOptions opts) {
+  std::vector<std::vector<char>> ans(opts.width, std::vector<char>(opts.height, ' '));
+  for (RenderEntity entity: entities) {
       char renderElem;
 
-      switch (entity.map_entity) {
-          case GameModel::Abstract::MapEntity::FLOOR : {
+      switch (entity.type) {
+      case RenderEntityType::FLOOR : {
               renderElem = '.';
           } break;
 
-          case GameModel::Abstract::MapEntity::WALL : {
+      case RenderEntityType::WALL : {
               renderElem = '#';
           } break;
 
-          case GameModel::Abstract::MapEntity::PERSON : {
+      case RenderEntityType::PERSON : {
               renderElem = 'H';
           } break;
 
-          case GameModel::Abstract::MapEntity::POTION : {
+      case RenderEntityType::POTION : {
               renderElem = 'P';
           } break;
 
-          case GameModel::Abstract::MapEntity::DOOR : {
+      case RenderEntityType::DOOR : {
               renderElem = 'D';
           } break;
 
-          case GameModel::Abstract::MapEntity::ITEM : {
+      case RenderEntityType::ITEM : {
               renderElem = 'S';
           } break;
 
-          case GameModel::Abstract::MapEntity::ENEMY : {
+      case RenderEntityType::ENEMY : {
               renderElem = 'E';
           } break;
 
-          case GameModel::Abstract::MapEntity::ENEMY_AGRESSIVE : {
+      case RenderEntityType::ENEMY_AGRESSIVE : {
               renderElem = 'A';
           } break;
 
-          case GameModel::Abstract::MapEntity::ENEMY_COWARD : {
+      case RenderEntityType::ENEMY_COWARD : {
               renderElem = 'C';
           } break;
 
-          case GameModel::Abstract::MapEntity::ENEMY_FLYING : {
+      case RenderEntityType::ENEMY_FLYING : {
               renderElem = 'F';
           } break;
 
-          case GameModel::Abstract::MapEntity::ENEMY_INDIFFERENT : {
+      case RenderEntityType::ENEMY_INDIFFERENT : {
               renderElem = 'I';
           } break;
 
-          case GameModel::Abstract::MapEntity::ENEMY_ORDINARY : {
+      case RenderEntityType::ENEMY_ORDINARY : {
               renderElem = 'O';
           } break;
 
-          case GameModel::Abstract::MapEntity::ENEMY_TRAVELER : {
+      case RenderEntityType::ENEMY_TRAVELER : {
               renderElem = 'T';
           } break;
 
-          case GameModel::Abstract::MapEntity::REPLICATOR : {
+      case RenderEntityType::ENEMY_REPLICATOR : {
             renderElem = 'R';
           } break;
 
@@ -80,26 +76,25 @@ CharConverter::convertMap(std::shared_ptr<GameModel::Map::MapInfo> mapInfo) {
   return ans;
 }
 
-char CharConverter::convertItem(GameModel::ItemType item) {
-  using GameModel::ItemType;
+char CharConverter::convertItem(RenderEquipmentType item) {
   switch (item) {
-  case ItemType::ARMOR: {
+  case RenderEquipmentType::ARMOR: {
     return 'A';
   } break;
 
-  case ItemType::BOOTS: {
+  case RenderEquipmentType::BOOTS: {
     return 'B';
   } break;
 
-  case ItemType::HELMET: {
+  case RenderEquipmentType::HELMET: {
     return 'H';
   } break;
 
-  case ItemType::WEAPON_DISTANT: {
+  case RenderEquipmentType::WEAPON_DISTANT: {
     return 'W';
   } break;
 
-  case ItemType::WEAPON_MELEE: {
+  case RenderEquipmentType::WEAPON_MELEE: {
     return 'M';
   } break;
 

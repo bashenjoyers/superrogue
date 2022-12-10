@@ -1,8 +1,7 @@
 #pragma once
 
 #include "GameDataConverter.h"
-#include "Model/GameModel/GameObject/Item/Stuff/Item.h"
-#include "Model/GameModel/Map/World.h"
+#include "View/RenderData.h"
 
 #include <memory>
 #include <string>
@@ -24,7 +23,7 @@ public:
    * @return std::vector<std::vector<char>> -- map chars representation
    */
   std::vector<std::vector<char>>
-  convertMap(std::shared_ptr<GameModel::Map::MapInfo> mapInfo);
+  convertMap(std::vector<RenderEntity> entities, RenderOptions opts);
 
   /**
    * @brief convert item type into char
@@ -32,7 +31,7 @@ public:
    * @param item -- item type
    * @return char -- char representation
    */
-  char convertItem(GameModel::ItemType item);
+  char convertItem(RenderEquipmentType item);
 
   /**
    * @brief convert (get) potion symbol

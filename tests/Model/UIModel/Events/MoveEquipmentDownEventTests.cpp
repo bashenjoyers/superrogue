@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "Model/GameModel/Map/World.h"
-#include "Model/UIModel/Events/MoveEquipmentDownEvent.h"
+#include "Controller/Events/UI/MoveEquipmentDownEvent.h"
 #include "Model/GameModel/GameObject/Character/Generation/AbstractEnemyFactory.h"
 #include "Model/GameModel/GameObject/Character/Generation/FantasyEnemyFactory.h"
 #include "Model/GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.h"
@@ -21,7 +21,7 @@ TEST(MOVE_EQUIPMENT_DOWN_EVENT_TESTS, TEST_EXECUTE) {
   std::shared_ptr<GameModel::GameManager> gm = std::make_shared<GameModel::GameManager>(mapOptions);
 
     std::shared_ptr<UIModel::CursorState> cursorState = std::make_shared<UIModel::CursorState>();
-    GameModel::Events::MoveEquipmentDownEvent moveEquipmentDownEvent = GameModel::Events::MoveEquipmentDownEvent(gm, cursorState);
+    Controller::Events::MoveEquipmentDownEvent moveEquipmentDownEvent = Controller::Events::MoveEquipmentDownEvent(gm, cursorState);
 
     moveEquipmentDownEvent.execute();
     ASSERT_EQ(cursorState->getEquipmentCursor(), GameModel::ItemType::WEAPON_DISTANT);

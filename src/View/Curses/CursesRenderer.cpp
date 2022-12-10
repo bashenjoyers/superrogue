@@ -41,19 +41,14 @@ WindowConfig CursesRenderer::getMainMenuWindowConfig() {
   return config;
 }
 
-void CursesRenderer::handleEvent(std::shared_ptr<GameModel::Map::MapInfo> map,
-                                std::shared_ptr<UIModel::CursorState> cursors) {
-    RenderInfo info = {
-            .mapInfo = map,
-            .cursorState = cursors
-    };
-    render(info);
+void CursesRenderer::handleEvent(RenderData data) {
+    render(data);
 }
 
-    void CursesRenderer::render(RenderInfo info) {
-        mapRenderer->render(info);
-        inventoryRenderer->render(info);
-        heroInfoRenderer->render(info);
+    void CursesRenderer::render(RenderData data) {
+        mapRenderer->render(data);
+        inventoryRenderer->render(data);
+        heroInfoRenderer->render(data);
     }
 
     WindowConfig CursesRenderer::getHeroInfoWindowConfig() {
