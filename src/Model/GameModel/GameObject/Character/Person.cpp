@@ -158,5 +158,8 @@ Inventory::InventoryInfo Person::get_inventory_info() {
 Abstract::MapEntity Person::get_map_entity() const noexcept {
   return Abstract::MapEntity::PERSON;
 }
+PersonSettings Person::get_settings() {
+  return settings;
+}
 
 }; // namespace GameModel

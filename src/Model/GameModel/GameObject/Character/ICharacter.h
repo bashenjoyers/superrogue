@@ -13,8 +13,6 @@ namespace GameModel {
  */
 class ICharacter : public IGameObject {
 public:
-  // returns an overridden empty description (nothing is known about the abstract character)
-  virtual std::string get_description() const noexcept override { return ""; };
   // determines the action on step
   virtual void step(){};
   // determines the action on punch

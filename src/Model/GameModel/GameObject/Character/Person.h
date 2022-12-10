@@ -54,6 +54,8 @@ public:
 
   Inventory::InventoryInfo get_inventory_info();
 
+  PersonSettings get_settings();
+
   virtual int get_attack_range() const noexcept override;
 
   /**
