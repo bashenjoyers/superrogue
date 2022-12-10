@@ -73,7 +73,7 @@ std::vector<GameModel::Abstract::MapEntityWithPosition> VisibilityBuilder::build
 				while (abs(dx) <= radius_x && abs(dy) <= radius_y) {
 					if (Values::view_blockers.find(world->map[x + dx][y + dy]) == Values::view_blockers.end()) {
 						visible[radius + dx][radius + dy] = true;
-						if (abs((float)dy/dx) >= del) {
+						if (abs((float)dy/dx) + EPS >= del) {
 							dx += direction.first;
 						} else {
 							dy += direction.second;
@@ -95,7 +95,7 @@ std::vector<GameModel::Abstract::MapEntityWithPosition> VisibilityBuilder::build
 				while (abs(dx) <= radius_x && abs(dy) <= radius_y) {
 					if (Values::view_blockers.find(world->map[x + dx][y + dy]) == Values::view_blockers.end()) {
 						visible[radius + dx][radius + dy] = true;
-						if (abs((float)dx/dy) >= del) {
+						if (abs((float)dx/dy) + EPS >= del) {
 							dy += direction.second;
 						} else {
 							dx += direction.first;

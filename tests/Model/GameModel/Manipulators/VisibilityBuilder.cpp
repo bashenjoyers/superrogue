@@ -57,10 +57,6 @@ TEST(MODEL_GAME_MODEL, VISIBLE_CELLS_1) {
     ASSERT_EQ(visibility_builder.build().size(), 10);
 
     visibility_builder.set_radius(3);
-    for (auto cell: visibility_builder.build()) {
-        std::cout << cell.pos.x << " " << cell.pos.y << "\n";
-    }
-    std::cout << "\n";
     ASSERT_EQ(visibility_builder.build().size(), 17);
 
     visibility_builder.set_radius(20);

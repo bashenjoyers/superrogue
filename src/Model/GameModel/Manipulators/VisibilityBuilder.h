@@ -9,12 +9,12 @@ namespace GameModel::Map {
 class VisibilityBuilder {
 public:
   /**
-   * @brief Map builder constructor
+   * @brief Visible cells builder constructor
    */
   VisibilityBuilder();
 
   /**
-   * @brief reset all settings
+   * @brief reset parameters
    */
   void reset() noexcept;
 
