@@ -2,6 +2,8 @@
 #include "Model/GameModel/Manipulators/VisibilityBuilder.h"
 #include "Model/GameModel/values.h"
 
+using std::abs;
+
 
 namespace GameModel::Map {
 VisibilityBuilder::VisibilityBuilder() {

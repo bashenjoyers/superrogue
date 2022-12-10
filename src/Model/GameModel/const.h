@@ -37,5 +37,5 @@ const float SECRETIVE_VISIBILITY_K = 0.5;
 const int MAX_MAP_LEN = 1000;   // useless
 const int ENEMY_AREA_SIZE = 20;
 const float DEFAULT_REPLICATION_PROBABILITY = 0.1;
-const float EPS = 1e-6;
+const float EPS = 1e-9;
 }; // namespace GameModel
