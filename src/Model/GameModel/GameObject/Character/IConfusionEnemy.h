@@ -43,5 +43,7 @@ public:
   bool is_dead() override;
   int get_attack_range() const noexcept override;
   std::shared_ptr<Enemy> replicate() override;
+  Abstract::Position get_position() override;
+  void set_position(Abstract::Position newPos) override;
 };
 }; // namespace GameModel

@@ -108,4 +108,12 @@ std::shared_ptr<Enemy> IConfusionEnemy::replicate() {
   return internalEnemy->replicate();
 }
 
+Position IConfusionEnemy::get_position() {
+  return internalEnemy->get_position();
+}
+
+void IConfusionEnemy::set_position(Abstract::Position newPos) {
+  internalEnemy->set_position(newPos);
+}
+
 }; // namespace GameModel
