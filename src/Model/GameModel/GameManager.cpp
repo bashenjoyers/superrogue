@@ -26,7 +26,6 @@ using namespace Abstract;
 GameManager::GameManager(Map::MapOptions map_options)
 	: map_options(map_options) {
   person = generate_person();
-  mapGenerator = std::make_shared<Generation::Map::BinaryTreeMazeGenerator>();
   generateMap();
 }
 
@@ -51,8 +50,9 @@ void GameManager::generateMap() noexcept {
 	person_level_up(Characteristics(2, 2, 0, 1)); // user can choose it later
   }
 
-  enemyFactory = std::make_shared<Generation::FantasyEnemyFactory>(level);
-  itemGenerator = std::make_shared<Generation::ItemGenerator>(level, person->get_full_characteristics().luck);
+  auto enemyFactory = std::make_shared<Generation::FantasyEnemyFactory>(level);
+  auto itemGenerator = std::make_shared<Generation::ItemGenerator>(level, person->get_full_characteristics().luck);
+  auto mapGenerator = std::make_shared<Generation::Map::BinaryTreeMazeGenerator>();
   std::shared_ptr<Generation::Map::MapBuilder> builder = std::make_shared<Generation::Map::MapBuilder>();
   builder->setEnemiesFactory(enemyFactory);
   builder->setItemsGenerator(itemGenerator);
@@ -62,27 +62,26 @@ void GameManager::generateMap() noexcept {
   builder->setItemsCount(itemsCount);
   builder->setPerson(person);
 
-  world = std::make_shared<Map::World>(builder->build());
+  auto world = std::make_shared<Map::World>(builder->build());
   worldManipulator = std::make_shared<Map::WorldManipulator>(world, level, itemGenerator);
 
   status = GameStatus::IN_PROGRESS;
   level++;
 }
 
-bool GameManager::step(CharacterAction action) {
-  assert(world != nullptr);
+void GameManager::step(CharacterAction action) {
   assert(person != nullptr);
   assert(worldManipulator != nullptr);
 
-  if (!worldManipulator->act(action, world->person)) {
-	if (!worldManipulator->actPersonInternal(action, world->person)) {
-	  return false;
+  if (!worldManipulator->act(action, person)) {
+	if (!worldManipulator->actPersonInternal(action, person)) {
+	  return;
 	}
   }
 
-  if (world->person->get_position() == world->door) {
+  if (worldManipulator->isDoorCell(person->get_position().x, person->get_position().y)) {
 	generateMap();
-	return true;
+	return;
   }
 
   worldManipulator->enemiesAct();
@@ -91,7 +90,7 @@ bool GameManager::step(CharacterAction action) {
 	status = GameStatus::END;
   }
 
-  return true;
+  return;
 }
 
 Map::MapInfo GameManager::getMapInfo() {

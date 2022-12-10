@@ -22,8 +22,8 @@ void GameController::interact() {
 
 void GameController::run() {
   while (true) {
-    if (gm->isOver()) return;
     interact();
+    if (gm->isOver()) return;
   }
 }
 
