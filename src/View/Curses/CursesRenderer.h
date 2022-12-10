@@ -8,7 +8,7 @@ namespace View {
  * @brief Curses main renderer class. Observing model events
  * 
  */
-class CursesRenderer : public Renderer, public ModelObserver {
+class CursesRenderer : public Renderer, public RenderDataObserver {
 public:
     CursesRenderer();
 
@@ -23,7 +23,7 @@ public:
    * 
    * @param info -- current game state
    */
-    void render(RenderInfo info) override;
+    void render(RenderData data) override;
 
     /**
      * @brief handle model event
@@ -31,7 +31,7 @@ public:
      * @param map -- current map state
      * @param cursors -- current cursors positions
      */
-    void handleEvent(std::shared_ptr<GameModel::Map::MapInfo> map, std::shared_ptr<UIModel::CursorState> cursors) override;
+    void handleEvent(RenderData data) override;
 
 private:
   WindowConfig getMapWindowConfig();

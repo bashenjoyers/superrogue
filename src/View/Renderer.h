@@ -1,20 +1,8 @@
 #pragma once
 
-#include "Common/Observers.h"
-
-#include "Model/GameModel/GameObject/Item/Stuff/Item.h"
-#include "Model/GameModel/Map/World.h"
+#include "Observers.h"
 
 namespace View {
-
-/**
- * @brief Render sources, e.g. map definition, cursor positions
- * 
- */
-struct RenderInfo {
-  std::shared_ptr<GameModel::Map::MapInfo> mapInfo;
-  std::shared_ptr<UIModel::CursorState> cursorState;
-};
 
 /**
  * @brief Window configuration for renderer.
@@ -45,7 +33,7 @@ public:
    * 
    * @param info -- current game/menu state to render
    */
-  virtual void render(RenderInfo info) = 0;
+  virtual void render(RenderData data) = 0;
 
 protected:
   WindowConfig config;

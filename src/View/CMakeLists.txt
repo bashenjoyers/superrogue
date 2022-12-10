@@ -5,4 +5,4 @@ set(VIEW_SOURCES
 )
 
 add_library(View ${VIEW_SOURCES})
-target_link_libraries(View Common Model)
+target_link_libraries(View Common)

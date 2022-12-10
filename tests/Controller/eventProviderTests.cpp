@@ -1,21 +1,21 @@
 #include <gtest/gtest.h>
 #include "Controller/EventProvider.h"
-#include "Model/GameModel/Events/PunchBackModelEvent.h"
-#include "Model/GameModel/Events/PunchForwardModelEvent.h"
-#include "Model/GameModel/Events/PunchLeftModelEvent.h"
-#include "Model/GameModel/Events/PunchRightModelEvent.h"
-#include "Model/GameModel/Events/StepBackModelEvent.h"
-#include "Model/UIModel/Events/MovePotionDownEvent.h"
-#include "Model/UIModel/Events/MovePotionUpEvent.h"
-#include "Model/GameModel/Events/StepForwardModelEvent.h"
-#include "Model/GameModel/Events/StepLeftModelEvent.h"
-#include "Model/GameModel/Events/StepRightModelEvent.h"
-#include "Model/GameModel/Events/ChangeWeaponModelEvent.h"
-#include "Model/GameModel/Events/ChangeItemModelEvent.h"
-#include "Model/GameModel/Events/PotionModelEvent.h"
-#include "Model/GameModel/Events/WaitModelEvent.h"
-#include "Model/UIModel/Events/MoveEquipmentDownEvent.h"
-#include "Model/UIModel/Events/MoveEquipmentUpEvent.h"
+#include "Controller/Events/Game/PunchBackModelEvent.h"
+#include "Controller/Events/Game/PunchForwardModelEvent.h"
+#include "Controller/Events/Game/PunchLeftModelEvent.h"
+#include "Controller/Events/Game/PunchRightModelEvent.h"
+#include "Controller/Events/Game/StepBackModelEvent.h"
+#include "Controller/Events/UI/MovePotionDownEvent.h"
+#include "Controller/Events/UI/MovePotionUpEvent.h"
+#include "Controller/Events/Game/StepForwardModelEvent.h"
+#include "Controller/Events/Game/StepLeftModelEvent.h"
+#include "Controller/Events/Game/StepRightModelEvent.h"
+#include "Controller/Events/Game/ChangeWeaponModelEvent.h"
+#include "Controller/Events/Game/ChangeItemModelEvent.h"
+#include "Controller/Events/Game/PotionModelEvent.h"
+#include "Controller/Events/Game/WaitModelEvent.h"
+#include "Controller/Events/UI/MoveEquipmentDownEvent.h"
+#include "Controller/Events/UI/MoveEquipmentUpEvent.h"
 
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_W) {
@@ -24,7 +24,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_W) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('w');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::PunchForwardModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::PunchForwardModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_A) {
@@ -33,7 +33,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_A) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('a');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::PunchLeftModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::PunchLeftModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_S) {
@@ -42,7 +42,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_S) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('s');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::PunchBackModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::PunchBackModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_D) {
@@ -51,7 +51,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_D) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('d');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::PunchRightModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::PunchRightModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_Q) {
@@ -60,7 +60,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_Q) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('q');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::ChangeWeaponModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::ChangeWeaponModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_L) {
@@ -69,7 +69,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_L) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('l');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::StepBackModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::StepBackModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_O) {
@@ -78,7 +78,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_O) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('o');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::StepForwardModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::StepForwardModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_K) {
@@ -87,7 +87,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_K) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('k');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::StepLeftModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::StepLeftModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_SEMICOLON) {
@@ -96,7 +96,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_SEMICOLON) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey(';');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::StepRightModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::StepRightModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_E) {
@@ -105,7 +105,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_E) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('e');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::ChangeItemModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::ChangeItemModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_P) {
@@ -114,7 +114,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_P) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('p');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::PotionModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::PotionModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_DOT) {
@@ -123,7 +123,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_DOT) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('.');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::WaitModelEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::WaitModelEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_MINUS) {
@@ -132,7 +132,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_MINUS) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('-');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::MoveEquipmentDownEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::MoveEquipmentDownEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_EQUALS) {
@@ -141,7 +141,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_EQUALS) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('=');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::MoveEquipmentUpEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::MoveEquipmentUpEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_LEFT_SQUARE_BRACKET) {
@@ -150,7 +150,7 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_LEFT_SQUARE_BRACKET) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey(']');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::MovePotionUpEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::MovePotionUpEvent*>(&(*result)) != nullptr);
 }
 
 TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_EQUALS_IF_RIGHT_SQUARE_BRACKET) {
@@ -159,5 +159,5 @@ TEST(EVENT_PROVIDER, GET_EVENT_BY_KEY_IF_EQUALS_IF_RIGHT_SQUARE_BRACKET) {
     Controller::EventProvider eventProvider = Controller::EventProvider(cursorState, gm);
 
     auto result = eventProvider.getEventByKey('[');
-    ASSERT_TRUE(dynamic_cast<GameModel::Events::MovePotionDownEvent*>(&(*result)) != nullptr);
+    ASSERT_TRUE(dynamic_cast<Controller::Events::MovePotionDownEvent*>(&(*result)) != nullptr);
 }

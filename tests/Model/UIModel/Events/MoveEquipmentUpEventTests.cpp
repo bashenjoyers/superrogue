@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Model/UIModel/Events/MoveEquipmentUpEvent.h"
+#include "Controller/Events/UI/MoveEquipmentUpEvent.h"
 #include "Model/GameModel/GameObject/Character/Generation/AbstractEnemyFactory.h"
 #include "Model/GameModel/GameObject/Character/Generation/FantasyEnemyFactory.h"
 #include "Model/GameModel/Map/Generator/RandomGenerating/BinaryTreeMazeGenerator.h"
@@ -20,7 +20,7 @@ TEST(MOVE_EQUIPMENT_UP_EVENT_TESTS, TEST_EXECUTE) {
   std::shared_ptr<GameModel::GameManager> gm = std::make_shared<GameModel::GameManager>(mapOptions);
 
     std::shared_ptr<UIModel::CursorState> cursorState = std::make_shared<UIModel::CursorState>();
-    GameModel::Events::MoveEquipmentUpEvent moveEquipmentUpEvent = GameModel::Events::MoveEquipmentUpEvent(gm, cursorState);
+    Controller::Events::MoveEquipmentUpEvent moveEquipmentUpEvent = Controller::Events::MoveEquipmentUpEvent(gm, cursorState);
 
     moveEquipmentUpEvent.execute();
     ASSERT_EQ(cursorState->getEquipmentCursor(), GameModel::ItemType::ARMOR);

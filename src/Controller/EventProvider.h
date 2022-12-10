@@ -2,12 +2,12 @@
 
 #include <memory>
 
-#include "Model/EmptyEvent.h"
+#include "Controller/Events/EmptyEvent.h"
 #include "Model/GameModel/Map/World.h"
-#include "Model/IEvent.h"
+#include "Controller/Events/IEvent.h"
 #include "Model/UIModel/CursorState.h"
 
-#include "Common/Observers.h"
+#include "View/Observers.h"
 
 namespace Controller {
 
@@ -30,18 +30,18 @@ public:
   * @param key - represents user's key
   * @return shared_ptr<IEvent> - event for user's key
   */
-  std::shared_ptr<GameModel::Events::IEvent> getEventByKey(int key);
+  std::shared_ptr<Events::IEvent> getEventByKey(int key);
 
   /**
   * @brief adds observer for events
   *
   * @param obs - represents observer
   */
-  void addObserver(std::shared_ptr<ModelObserver> obs);
+  void addObserver(std::shared_ptr<RenderDataObserver> obs);
 
 private:
-  std::map<int, std::shared_ptr<GameModel::Events::IEvent>> keyMapping;
-  std::shared_ptr<GameModel::Events::EmptyEvent> emptyEvent;
+  std::map<int, std::shared_ptr<Events::IEvent>> keyMapping;
+  std::shared_ptr<Events::EmptyEvent> emptyEvent;
 };
 
 } // namespace Controller

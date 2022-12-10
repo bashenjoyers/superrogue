@@ -15,5 +15,5 @@ add_subdirectory(src/View)
 
 add_subdirectory(tests)
 
-add_executable(superrogue src/main.cpp src/Boot.cpp)
+add_executable(superrogue src/main.cpp)
 target_link_libraries(superrogue View Model Controller Common)

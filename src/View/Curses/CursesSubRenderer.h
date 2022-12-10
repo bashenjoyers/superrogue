@@ -4,6 +4,7 @@
 #include "../Renderer.h"
 
 #include "Common/Ncurses/CursesAPI.h"
+#include "../RenderData.h"
 
 #include <optional>
 
@@ -53,7 +54,7 @@ public:
    * 
    * @param info -- current game state
    */
-  virtual void render(RenderInfo info) override;
+  virtual void render(RenderData data) override;
 };
 
 /**
@@ -74,7 +75,7 @@ public:
    * 
    * @param info -- current game state
    */
-  virtual void render(RenderInfo info) override;
+  virtual void render(RenderData data) override;
 
   /**
    * @brief reset window settings (need to affect subwindows)
@@ -84,11 +85,11 @@ public:
   virtual void resetWindow(WindowConfig newConf) override;
 
 private:
-  void renderPotion(GameModel::Potion p, size_t row, bool selected);
+  void renderPotion(RenderItem p, size_t row, bool selected);
   void renderEmptyPotion(size_t row, bool selected);
-  void renderItem(std::optional<GameModel::Item> item, GameModel::ItemType type,
+  void renderItem(std::optional<RenderItem> item, RenderEquipmentType type,
                   bool selected);
-  size_t getItemRowOffset(GameModel::ItemType type);
+  size_t typeToPos(RenderEquipmentType type);
 
   Ncurses::NcursesWindow::NcursesWIndowPtr equipmentWin;
   Ncurses::NcursesWindow::NcursesWIndowPtr potionsWin;
@@ -109,7 +110,7 @@ class CursesMainMenuRenderer : public CursesSubRenderer {
 public:
   CursesMainMenuRenderer(WindowConfig conf);
 
-  virtual void render(RenderInfo info) override;
+  virtual void render(RenderData data) override;
 };
 
 /**
@@ -130,7 +131,7 @@ public:
      * 
      * @param info -- current game state
      */
-    virtual void render(RenderInfo info) override;
+    virtual void render(RenderData data) override;
 
       /**
      * @brief reset window settings (need to affect subwindows)
@@ -139,7 +140,7 @@ public:
      */
     virtual void resetWindow(WindowConfig newConf) override;
 private:
-    void renderCharacteristics(GameModel::Characteristics characteristics);
+    void renderCharacteristics(RenderPersonInfo characteristics);
 
     Ncurses::NcursesWindow::NcursesWIndowPtr characteristicsWin;
     void spawnCharacteristicsWindow();

@@ -11,7 +11,7 @@ std::shared_ptr<GameModel::Replicator> GameModel::Replicator::clone() {
 }
 
 GameModel::Abstract::MapEntity GameModel::Replicator::get_map_entity() const noexcept {
-  return GameModel::Abstract::MapEntity::REPLICATOR;
+  return GameModel::Abstract::MapEntity::ENEMY_REPLICATOR;
 }
 
 GameModel::Replicator::Replicator(std::string name,

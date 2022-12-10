@@ -2,9 +2,6 @@ add_subdirectory(GameModel)
 add_subdirectory(UIModel)
 
 set(MODEL_SOURCES
-        IEvent.cpp
-        EmptyEvent.cpp
-
         Exceptions/exceptions.cpp
 )
 
