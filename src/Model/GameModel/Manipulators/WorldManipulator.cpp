@@ -420,6 +420,7 @@ void GameModel::Map::WorldManipulator::enemiesAct() {
 
     if (auto r = enemy->replicate(); r != nullptr) {
       r->set_position(startPosition);
+      world->map[startPosition.x][startPosition.y] = r->get_map_entity();
       replicatedEnemies.push_back(r);
     }
   }

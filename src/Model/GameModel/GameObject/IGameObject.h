@@ -33,7 +33,7 @@ public:
   IGameObject(){};
   virtual ~IGameObject() {}
 
-  Abstract::Position get_position();
-  void set_position(Abstract::Position newPos);
+  virtual Abstract::Position get_position();
+  virtual void set_position(Abstract::Position newPos);
 };
 }; // namespace GameModel
